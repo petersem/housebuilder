@@ -1,0 +1,109 @@
+
+body, p {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    font-family: sans-serif;
+    line-height: 1.6;
+}
+
+header {
+    height: 80px; /* optional */
+    line-height: 80px; /* vertically center inline elements */
+    text-align: center; /* centers the nav */
+    padding: 0 1rem;
+    background-color: #2e2e2e;
+}
+
+/* Float the logo left */
+logo {
+    padding-left: 15px;
+    float: left;
+}
+
+logo img {
+    height: 60px;
+    vertical-align: middle;
+}
+
+/* Center the nav using inline-block */
+nav {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+nav li {
+    display: inline-block;
+    margin: 0 1rem;
+}
+
+nav a {
+    text-decoration: none;
+    font-weight: 800;
+    color: rgb(221, 221, 221);
+}
+
+nav ul li a:hover {
+  color: #eeea18;
+}
+
+main {
+    gap: 1em;
+    padding: 0em;
+}
+
+section {
+    padding-left: 20px;
+}
+
+.listHeader {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+#tasks {
+    list-style: none;
+}
+
+input:checked + span {
+    text-decoration: line-through;
+    color: red;
+}
+
+.newTask {
+    font-weight: bold;
+    padding-left: 40px;
+}
+
+.newTask > div {
+    padding-left: 40px;
+}
+
+#extras {
+    padding-left: 20px;
+    font-size: 0.8em;
+}
+
+.title {
+    font-weight: bold;
+    color: #360da8;
+}
+
+
+.money {
+    font-weight: bold;
+}
+
+.company {
+    color: rgb(0, 61, 13);
+}
+
+.criteria {
+    font-weight: 600;
+}

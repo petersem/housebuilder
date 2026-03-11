@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <%- include("partials/head.ejs") %>
+</head>
+
+<body>
+    <%- include("partials/menu.ejs") %>
+        <section>
+            <h1>
+                <%= title %>
+            </h1>
+            <ul id="houses">
+            <span class='listHeader'>House List</span>
+            <% data.forEach((house)=> { %>
+                <li>
+                    <% 
+                    let money = new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3 }).format(house.totalCost);
+                    %>
+                    <span class="money">$<%= money %></span>
+                    <span class="title"> <%= house.title %></span> -
+                    <span class="company"><%= house.companyName %></span> -
+                    <span><%= house.rooms %> rooms</span> -
+                    <span><%= house.bathrooms %> bathrooms</span> -
+                    <span><%= house.garages %> garage</span> -
+                    <span><%= house.floorAreaSqm %> sqm</span> -
+                    <span><%= house.storyCount %> level</span>
+                    <!-- <% if (house.extras.length > 0) {%>
+                    <div>Extras: </div>
+                    <% } %> -->
+                    <% house.extras.forEach(extra => { %>
+                        <div id="extras">
+                        <span><%= extra %></span>
+                        </div>
+                    <% }); %>
+                </li>
+                <% }); %>
+            </ul>
+        </section>
+</body>
+
+</html>
