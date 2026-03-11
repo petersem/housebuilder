@@ -4,7 +4,7 @@ import { HouseController } from '../controllers/houseController.mjs';
 const houseRoutes = express.Router();
 
 houseRoutes.get("/list", HouseController.viewHouseList);
-houseRoutes.get("/list/:houseId", HouseController.viewHouse);
+houseRoutes.get("/list/:houseId", HouseController.editHouse);
 houseRoutes.post("/add", HouseController.addHouse);
 houseRoutes.post("/delete", HouseController.deleteHouse);
 // no update yet

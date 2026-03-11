@@ -15,30 +15,48 @@
                 <%= title %>
             </h1>
             <ul id="houses">
-            <span class='listHeader'>House List</span>
-            <% data.forEach((house)=> { %>
-                <li>
-                    <% 
-                    let money = new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3 }).format(house.totalCost);
-                    %>
-                    <span class="money">$<%= money %></span>
-                    <span class="title"> <%= house.title %></span> -
-                    <span class="company"><%= house.companyName %></span> -
-                    <span><%= house.rooms %> rooms</span> -
-                    <span><%= house.bathrooms %> bathrooms</span> -
-                    <span><%= house.garages %> garage</span> -
-                    <span><%= house.floorAreaSqm %> sqm</span> -
-                    <span><%= house.storyCount %> level</span>
-                    <!-- <% if (house.extras.length > 0) {%>
-                    <div>Extras: </div>
-                    <% } %> -->
-                    <% house.extras.forEach(extra => { %>
-                        <div id="extras">
-                        <span><%= extra %></span>
-                        </div>
+                <span class='listHeader'>House List</span>
+                <% data.forEach((house)=> { %>
+                    <li><div>
+                        <% let money=new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3
+                            }).format(house.totalCost); %>
+                            <span class="money">$<%= money %></span>
+                            <span class="title">
+                                <%= house.title %>
+                            </span> -
+                            <span class="company">
+                                <%= house.companyName %>
+                            </span> -
+                            <i class="fa-regular fa-pen-to-square" title="Edit"></i>
+                            <i class="fa-solid fa-upload" title="Publish to Showcase"></i>
+                            <i class="fa-solid fa-trash-can" title="Delete"></i>
+                            <div>
+                                <span>
+                                    <%= house.rooms %> rooms
+                                </span> -
+                                <span>
+                                    <%= house.bathrooms %> bathrooms
+                                </span> -
+                                <span>
+                                    <%= house.garages %> garage
+                                </span> -
+                                <span>
+                                    <%= house.floorAreaSqm %> sqm
+                                </span> -
+                                <span>
+                                    <%= house.storyCount %> level
+                                </span>
+                            </div>
+                            <% house.extras.forEach(extra=> { %>
+                                <div id="extras">
+                                    <span>
+                                        <%= extra %>
+                                    </span>
+                                </div>
+                                <% }); %>
+                    </li>
+                    </div>
                     <% }); %>
-                </li>
-                <% }); %>
             </ul>
         </section>
 </body>

@@ -5,6 +5,7 @@ body, p {
     font-family: sans-serif;
     font-family: sans-serif;
     line-height: 1.6;
+    background-color: whitesmoke;
 }
 
 header {
@@ -59,7 +60,7 @@ main {
 }
 
 section {
-    padding-left: 20px;
+    padding-left: 10px;
 }
 
 .listHeader {
@@ -74,15 +75,6 @@ section {
 input:checked + span {
     text-decoration: line-through;
     color: red;
-}
-
-.newTask {
-    font-weight: bold;
-    padding-left: 40px;
-}
-
-.newTask > div {
-    padding-left: 40px;
 }
 
 #extras {
@@ -101,9 +93,37 @@ input:checked + span {
 }
 
 .company {
-    color: rgb(0, 61, 13);
+    font-weight: bold;
+    color: rgb(0, 102, 22);
 }
 
 .criteria {
     font-weight: 600;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.fa-trash-can {
+  color: black;
+}
+
+.fa-upload{
+    color: black;
+}
+
+.fa-trash-can:hover,.fa-trash-can:focus {
+    font-size: 1.1em;
+    color: red;
+}
+
+.fa-upload:hover,.fa-upload:focus {
+    font-size: 1.1em;
+    color: #360da8;
+}
+
+.fa-pen-to-square:hover,.fa-pen-to-square:focus {
+    font-size: 1.1em;
+      color: rgb(0, 102, 22);
 }

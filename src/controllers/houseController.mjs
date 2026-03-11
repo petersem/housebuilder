@@ -49,6 +49,19 @@ export class HouseController {
         });
     }
 
+    static editHouse(req, res) {
+        let houses = HouseModel.select();
+        houses.forEach(house => {
+            // calculate current total price
+            house.totalPrice = this.costCalculator(house);
+        });
+        res.status(200);
+        res.render('viewEditHouse', {
+            title: "Edit House",
+            data: houses, pricing, companies
+        });
+    }
+
     static viewHouse(req, res) {
         let houses = HouseModel.select();
         houses.forEach(house => {
