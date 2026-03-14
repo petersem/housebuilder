@@ -5,6 +5,12 @@ import CompanyModel from "../models/CompanyModel.mjs";
 
 export class HouseController {
 
+    // calculate total price for house
+    /**
+     * 
+     * @param {*} house 
+     * @returns 
+     */
     static costCalculator(house) {
         let pricing = PricingModel.select();
         let companies = CompanyModel.select();
@@ -76,9 +82,11 @@ export class HouseController {
     }
 
     static addHouse(req, res) {
-        HouseModel.insert(new HouseModel(req.body.textNewTask, false));
-        res.status(201);
-        res.redirect("/house/list");
+        // HouseModel.insert(new HouseModel(req.body.textNewTask, false));
+        // res.status(201);
+        res.writeHead(201, { 'Content-Type': 'application/json' });
+        res.end('{ status: added }');
+        //res.redirect("/house/list");
     }
 
     static deleteHouse(req, res) {
