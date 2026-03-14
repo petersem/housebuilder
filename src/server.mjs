@@ -23,7 +23,7 @@ app.use(sanitiser("clean")); // sanitises req.body prop values - Options are 'cl
 app.use("/", homeRoute);
 app.use("/house", houseRoutes);
 app.use("/err", (req, res) => {
-    throw new Error('Ooff! What an error!')
+    throw new Error('Ooff! What an error!') // just here for testing
 });
 
 app.use(errorMiddleware); // lastly, manage errors 
