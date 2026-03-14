@@ -5,7 +5,8 @@
   "main": "server.mjs",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
-    "dev": "nodemon --env-file=./src/.env src/server.mjs"
+    "dev": "nodemon --env-file=./src/.env src/server.mjs",
+    "prod": "nodemon --env-file=./src/.envprod src/server.mjs"
   },
   "keywords": [],
   "author": "Matt Petersen",
