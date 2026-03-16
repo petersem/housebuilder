@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <%- include("partials/head.ejs") %>
+</head>
+
+<body>
+    <%- include("partials/menu.ejs") %>
+        <%
+            // house.extras.forEach(ex => {
+            //     console.log(ex);
+            // });
+        %>
+        <% let house=data[0][0]; let companies=data[1][0]; let pricing=data[2][0]; %>
+
+
+        <section>
+                <h1>
+                    <%= title %>
+                </h1>
+                <form method="post" action="/house/update">
+                    <div><span>Id</span><span><input name="id" type="text" value="<%= house.id %>"></span></div>
+                    <div><span>Title</span><span><input name="title" type="text" value="<%= house.title %>"></span></div>
+                    <div><span>Company</span><span><input name="companyName" type="text" value="<%= house.companyName %>"></span></div>
+                    <div><span>Rooms</span><span><input name="rooms" type="text" value="<%= house.rooms %>"></span></div>
+                    <div><span>Bathrooms</span><span><input name="bathrooms" type="text" value="<%= house.bathrooms %>"></span></div>
+                    <div><span>Garages</span><span><input name="garages" type="text" value="<%= house.garages %>"></span></div>
+                    <div><span>Floor area (Sqm)</span><span><input name="floorAreaSqm" type="text" value="<%= house.floorAreaSqm %>"></span></div>
+                    <div><span>Stories</span><span><input name="storyCount" type="text" value="<%= house.storyCount %>"></span></div>
+                    <div><span>Built-in Wardrobe</span><span><input name="builtIns" type="checkbox" <%= house.extras.includes('Built-in Wardrobe') ? "checked" : null %>></span></div>
+                    <div><span>Double Glazing Windows</span><span><input name="doubleGlazing" type="checkbox" <%= house.extras.includes('Double Glazing Windows') ? "checked" : null %>></span></div>
+                    <div><span>Solar Panel Installation (standard)</span><span><input name="solarPanel" type="checkbox" <%= house.extras.includes('Solar Panel Installation (Standard)') ? "checked" : null %>></span></div>
+
+                    <input type="submit" value="Update">
+                </form>
+                </span>
+            </section>
+</body>
+
+</html>

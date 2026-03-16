@@ -11,7 +11,7 @@ export const sanitiser = function (action = "clean") {
             } else {
                 // Remove potentially dangerous characters
                 for (let [key, value] of Object.entries(req.body)) {
-                    const testBad = /[$&+,:;=?@#|'<>.^*()%!-]/.test(req.body[key]);
+                    const testBad = /[$&+,:;=?@#|<>{}^*()%!]/.test(req.body[key]);
                     // if bad characters found, print to the log and santisise bad data
                     if (testBad) {
                         const display = () => {
@@ -33,14 +33,14 @@ export const sanitiser = function (action = "clean") {
                                 console.log(`                ** Warning only`);
                                 break;
                             case "fail":
-                                res.status(500);
-                                const errorMessage = `Sanitiser Error: IP: ${req.connection.remoteAddress} - Logged: ${new Date().toLocaleString()} - Issue: body.${key} - Text: ${req.body[key]}`; 
-                                throw new Error(errorMessage)
+                                const errorMessage = `Error: ${key} - '${req.body[key]}'`; 
+                                console.log("`** Sanitiser ** (Mode: fail) " + errorMessage);
+                                return res.setHeader('Content-Type', 'application/json').status(422).json({ message: errorMessage, status: "rejected" });
                                 break;
                             default:
                                 res.status(500);
                                 console.log(`** Sanitiser ** (Mode: ${action}) You have NOT SELECTED A VALID OPTION for sanitiser - no action taken !!!`);
-                                res.json(`{message: sanitiser middleware triggered, but using invalid option '${action}' - No action taken }`);
+                                res.setHeader('Content-Type', 'application/json').status(500).json(`{message: sanitiser middleware triggered, but using invalid option '${action}' - No action taken }`);
                                 return;
                                 break;
                         }
