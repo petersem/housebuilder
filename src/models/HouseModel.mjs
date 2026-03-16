@@ -27,10 +27,6 @@ export default class HouseModel extends DataModel {
         this.extras = extras ?? [];
     }
 
-    static getHouse(id) {
-        const result = this.select(house => house.id == id)
-        return result;
-    }
 }
 
 // Load static sample data. In the future we will use a database instead. bull is first param for new house records

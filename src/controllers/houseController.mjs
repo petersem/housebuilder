@@ -16,7 +16,6 @@ export class HouseController {
      */ void
     static costCalculator(house) {
         const pricing = PricingModel.select();
-        const companies = CompanyModel.select();
 
         let companyBasePrice = 0;
         let totalRoomPrice = 0;
@@ -26,7 +25,7 @@ export class HouseController {
         let totalExtrasPrice = 0;
 
         // get company base price
-        companyBasePrice = CompanyModel.getCompany(house.companyName)[0].basePrice
+        companyBasePrice = CompanyModel.select(comp => comp.name == house.companyName)[0].basePrice;
 
         // calculate other costs
         totalRoomPrice = house.rooms * pricing[0].perRoom;
@@ -50,15 +49,15 @@ export class HouseController {
             house.totalCost = house.totalCost ?? HouseController.costCalculator(house)
         });
 
-        // res.status(200);
-        // res.setHeader('Content-Type', 'application/json');
-        // res.json({ message: "records retrieved", data: houses });
-
         res.status(200);
-        res.render('houselist', {
-            title: "House Builder",
-            data: houses
-        });
+        res.setHeader('Content-Type', 'application/json');
+        res.json({ message: "records retrieved", data: houses });
+
+        // res.status(200);
+        // res.render('houselist', {
+        //     title: "House Builder",
+        //     data: houses
+        // });
     }
 
     static readHouse(req, res) {
@@ -85,11 +84,13 @@ export class HouseController {
     }
 
     static updateHouse(req, res) {
+        // build extras array
         let extras = [];
         if (req.body.builtIns == "on") { extras.push("Built-in Wardrobe")};
         if (req.body.doubleGlazing == "on") { extras.push("Double Glazing Windows")};
         if (req.body.solarPanel == "on") { extras.push("Solar Panel Installation (Standard)")};
 
+        // build new house object
         const updatedHouse = new HouseModel(
             req.body.id,
             req.body.title,
@@ -99,15 +100,29 @@ export class HouseController {
             req.body.garages,
             req.body.floorAreaSqm,
             req.body.storyCount,
-            extras
+            req.body.extras = extras
         )
 
+        // recalculate price
         updatedHouse.totalCost = HouseController.costCalculator(updatedHouse);
+        console.log(updatedHouse);
+        // update house
+        const outcome = HouseModel.update(house => house.id == req.body.id, updatedHouse);
+        res.setHeader('Content-Type', 'application/json');
 
-        HouseModel.update(house => house.id == req.body.id, updatedHouse);
+        // if deleted or not found
+        if (outcome != 0) {
+            // updated
+            res.json({ message: "record updated", data: updatedHouse });
+            res.status(201);
+        } else {
+            // was not present
+            res.setHeader('Content-Type', 'application/json');
+            res.status(404).json({ message: "record not found" });
+        }
+        res.end();
 
-        res.status(201)
-        res.redirect("/house/list");
+        //res.redirect("/house/list");
     }
 
     static createHouse(req, res) {
@@ -119,27 +134,37 @@ export class HouseController {
         const floorAreaSqm = req.body?.floorAreaSqm;
         const storyCount = req.body?.storyCount
         
+        const house = new HouseModel(null, title, companyName, rooms, bathrooms, garages, floorAreaSqm, storyCount, ["Built-in Wardrobe","Double Glazing Windows","Solar Panel Installation (Standard)"]);
+
+        res.setHeader('Content-Type', 'application/json');
+
         try {
-            HouseModel.insert(new HouseModel(null, title, companyName, rooms, bathrooms, garages, floorAreaSqm, storyCount, ["Built-in Wardrobe","Double Glazing Windows","Solar Panel Installation (Standard)"]));
+            res.status(201);
+            HouseModel.insert(house);
+            res.json({ message: "record added", data: house });
         }
         catch (err) {
+            res.status(400);
+            res.json({ message: "bad request", data: err.message})
             throw err;
+        } finally {
+            res.end();
         }
-
-        res.status(201);
-        res.setHeader('Content-Type', 'application/json');
-        res.json({ message: "record added", data: req.body });
-        // res.render('viewEditHouse', {
-        //     title: "New House Details",
-        //     data: pricing, companies
-        // });
     }
 
     static deleteHouse(req, res) {
-        console.log("Deleted:", req.params.houseId);
-        HouseModel.delete(house => house.id == req.params.houseId);
-        res.status(204).json({ message: req.params.houseId + " deleted" });
+        const outcome = HouseModel.delete(house => house.id == req.body.houseId);
+
+        // if deleted or not found
+        if (outcome != 0) {
+            // no json response allowed with a 204
+            res.status(204);
+        } else {
+            res.setHeader('Content-Type', 'application/json');
+            res.status(404).json({ message: "record not found" });
+        }
         res.end();
+
         //res.redirect("/house/list");
     }
 }

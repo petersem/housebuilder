@@ -12,11 +12,6 @@ export default class CompanyModel extends DataModel {
         this.basePrice = basePrice;
         this.rating = rating;
     }
-
-    static getCompany(name) {
-        const result = this.select(company => company.name == name);
-        return result;
-    }
 }
 
 // Load static sample data. In the future we will use a database instead.

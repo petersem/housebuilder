@@ -6,7 +6,7 @@
         <%= title %>
     </title>
     <%- include("partials/head.ejs") %>
-    <script src="/script/house.js"></script>
+    <script src="/script/showcase.js"></script>
 </head>
 
 <body>
@@ -16,7 +16,7 @@
                 <%= title %>
             </h1>
             <ul id="houses">
-                <span class='listHeader'>House List</span>
+                <span class='listHeader'>Showcase List</span>
                 
                 <% data.forEach((house)=> { %>
                     <li><div>
@@ -29,9 +29,7 @@
                             <span class="company">
                                 <%= house.companyName %>
                             </span> -
-                            <a href="\house\<%= house.id %>"><i class="fa-regular fa-pen-to-square" title="Edit"></i></a>
-                            <i class="fa-solid fa-upload" title="Publish to Showcase" onclick="addShowcase('<%= house %>');"></i>
-                            <i class="fa-solid fa-trash-can" title="Delete" onclick="houseDelete('<%= house.id %>');"></i>
+                            <i class="fa-solid fa-trash-can" title="Delete" onclick="showcaseDelete('<%= house.id %>');"></i>
                             <div>
                                 <span>
                                     <%= house.rooms %> rooms

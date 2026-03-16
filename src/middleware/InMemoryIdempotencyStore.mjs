@@ -6,7 +6,7 @@ export class InMemoryIdempotencyStore {
   constructor(ttlMs = 24 * 60 * 60 * 1000) {  // 24 hours default
     this.ttlMs = ttlMs;
 
-    // Clean up expired records periodically
+    // Clean up expired records periodically (hourly)
     this.cleanupInterval = setInterval(() => this.cleanup(), 60 * 60 * 1000);
   }
 

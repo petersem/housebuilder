@@ -1,7 +1,7 @@
 
 //import { Request, Response, next } from 'express';
 import crypto from 'crypto';
-import { InMemoryIdempotencyStore } from './idempotency-store.mjs';
+import { InMemoryIdempotencyStore } from './InMemoryIdempotencyStore.mjs';
 
 const idemStore = new InMemoryIdempotencyStore();
 

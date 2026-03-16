@@ -17,10 +17,6 @@ export default class PricingModel extends DataModel {
         this.extras = extras;
     }
 
-    static extra(extraName) {
-        const result = this.select(extra => extra.name == extraName)
-        return result;
-    }
 }
 
 // Load static sample data. In the future we will use a database instead.
