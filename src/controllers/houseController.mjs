@@ -2,18 +2,48 @@
 import HouseModel from "../models/HouseModel.mjs"
 import PricingModel from "../models/PricingModel.mjs";
 import CompanyModel from "../models/CompanyModel.mjs";
+import { matchedData, validationResult } from "express-validator"
 
 /**
  * Manages all interractions for houses
  */
 export class HouseController {
 
+    /**
+     * Checks for express-validator validation errors
+     * @param {Request} req 
+     * @param {Response} res 
+     * @returns {JSON} an array of errors
+     */
+    static checkValidationErrors(req, res) {
+        const result = validationResult(req);
+        // if errors present
+        if (!result.isEmpty()) {
+            // format all the errors nicely
+            let errors = [];
+            result.array().forEach(err => {
+                const error = {
+                    "location": err.location,
+                    "field": err.path,
+                    "value": err.value,
+                    "msg": err.msg,
+                };
+                errors.push(error);
+                if (process.env.NODE_ENV === "development") {
+                    console.log(`** Express-validator ** ${error.field} - ${error.value} - ${error.msg}`);
+                }                
+            });
+            return errors;
+        }
+        return;
+    }
+
     // calculate total price for house
     /**
      * Calculates the total price for a house from selected options and company/pricing model data
      * @param {HouseModel} house 
-     * @returns The total price price for a given house and options
-     */ void
+     * @returns {int} The total price price for a given house and options
+     */ 
     static costCalculator(house) {
         const pricing = PricingModel.select();
 
@@ -61,6 +91,18 @@ export class HouseController {
     }
 
     static readHouse(req, res) {
+        // validate fields and exit if errors
+        const result = validationResult(req);
+        const readErrs = HouseController.checkValidationErrors(req, res);
+        if (readErrs?.length > 0) {
+            return res.status(400).send({ errors: readErrs })
+        }
+
+        const errs = HouseController.checkValidationErrors(req, res);
+        if (errs?.length > 0) {
+            return res.status(400).send({ errors: errs })
+        }
+
         const pricing = PricingModel.select();
         const companies = CompanyModel.select();
         const house = HouseModel.select(house => house.id == req.params.houseId);
@@ -84,11 +126,18 @@ export class HouseController {
     }
 
     static updateHouse(req, res) {
+        // validate fields and exit if errors
+        const result = validationResult(req);
+        const readErrs = HouseController.checkValidationErrors(req, res);
+        if (readErrs?.length > 0) {
+            return res.status(400).send({ errors: readErrs })
+        }
+
         // build extras array
         let extras = [];
-        if (req.body.builtIns == "on") { extras.push("Built-in Wardrobe")};
-        if (req.body.doubleGlazing == "on") { extras.push("Double Glazing Windows")};
-        if (req.body.solarPanel == "on") { extras.push("Solar Panel Installation (Standard)")};
+        if (req.body.builtIns == "on") { extras.push("Built-in Wardrobe") };
+        if (req.body.doubleGlazing == "on") { extras.push("Double Glazing Windows") };
+        if (req.body.solarPanel == "on") { extras.push("Solar Panel Installation (Standard)") };
 
         // build new house object
         const updatedHouse = new HouseModel(
@@ -105,7 +154,7 @@ export class HouseController {
 
         // recalculate price
         updatedHouse.totalCost = HouseController.costCalculator(updatedHouse);
-        console.log(updatedHouse);
+
         // update house
         const outcome = HouseModel.update(house => house.id == req.body.id, updatedHouse);
         res.setHeader('Content-Type', 'application/json');
@@ -126,15 +175,24 @@ export class HouseController {
     }
 
     static createHouse(req, res) {
+        // validate fields and exit if errors
+        const result = validationResult(req);
+        const addErrs = HouseController.checkValidationErrors(req, res);
+        if (addErrs?.length > 0) {
+            return res.status(400).send({ errors: addErrs })
+        }
+
+        // perform create operation
         const title = req.body?.title;
         const companyName = req.body?.companyName;
         const rooms = req.body?.rooms;
         const bathrooms = req.body?.bathrooms;
         const garages = req.body?.garages;
         const floorAreaSqm = req.body?.floorAreaSqm;
-        const storyCount = req.body?.storyCount
-        
-        const house = new HouseModel(null, title, companyName, rooms, bathrooms, garages, floorAreaSqm, storyCount, ["Built-in Wardrobe","Double Glazing Windows","Solar Panel Installation (Standard)"]);
+        const storyCount = req.body?.storyCount;
+        const extras = req.body?.extras;
+
+        const house = new HouseModel(null, title, companyName, rooms, bathrooms, garages, floorAreaSqm, storyCount, extras);
 
         res.setHeader('Content-Type', 'application/json');
 
@@ -145,7 +203,7 @@ export class HouseController {
         }
         catch (err) {
             res.status(400);
-            res.json({ message: "bad request", data: err.message})
+            res.json({ message: "bad request", data: err.message })
             throw err;
         } finally {
             res.end();

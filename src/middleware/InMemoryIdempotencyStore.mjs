@@ -1,13 +1,21 @@
 export class InMemoryIdempotencyStore {
   records = new Map();
   ttlMs;
-  cleanupInterval;
+  cleanupIntervalM;
 
-  constructor(ttlMs = 24 * 60 * 60 * 1000) {  // 24 hours default
-    this.ttlMs = ttlMs;
+  defaultOptions = {
+    ttlMs: 24 * 60 * 60 * 1000,
+    cleanupIntervalM: 60
+  };
 
+  constructor(options = {}) {  // 24 hours default
+    const config = { ...this.defaultOptions, ...options}
+    this.ttlMs = config.ttlMs;
+    this.cleanupIntervalM = config.cleanupIntervalM;
+console.log(this.ttlMs)
+console.log(this.cleanupIntervalM)
     // Clean up expired records periodically (hourly)
-    this.cleanupInterval = setInterval(() => this.cleanup(), 60 * 60 * 1000);
+    this.cleanupIntervalm = setInterval(() => this.cleanup(), this.cleanupIntervalM * 60 * 1000);
   }
 
   get(key) {
@@ -27,6 +35,9 @@ export class InMemoryIdempotencyStore {
 
     for (const [key, record] of this.records.entries()) {
       if (record.createdAt.getTime() < cutoff) {
+        if (process.env?.NODE_ENV === "development") {
+          console.log(`** Idempotency Middleware ** Key expired - ${key}`);
+        }
         this.records.delete(key);
       }
     }

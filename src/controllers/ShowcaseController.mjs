@@ -1,10 +1,41 @@
 // import { error } from "console";
 import ShowcaseModel from "../models/ShowcaseModel.mjs"
+import { matchedData, validationResult } from "express-validator"
 
 /**
  * Manages all interractions for houses
  */
 export class ShowcaseController {
+
+        /**
+         * Checks for express-validator validation errors
+         * @param {Request} req 
+         * @param {Response} res 
+         * @returns {JSON} an array of errors
+         */
+        static checkValidationErrors(req, res) {
+            const result = validationResult(req);
+            // if errors present
+            if (!result.isEmpty()) {
+                // format all the errors nicely
+                let errors = [];
+                result.array().forEach(err => {
+                    const error = {
+                        "location": err.location,
+                        "field": err.path,
+                        "value": err.value,
+                        "msg": err.msg,
+                    };
+                    errors.push(error);
+                    if (process.env.NODE_ENV === "development") {
+                        console.log(`** Express-validator ** ${error.field} - ${error.value} - ${error.msg}`);
+                    }    
+                });
+                return errors;
+            }
+            return;
+        }
+
     static viewShowcase(req, res) {
         let houses = ShowcaseModel.select();
 
@@ -20,7 +51,15 @@ export class ShowcaseController {
     }
 
     static createHouse(req, res) {
-        
+
+        // validate fields and exit if errors
+        const result = validationResult(req);
+        const readErrs = ShowcaseController.checkValidationErrors(req, res);
+        if (readErrs?.length > 0) {
+            return res.status(400).send({ errors: readErrs })
+        }
+
+
         const id = req.body.id;
         const title = req.body.title;
         const companyName = req.body.companyName;

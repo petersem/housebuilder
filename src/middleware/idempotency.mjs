@@ -3,12 +3,11 @@
 import crypto from 'crypto';
 import { InMemoryIdempotencyStore } from './InMemoryIdempotencyStore.mjs';
 
-const idemStore = new InMemoryIdempotencyStore();
-
 const defaultOptions = {
   headerName: 'Idempotency-Key',
   requiredForMethods: ['POST', 'PUT', 'PATCH'],
   ttlMs: 24 * 60 * 60 * 1000,
+  cleanupIntervalM: 60
 };
 
 // Hash the request body to detect key reuse with different payloads
@@ -19,6 +18,7 @@ function hashRequest(body) {
 
 export function idempotencyMiddleware(options = {}) {
   const config = { ...defaultOptions, ...options };
+  const idemStore = new InMemoryIdempotencyStore({ ttlMs: config.ttlMs, cleanupIntervalM: config.cleanupIntervalM });
 
   return async (req, res, next) => {
     // Skip methods that do not need idempotency
@@ -30,6 +30,9 @@ export function idempotencyMiddleware(options = {}) {
 
     // Require idempotency key for protected methods
     if (!idempotencyKey) {
+      if (process.env?.NODE_ENV === "development") {
+        console.log(`** Idempotency Middleware ** Rejected - ${config.headerName} header is required for ${req.method} requests`);
+      }      
       return res.status(400).json({
         error: 'Missing idempotency key',
         message: `The ${config.headerName} header is required for ${req.method} requests`,
@@ -38,6 +41,9 @@ export function idempotencyMiddleware(options = {}) {
 
     // Validate key format (UUID recommended)
     if (!/^[a-zA-Z0-9-_]{16,64}$/.test(idempotencyKey)) {
+      if (process.env?.NODE_ENV === "development") {
+        console.log(`** Idempotency Middleware ** Rejected - The ${config.headerName} must be 16-64 alphanumeric characters, hyphens, or underscores`);
+      }        
       return res.status(400).json({
         error: 'Invalid idempotency key format',
         message: 'Key must be 16-64 alphanumeric characters, hyphens, or underscores',
@@ -54,6 +60,9 @@ export function idempotencyMiddleware(options = {}) {
     if (existing) {
       // Verify request body matches (detect key reuse with different payload)
       if (existing.requestHash !== requestHash) {
+        if (process.env?.NODE_ENV === "development") {
+          console.log("** Idempotency Middleware ** Rejected - Key reused with different request");
+        }
         return res.status(422).json({
           error: 'Idempotency key reused with different request',
           message: 'Each unique request must use a unique idempotency key',
@@ -72,7 +81,9 @@ export function idempotencyMiddleware(options = {}) {
       if (existing.response) {
         // Set headers to indicate cached response
         res.set('Idempotent-Replayed', 'true');
-
+        if (process.env?.NODE_ENV === "development") {
+          console.log("** Idempotency Middleware ** Request already served - Response replayed only - ", existing?.response?.statusCode, existing?.response?.body?.message);
+        }
         for (const [key, value] of Object.entries(existing.response.headers)) {
           res.set(key, value);
         }
@@ -99,6 +110,24 @@ export function idempotencyMiddleware(options = {}) {
       if (record && record.status === 'processing') {
         // Determine if successful based on status code
         const isSuccess = res.statusCode >= 200 && res.statusCode < 300;
+        // if not a success, delete the key
+        if (!isSuccess) { 
+          if (process.env?.NODE_ENV === "development") {
+           console.log("** Idempotency Middleware ** Call failed - Key deleted");
+          }
+          idemStore.delete(compositeKey);
+          return
+        } else {
+          if (process.env?.NODE_ENV === "development") {
+            try {
+              const cutOff = Date.now() + config.ttlMs;
+              console.log(`** Idempotency Middleware ** Key added - ${compositeKey} - Expires: ${new Date(cutOff).toLocaleString()}`);  
+            }
+            catch (err) {
+              console.log(err);
+            }
+          }
+        };
 
         idemStore.set(compositeKey, {
           ...record,
