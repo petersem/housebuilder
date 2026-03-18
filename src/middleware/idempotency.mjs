@@ -20,6 +20,15 @@ export function idempotencyMiddleware(options = {}) {
   const config = { ...defaultOptions, ...options };
   const idemStore = new InMemoryIdempotencyStore({ ttlMs: config.ttlMs, cleanupIntervalM: config.cleanupIntervalM });
 
+  if (process.env?.NODE_ENV === "development") {
+    console.log(`** Idempotency Middleware ** Activated
+      Expiry (mins): ${config.ttlMs / 1000 / 60}
+      Cleanup Interval (mins): ${config.cleanupIntervalM} 
+      Key Name: ${config.headerName} 
+      Methods: ${config.requiredForMethods}`);
+  }
+
+
   return async (req, res, next) => {
     // Skip methods that do not need idempotency
     if (!config.requiredForMethods?.includes(req.method)) {

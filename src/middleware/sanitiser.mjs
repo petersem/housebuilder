@@ -3,7 +3,11 @@ export const sanitiser = function (action = "fail") {
     // options can be
     //      clean = to replace bad characters
     //      warn = log, but dont change anything
-    //      disable = Dont log or do anything
+    //      reject = return a status 422 and dont process
+    if (process.env?.NODE_ENV === "development") {
+        console.log(`** Sanitiser Middleware ** Activated - Mode: ${action}`);
+    }
+
     return (req, res, next) => {
         if (req.body != undefined) {
             if (action.toLowerCase() == "disable") {
@@ -15,11 +19,13 @@ export const sanitiser = function (action = "fail") {
                     // if bad characters found, print to the log and santisise bad data
                     if (testBad) {
                         const display = () => {
-                            console.log(`** Sanitiser ** (Mode: ${action})`);
-                            console.log(`                From IP        ${req.connection.remoteAddress}`);
-                            console.log(`                Logged at:     ${new Date().toLocaleString()}`)
-                            console.log(`                Issue with:    body.${key}`);
-                            console.log(`                Original text: ${req.body[key]} `);    
+                            if (process.env.NODE_ENV === "development") {
+                                console.log(`** Sanitiser ** (Mode: ${action})`);
+                                console.log(`                From IP        ${req.connection.remoteAddress}`);
+                                console.log(`                Logged at:     ${new Date().toLocaleString()}`)
+                                console.log(`                Issue with:    body.${key}`);
+                                console.log(`                Original text: ${req.body[key]} `);
+                            }
                         }
 
                         switch (action.toLowerCase()) {
@@ -37,7 +43,7 @@ export const sanitiser = function (action = "fail") {
                                 }
                                 break;
                             case "reject":
-                                const errorMessage = `Error: ${key} - '${req.body[key]}'`; 
+                                const errorMessage = `Field: ${key} - '${req.body[key]}'`;
                                 if (process.env.NODE_ENV === "development") {
                                     console.log(`** Sanitiser ** (Mode: ${action}) ${errorMessage}`);
                                 }

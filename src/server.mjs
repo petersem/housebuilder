@@ -9,7 +9,9 @@ import { idempotencyMiddleware } from './middleware/idempotency.mjs';
 
 // Load environment values to variables
 const PORT = process.env.PORT || 3000;
-console.log(`Mode: ${process.env.NODE_ENV}`);
+if (process.env?.NODE_ENV === "development") {
+    console.log(`** Environment ** ${process.env?.NODE_ENV}`);
+}
 
 const app = express();  // setup express app
 
@@ -35,9 +37,9 @@ app.use("/err", (req, res) => {
 });
 
 // must run last thing
-app.use(errorMiddleware); // manage display via middleware
+app.use(errorMiddleware()); // manage display via middleware
 
 // start listening on a specified port 
 app.listen(PORT, () => {
-    console.log(`Express app listening on port ${PORT}`)
+    console.log(`** Express app ** Listening on port ${PORT}`)
 });

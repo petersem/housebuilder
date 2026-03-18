@@ -12,8 +12,6 @@ export class InMemoryIdempotencyStore {
     const config = { ...this.defaultOptions, ...options}
     this.ttlMs = config.ttlMs;
     this.cleanupIntervalM = config.cleanupIntervalM;
-console.log(this.ttlMs)
-console.log(this.cleanupIntervalM)
     // Clean up expired records periodically (hourly)
     this.cleanupIntervalm = setInterval(() => this.cleanup(), this.cleanupIntervalM * 60 * 1000);
   }
