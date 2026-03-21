@@ -1,6 +1,6 @@
-// import { error } from "console";
 import ShowcaseModel from "../models/ShowcaseModel.mjs"
 import { matchedData, validationResult } from "express-validator"
+import { logError, logWarning, logInfo } from "../utilities/logger.mjs";
 
 /**
  * Manages all interractions for houses
@@ -28,7 +28,7 @@ export class ShowcaseController {
                     };
                     errors.push(error);
                     if (process.env.NODE_ENV === "development") {
-                        console.log(`** Express-validator ** ${error.field} - ${error.value} - ${error.msg}`);
+                        console.log(logWarning, `Express-validator: ${error.field} - ${error.value} - ${error.msg}`);
                     }    
                 });
                 return errors;
@@ -59,7 +59,6 @@ export class ShowcaseController {
             return res.status(400).send({ errors: readErrs })
         }
 
-
         const id = req.body.id;
         const title = req.body.title;
         const companyName = req.body.companyName;
@@ -72,9 +71,6 @@ export class ShowcaseController {
         const extras = req.body.extras;
         
         const house = new ShowcaseModel(id, title, companyName, rooms, bathrooms, garages, floorAreaSqm, storyCount, totalCost, extras);
-        //console.log(house);
-
-
         res.setHeader('Content-Type', 'application/json');
 
         try {

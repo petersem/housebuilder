@@ -3,6 +3,7 @@ import HouseModel from "../models/HouseModel.mjs"
 import PricingModel from "../models/PricingModel.mjs";
 import CompanyModel from "../models/CompanyModel.mjs";
 import { matchedData, validationResult } from "express-validator"
+import { logError, logWarning, logInfo } from "../utilities/logger.mjs";
 
 /**
  * Manages all interractions for houses
@@ -30,7 +31,7 @@ export class HouseController {
                 };
                 errors.push(error);
                 if (process.env.NODE_ENV === "development") {
-                    console.log(`** Express-validator ** ${error.field} - ${error.value} - ${error.msg}`);
+                    console.log(logWarning, `Express-validator: ${error.field} - ${error.value} - ${error.msg}`);
                 }                
             });
             return errors;
@@ -183,6 +184,7 @@ export class HouseController {
         }
 
         // perform create operation
+        const id = req.body?.id;
         const title = req.body?.title;
         const companyName = req.body?.companyName;
         const rooms = req.body?.rooms;
@@ -192,7 +194,7 @@ export class HouseController {
         const storyCount = req.body?.storyCount;
         const extras = req.body?.extras;
 
-        const house = new HouseModel(null, title, companyName, rooms, bathrooms, garages, floorAreaSqm, storyCount, extras);
+        const house = new HouseModel(id, title, companyName, rooms, bathrooms, garages, floorAreaSqm, storyCount, extras);
 
         res.setHeader('Content-Type', 'application/json');
 

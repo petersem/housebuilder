@@ -1,16 +1,17 @@
 import express from 'express';
 import path from 'path';
-import houseRoutes from './routes/house.mjs';
 import homeRoute from './routes/home.mjs';
+import houseRoutes from './routes/house.mjs';
 import showcaseRoutes from './routes/showcase.mjs';
 import { sanitiser } from './middleware/sanitiser.mjs';
 import { errorMiddleware } from './middleware/errorMiddleware.mjs';
 import { idempotencyMiddleware } from './middleware/idempotency.mjs';
+import { logError, logWarning, logInfo } from "./utilities/logger.mjs";
 
 // Load environment values to variables
 const PORT = process.env.PORT || 3000;
 if (process.env?.NODE_ENV === "development") {
-    console.log(`** Environment ** ${process.env?.NODE_ENV}`);
+    console.log(logInfo, `Environment: ${process.env?.NODE_ENV}`);
 }
 
 const app = express();  // setup express app
@@ -41,5 +42,5 @@ app.use(errorMiddleware()); // manage display via middleware
 
 // start listening on a specified port 
 app.listen(PORT, () => {
-    console.log(`** Express app ** Listening on port ${PORT}`)
+    console.log(logInfo, `Express app: Listening on port ${PORT}`)
 });

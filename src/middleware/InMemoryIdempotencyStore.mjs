@@ -1,3 +1,5 @@
+import { logError, logWarning, logInfo } from "../utilities/logger.mjs";
+
 export class InMemoryIdempotencyStore {
   records = new Map();
   ttlMs;
@@ -13,7 +15,7 @@ export class InMemoryIdempotencyStore {
     this.ttlMs = config.ttlMs;
     this.cleanupIntervalM = config.cleanupIntervalM;
     // Clean up expired records periodically (hourly)
-    this.cleanupIntervalm = setInterval(() => this.cleanup(), this.cleanupIntervalM * 60 * 1000);
+    this.cleanupIntervalM = setInterval(() => this.cleanup(), this.cleanupIntervalM * 60 * 1000);
   }
 
   get(key) {
@@ -34,7 +36,7 @@ export class InMemoryIdempotencyStore {
     for (const [key, record] of this.records.entries()) {
       if (record.createdAt.getTime() < cutoff) {
         if (process.env?.NODE_ENV === "development") {
-          console.log(`** Idempotency Middleware ** Key expired - ${key}`);
+          console.log(logInfo, `Idempotency Middleware: Key expired - ${key}`);
         }
         this.records.delete(key);
       }
@@ -42,7 +44,7 @@ export class InMemoryIdempotencyStore {
   }
 
   stop() {
-    clearInterval(this.cleanupInterval);
+    clearInterval(this.cleanupIntervalM);
   }
 }
 

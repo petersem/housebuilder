@@ -1,5 +1,4 @@
 import express from 'express';
-import { HouseController } from '../controllers/HouseController.mjs';
 
 let homeRoute = express.Router();
 
