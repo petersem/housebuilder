@@ -20,13 +20,11 @@ export function idempotencyMiddleware(options = {}) {
   const config = { ...defaultOptions, ...options };
   const idemStore = new InMemoryIdempotencyStore({ ttlMs: config.ttlMs, cleanupIntervalM: config.cleanupIntervalM });
 
-  if (process.env?.NODE_ENV === "development") {
-    console.log(logInfo, `Idempotency Middleware: Activated
+  console.log(logInfo, `Idempotency Middleware: Activated
                 - Expiry (mins): ${config.ttlMs / 1000 / 60}
                 - Cleanup Interval (mins): ${config.cleanupIntervalM} 
                 - Key Name: ${config.headerName} 
                 - Methods: ${config.requiredForMethods}`);
-  }
 
 
   return async (req, res, next) => {
@@ -41,7 +39,7 @@ export function idempotencyMiddleware(options = {}) {
     if (!idempotencyKey) {
       if (process.env?.NODE_ENV === "development") {
         console.log(logWarning, `Idempotency Middleware: Rejected - ${config.headerName} header is required for ${req.method} requests`);
-      }      
+      }
       return res.status(400).json({
         error: 'Missing idempotency key',
         message: `The ${config.headerName} header is required for ${req.method} requests`,
@@ -52,7 +50,7 @@ export function idempotencyMiddleware(options = {}) {
     if (!/^[a-zA-Z0-9-_]{16,64}$/.test(idempotencyKey)) {
       if (process.env?.NODE_ENV === "development") {
         console.log(logWarning, `Idempotency Middleware: Rejected - The ${config.headerName} must be 16-64 alphanumeric characters, hyphens, or underscores`);
-      }        
+      }
       return res.status(400).json({
         error: 'Invalid idempotency key format',
         message: 'Key must be 16-64 alphanumeric characters, hyphens, or underscores',
@@ -120,9 +118,9 @@ export function idempotencyMiddleware(options = {}) {
         // Determine if successful based on status code
         const isSuccess = res.statusCode >= 200 && res.statusCode < 300;
         // if not a success, delete the key
-        if (!isSuccess) { 
+        if (!isSuccess) {
           if (process.env?.NODE_ENV === "development") {
-           console.log(logWarning, `Idempotency Middleware: ${req.method} request failed - Key not saved`);
+            console.log(logWarning, `Idempotency Middleware: ${req.method} request failed - Key not saved`);
           }
           idemStore.delete(compositeKey);
           return
@@ -131,7 +129,7 @@ export function idempotencyMiddleware(options = {}) {
           if (process.env?.NODE_ENV === "development") {
             try {
               const cutOff = Date.now() + config.ttlMs;
-              console.log(logInfo, `Idempotency Middleware: Key added - ${compositeKey} - Expires: ${new Date(cutOff).toLocaleString()}`);  
+              console.log(logInfo, `Idempotency Middleware: Key added - ${compositeKey} - Expires: ${new Date(cutOff).toLocaleString()}`);
             }
             catch (err) {
               console.log(logError, err);

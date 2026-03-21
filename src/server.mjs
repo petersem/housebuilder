@@ -27,7 +27,11 @@ app.use(express.static(path.join(import.meta.dirname, "public"))); // handle any
 // must run before before routes and idemponcyMiddleware
 app.use(sanitiser("reject")); // sanitises req.body prop values - Options are 'clean' (default), 'warn', 'fail', or 'disable'
 // must run before routes
-app.use(idempotencyMiddleware({ ttlMs: 2 * 60 * 1000, cleanupIntervalM: 1 })); // adds idempotence functionality for post, put, and patch - (flushes tokens every 5 minutes)
+let devOptions;
+if (process.env?.NODE_ENV === "development") {
+    devOptions = { ttlMs: 2 * 60 * 1000, cleanupIntervalM: 1 }
+}
+app.use(idempotencyMiddleware(devOptions)); // adds idempotence functionality for post, put, and patch - (flushes tokens every 5 minutes)
 
 // add top-level routes
 app.use("/", homeRoute);

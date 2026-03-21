@@ -7,9 +7,8 @@ export const sanitiser = function (action = "fail") {
     //      clean = to replace bad characters
     //      warn = log, but dont change anything
     //      reject = return a status 422 and dont process
-    if (process.env?.NODE_ENV === "development") {
-        console.log(logInfo, `Sanitiser Middleware: Activated - Mode: ${action}`);
-    }
+    console.log(logInfo, `Sanitiser Middleware: Activated - Mode: ${action}`);
+
 
     return (req, res, next) => {
         if (req.body != undefined) {
@@ -47,9 +46,9 @@ export const sanitiser = function (action = "fail") {
                                 break;
                             case "reject":
                                 const errorMessage = `Field: ${key} - '${req.body[key]}'`;
-                                if (process.env.NODE_ENV === "development") {
-                                    console.log(logError, `Sanitiser (Mode: ${action}) ${errorMessage}`);
-                                }
+                                //if (process.env.NODE_ENV === "development") {
+                                    console.log(logWarning, `Sanitiser (Mode: ${action}) ${errorMessage}`);
+                                //}
                                 return res.setHeader('Content-Type', 'application/json').status(422).json({ message: errorMessage, status: "rejected" });
                                 break;
                             default:

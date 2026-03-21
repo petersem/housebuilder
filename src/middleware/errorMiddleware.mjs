@@ -8,9 +8,8 @@ import { logError, logWarning, logInfo } from "../utilities/logger.mjs";
  * @param {*} next 
  */
 export const errorMiddleware = function () {
-    if (process.env?.NODE_ENV === "development") {
-        console.log(logInfo, `Error Middleware: Activated`);
-    }
+    console.log(logInfo, `Error Middleware: Activated`);
+
     return (err, req, res, next) => {
         if (process.env?.NODE_ENV === "development") {
             console.log(logError, err);
