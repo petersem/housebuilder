@@ -50,7 +50,7 @@ export const addShowcaseValidationSchema = {
                 max: 2
             },
             errorMessage:
-                "must a whole number from 1 to 2"
+                "must be a whole number from 1 to 2"
         },
         notEmpty: {
             errorMessage: 
@@ -64,7 +64,7 @@ export const addShowcaseValidationSchema = {
                 max: 2
             },
             errorMessage:
-                "must a whole number from 1 to 2"
+                "must be a whole number from 1 to 2"
         },
         notEmpty: {
             errorMessage: 
@@ -92,7 +92,7 @@ export const addShowcaseValidationSchema = {
                 max: 800
             },
             errorMessage:
-                "must a whole number from 200 to 800"
+                "must be a whole number from 200 to 800"
         },
         notEmpty: {
             errorMessage: 
