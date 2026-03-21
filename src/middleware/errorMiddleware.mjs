@@ -12,7 +12,11 @@ export const errorMiddleware = function () {
         console.log(logInfo, `Error Middleware: Activated`);
     }
     return (err, req, res, next) => {
-        console.log(logError, err);
+        if (process.env?.NODE_ENV === "development") {
+            console.log(logError, err);
+        } else {
+            console.log(logError, err.message);
+        }
         const statusCode = res.statusCode ? res.statusCode : 500;
         res.status(statusCode);
         res.json({message: err.message, stack: process.env.NODE_ENV === "development" ? err.stack : null});
