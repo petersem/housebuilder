@@ -122,11 +122,12 @@ export function idempotencyMiddleware(options = {}) {
         // if not a success, delete the key
         if (!isSuccess) { 
           if (process.env?.NODE_ENV === "development") {
-           console.log(logWarning, "Idempotency Middleware: Call failed - Key deleted");
+           console.log(logWarning, `Idempotency Middleware: ${req.method} request failed - Key not saved`);
           }
           idemStore.delete(compositeKey);
           return
         } else {
+
           if (process.env?.NODE_ENV === "development") {
             try {
               const cutOff = Date.now() + config.ttlMs;
