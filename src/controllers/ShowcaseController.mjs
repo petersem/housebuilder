@@ -1,6 +1,6 @@
 import ShowcaseModel from "../models/ShowcaseModel.mjs"
 import { matchedData, validationResult } from "express-validator"
-import { logError, logWarning, logInfo } from "../utilities/logger.mjs";
+import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
 
 /**
  * Manages all interractions for houses

@@ -1,20 +1,17 @@
-import { logError, logWarning, logInfo } from "../utilities/logger.mjs";
+import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
 
 /**
- import { logError, logWarning, logInfo } from "../utilities/logger.mjs";* Middleware to handle error stackstraces if in dev or prod
- * @param {*} err 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ * Defines the errorMiddleware function
+ * @returns {Error, Request, Response, any }
  */
 export const errorMiddleware = function () {
     console.log(logInfo, `Error Middleware: Activated`);
 
     return (err, req, res, next) => {
         if (process.env?.NODE_ENV === "development") {
-            console.log(logError, err);
+            console.log(logDanger, err);
         } else {
-            console.log(logError, err.message);
+            console.log(logDanger, err.message);
         }
         const statusCode = res.statusCode ? res.statusCode : 500;
         res.status(statusCode);

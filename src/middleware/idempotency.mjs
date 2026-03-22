@@ -1,4 +1,4 @@
-import { logError, logWarning, logInfo } from "../utilities/logger.mjs";
+import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
 //import { Request, Response, next } from 'express';
 import crypto from 'crypto';
 import { InMemoryIdempotencyStore } from './InMemoryIdempotencyStore.mjs';
@@ -68,7 +68,7 @@ export function idempotencyMiddleware(options = {}) {
       // Verify request body matches (detect key reuse with different payload)
       if (existing.requestHash !== requestHash) {
         if (process.env?.NODE_ENV === "development") {
-          console.log(logError, "Idempotency Middleware: Rejected - Key reused with different request");
+          console.log(logDanger, "Idempotency Middleware: Rejected - Key reused with different request");
         }
         return res.status(422).json({
           error: 'Idempotency key reused with different request',
@@ -132,7 +132,7 @@ export function idempotencyMiddleware(options = {}) {
               console.log(logInfo, `Idempotency Middleware: Key added - ${compositeKey} - Expires: ${new Date(cutOff).toLocaleString()}`);
             }
             catch (err) {
-              console.log(logError, err);
+              console.log(logDanger, err);
             }
           }
         };

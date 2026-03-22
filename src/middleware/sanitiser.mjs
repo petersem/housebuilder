@@ -1,4 +1,4 @@
-import { logError, logWarning, logInfo } from "../utilities/logger.mjs";
+import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
 
 
 // wrapper pattern to pass a variable in before the middleware is called. 
@@ -54,7 +54,7 @@ export const sanitiser = function (action = "fail") {
                             default:
                                 res.status(500);
                                 if (process.env.NODE_ENV === "development") {
-                                    console.log(logError, `Sanitiser (Mode: ${action}) You have NOT SELECTED A VALID OPTION for sanitiser - no action taken !!!`);
+                                    console.log(logDanger, `Sanitiser (Mode: ${action}) You have NOT SELECTED A VALID OPTION for sanitiser - no action taken !!!`);
                                 }
                                 res.setHeader('Content-Type', 'application/json').status(500).json(`{message: sanitiser middleware triggered, but using invalid option '${action}' - No action taken }`);
                                 return;

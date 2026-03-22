@@ -1,1 +1,11 @@
+# ignore the following folders
 /node_modules
+/config/*.json
+/dist
+
+# any excluded dir with a .keep file. Will stay in github, but all other files will not :)
+!.keep
+# exclude specific folders and files
+!/public/custom/pictures
+!/public/custom/pictures/readme.txt
+!/public/custom/custom.css

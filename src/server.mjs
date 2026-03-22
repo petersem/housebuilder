@@ -6,7 +6,7 @@ import showcaseRoutes from './routes/showcase.mjs';
 import { sanitiser } from './middleware/sanitiser.mjs';
 import { errorMiddleware } from './middleware/errorMiddleware.mjs';
 import { idempotencyMiddleware } from './middleware/idempotency.mjs';
-import { logError, logWarning, logInfo } from "./utilities/logger.mjs";
+import { logDanger, logWarning, logInfo } from "./utilities/logger.mjs";
 
 // Load environment values to variables
 const PORT = process.env.PORT || 3000;
@@ -29,7 +29,7 @@ app.use(sanitiser("reject")); // sanitises req.body prop values - Options are 'c
 // must run before routes
 let devOptions;
 if (process.env?.NODE_ENV === "development") {
-    devOptions = { ttlMs: 2 * 60 * 1000, cleanupIntervalM: 1 }
+    devOptions = { ttlMs: 3 * 60 * 1000, cleanupIntervalM: 1 }
 }
 app.use(idempotencyMiddleware(devOptions)); // adds idempotence functionality for post, put, and patch - (flushes tokens every 5 minutes)
 

@@ -1,4 +1,4 @@
-import { logError, logWarning, logInfo } from "../utilities/logger.mjs";
+import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
 
 export class InMemoryIdempotencyStore {
   records = new Map();

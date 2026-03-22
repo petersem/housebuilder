@@ -3,7 +3,7 @@ import HouseModel from "../models/HouseModel.mjs"
 import PricingModel from "../models/PricingModel.mjs";
 import CompanyModel from "../models/CompanyModel.mjs";
 import { matchedData, validationResult } from "express-validator"
-import { logError, logWarning, logInfo } from "../utilities/logger.mjs";
+import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
 
 /**
  * Manages all interractions for houses
