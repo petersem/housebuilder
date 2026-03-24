@@ -7,12 +7,13 @@ import { sanitiser } from './middleware/sanitiser.mjs';
 import { errorMiddleware } from './middleware/errorMiddleware.mjs';
 import { idempotencyMiddleware } from './middleware/idempotency.mjs';
 import { logDanger, logWarning, logInfo } from "./utilities/logger.mjs";
+import companyRoutes from './routes/companies.mjs';
+import pricingRoutes from './routes/pricing.mjs';
 
 // Load environment values to variables
 const PORT = process.env.PORT || 3000;
-if (process.env?.NODE_ENV === "development") {
-    console.log(logInfo, `Environment: ${process.env?.NODE_ENV}`);
-}
+console.log(logInfo, `Environment: ${process.env?.NODE_ENV}`);
+
 
 const app = express();  // setup express app
 
@@ -35,8 +36,10 @@ app.use(idempotencyMiddleware(devOptions)); // adds idempotence functionality fo
 
 // add top-level routes
 app.use("/", homeRoute);
-app.use("/house", houseRoutes);
+// app.use("/house", houseRoutes);
 app.use("/showcase", showcaseRoutes);
+app.use("/pricing", pricingRoutes);
+app.use("/companies", companyRoutes);
 app.use("/err", (req, res) => {
     throw new Error('Ooff! What an error!') // just here for testing
 });

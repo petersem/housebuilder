@@ -5,7 +5,7 @@ import { InMemoryIdempotencyStore } from './InMemoryIdempotencyStore.mjs';
 
 const defaultOptions = {
   headerName: 'Idempotency-Key',
-  requiredForMethods: ['POST', 'PUT', 'PATCH'],
+  requiredForMethods: ['POST'], //, 'PUT', 'PATCH'],
   ttlMs: 24 * 60 * 60 * 1000,
   cleanupIntervalM: 60
 };

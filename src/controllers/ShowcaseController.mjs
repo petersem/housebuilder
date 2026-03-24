@@ -1,6 +1,8 @@
 import ShowcaseModel from "../models/ShowcaseModel.mjs"
 import { matchedData, validationResult } from "express-validator"
 import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
+import PricingModel from '../models/PricingModel.mjs';
+import CompanyModel from '../models/CompanyModel.mjs';
 
 /**
  * Manages all interractions for houses
@@ -48,6 +50,82 @@ export class ShowcaseController {
         //     title: "Showcase",
         //     data: houses
         // });
+    }
+
+    static readHouse(req, res) {
+        // validate fields and exit if errors
+        const result = validationResult(req);
+        const readErrs = ShowcaseController.checkValidationErrors(req, res);
+        if (readErrs?.length > 0) {
+            return res.status(400).send({ errors: readErrs })
+        }
+
+        const errs = ShowcaseController.checkValidationErrors(req, res);
+        if (errs?.length > 0) {
+            return res.status(400).send({ errors: errs })
+        }
+
+        const pricing = PricingModel.select();
+        const companies = CompanyModel.select();
+        const house = ShowcaseModel.select(house => house.id == req.params.houseId);
+        // check if house record found
+        if (house.length == 0) {
+            res.status(404);
+            res.setHeader('Content-Type', 'application/json');
+            res.json({ message: "record not found", data: req.params.houseId });
+        } else {
+            res.status(200);
+            res.setHeader('Content-Type', 'application/json');
+            res.json({ message: "record retrieved", data: house });
+
+            // Render details page
+            // res.status(200);
+            // res.render('housedetails', {
+            // title: "House Details",
+            // data: [house, companies, pricing]
+            // });
+        }
+    }
+
+    static updateHouse(req, res) {
+        // validate fields and exit if errors
+        const result = validationResult(req);
+        const readErrs = ShowcaseController.checkValidationErrors(req, res);
+        if (readErrs?.length > 0) {
+            return res.status(400).send({ errors: readErrs })
+        }
+
+        // build new house object
+        const updatedHouse = new ShowcaseModel(
+            req.body.id,
+            req.body.title,
+            req.body.companyName,
+            req.body.rooms,
+            req.body.bathrooms,
+            req.body.garages,
+            req.body.floorAreaSqm,
+            req.body.storyCount,
+            req.body.extras,
+            req.body.totalCost
+        )
+
+        // update house
+        const outcome = ShowcaseModel.update(house => house.id == req.body.id, updatedHouse);
+        res.setHeader('Content-Type', 'application/json');
+
+        // if deleted or not found
+        if (outcome != 0) {
+            // updated
+            res.json({ message: "record updated", data: updatedHouse });
+            res.status(201);
+        } else {
+            // was not present
+            res.setHeader('Content-Type', 'application/json');
+            res.status(404).json({ message: "record not found" });
+        }
+        res.end();
+
+        //res.redirect("/showcase/list");
     }
 
     static createHouse(req, res) {
