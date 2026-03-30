@@ -116,12 +116,11 @@ export class ShowcaseController {
         // if deleted or not found
         if (outcome != 0) {
             // updated
-            res.json({ message: "record updated", data: updatedHouse });
-            res.status(201);
+            res.status(201).json({ message: "record updated", data: updatedHouse });
         } else {
             // was not present
             res.setHeader('Content-Type', 'application/json');
-            res.status(404).json({ message: "record not found" });
+            res.status(204).json({ message: "record not found" });
         }
         res.end();
 

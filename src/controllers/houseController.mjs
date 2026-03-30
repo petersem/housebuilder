@@ -168,7 +168,7 @@ export class HouseController {
         } else {
             // was not present
             res.setHeader('Content-Type', 'application/json');
-            res.status(404).json({ message: "record not found" });
+            res.status(204).json({ message: "record not found" });
         }
         res.end();
 
