@@ -4,7 +4,7 @@ import CompanyModel from "../models/CompanyModel.mjs"
 import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
 
 /**
- * Manages all interractions for houses
+ * Manages all interractions for companies
  */
 export class CompanyController {
 

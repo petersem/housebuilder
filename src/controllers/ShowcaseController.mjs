@@ -105,8 +105,8 @@ export class ShowcaseController {
             req.body.garages,
             req.body.floorAreaSqm,
             req.body.storyCount,
-            req.body.extras,
-            req.body.totalCost
+            req.body.totalCost,
+            req.body.extras
         )
 
         // update house

@@ -80,15 +80,15 @@ export class HouseController {
             house.totalCost = house.totalCost ?? HouseController.costCalculator(house)
         });
 
-        res.status(200);
-        res.setHeader('Content-Type', 'application/json');
-        res.json({ message: "records retrieved", data: houses });
-
         // res.status(200);
-        // res.render('houselist', {
-        //     title: "House Builder",
-        //     data: houses
-        // });
+        // res.setHeader('Content-Type', 'application/json');
+        // res.json({ message: "records retrieved", data: houses });
+
+        res.status(200);
+        res.render('houselist', {
+            title: "House Builder",
+            data: houses
+        });
     }
 
     static readHouse(req, res) {

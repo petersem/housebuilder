@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "dev": "nodemon --env-file=./src/.env src/server.mjs",
-    "prod": "nodemon --env-file=./src/.envprod src/server.mjs"
+    "prod": "nodemon --env-file=./src/.envprod src/server.mjs",
+    "doc": "cls && node ./node_modules/jsdoc/jsdoc.js -c ./jsdoc.conf.json"
   },
   "keywords": [],
   "author": "Matt Petersen",
@@ -15,13 +16,17 @@
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "jest": "^30.3.0",
+    "jsdoc": "^4.0.5",
     "nodemon": "^3.1.14"
   },
   "dependencies": {
+    "cors": "^2.8.6",
     "crypto": "^1.0.1",
     "ejs": "^5.0.1",
     "express": "^5.2.1",
     "express-validator": "^7.3.1",
-    "he": "^1.2.0"
+    "he": "^1.2.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }
