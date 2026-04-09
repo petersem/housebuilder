@@ -16,6 +16,11 @@ function hashRequest(body) {
   return crypto.createHash('sha256').update(content).digest('hex');
 }
 
+/**
+ * idempotencyMiddleware
+ * @param {Object} options This is optional, but can include any of the following options: <pre><code>{ headerName: `xxx', requiredForMethods: ['POST', 'PUT', 'PATCH'], ttlMs: milliseconds, cleanupIntervalM: minutes}</code></pre>
+ * @returns {null}
+ */
 export function idempotencyMiddleware(options = {}) {
   const config = { ...defaultOptions, ...options };
   const idemStore = new InMemoryIdempotencyStore({ ttlMs: config.ttlMs, cleanupIntervalM: config.cleanupIntervalM });

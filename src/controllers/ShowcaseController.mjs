@@ -5,15 +5,16 @@ import PricingModel from '../models/PricingModel.mjs';
 import CompanyModel from '../models/CompanyModel.mjs';
 
 /**
- * Manages all interractions for houses
+ * Manages all interractions for showcase houses
  */
 export class ShowcaseController {
 
         /**
+         * ### checkValidationErrors
          * Checks for express-validator validation errors
-         * @param {Request} req 
-         * @param {Response} res 
-         * @returns {JSON} an array of errors
+         * @param {Express.Request} req The request object
+         * @param {Express.Response} res  The response object
+         * @returns {JSON} [error] an array of errors
          */
         static checkValidationErrors(req, res) {
             const result = validationResult(req);
@@ -38,6 +39,13 @@ export class ShowcaseController {
             return;
         }
 
+/**
+ * ### viewShowcase
+ * Retrieves all showcase houses
+ * @param {Express.Request} req The express request object
+ * @param {Express.Reponse} res The express response object
+ * @returns {Array} An array of house objects
+ */        
     static viewShowcase(req, res) {
         let houses = ShowcaseModel.select();
 
@@ -52,6 +60,13 @@ export class ShowcaseController {
         // });
     }
 
+    /**
+     * ### readHouse
+     * Retrieves an individual showcase house
+     * @param {Express.Request} req The express request object
+     * @param {Express.Reponse} res The express response object
+     * @returns {json} house A showcase house
+     */
     static readHouse(req, res) {
         // validate fields and exit if errors
         const result = validationResult(req);
@@ -87,6 +102,13 @@ export class ShowcaseController {
         }
     }
 
+    /**
+     * ### updateHouse
+     * Updates an individual showcase house
+     * @param {Express.Request} req The express request object
+     * @param {Express.Reponse} res The express response object
+     * @returns {json} house The updated showcase house record
+     */
     static updateHouse(req, res) {
         // validate fields and exit if errors
         const result = validationResult(req);

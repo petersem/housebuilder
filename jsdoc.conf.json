@@ -4,7 +4,7 @@
     "includePattern": ".+\\.(m?js(doc|x)?|cjs|ts)$",
     "excludePattern": "(^|\\/|\\\\)_"
   },
-  "plugins": [],
+  "plugins": ["plugins/markdown"],
   "opts": {
     "encoding": "utf8",
     "destination": "./docs",

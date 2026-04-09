@@ -5,17 +5,9 @@ import CompanyModel from "../models/CompanyModel.mjs";
 import { matchedData, validationResult } from "express-validator"
 import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
 
-/**
- * Manages all interractions for houses
- */
+
 export class HouseController {
 
-    /**
-     * Checks for express-validator validation errors
-     * @param {Request} req 
-     * @param {Response} res 
-     * @returns {JSON} an array of errors
-     */
     static checkValidationErrors(req, res) {
         const result = validationResult(req);
         // if errors present
@@ -39,12 +31,6 @@ export class HouseController {
         return;
     }
 
-    // calculate total price for house
-    /**
-     * Calculates the total price for a house from selected options and company/pricing model data
-     * @param {HouseModel} house 
-     * @returns {int} The total price price for a given house and options
-     */ 
     static costCalculator(house) {
         const pricing = PricingModel.select();
 

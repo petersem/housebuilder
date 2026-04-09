@@ -1,5 +1,9 @@
 import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
 
+
+/**
+ * InMemoryIdempotencyStore class
+ */
 export class InMemoryIdempotencyStore {
   records = new Map();
   ttlMs;
@@ -10,6 +14,9 @@ export class InMemoryIdempotencyStore {
     cleanupIntervalM: 60
   };
 
+  /**
+   * @param {Object} options Any [optional] override options 
+   */
   constructor(options = {}) {  // 24 hours default
     const config = { ...this.defaultOptions, ...options}
     this.ttlMs = config.ttlMs;
@@ -18,6 +25,11 @@ export class InMemoryIdempotencyStore {
     this.cleanupIntervalM = setInterval(() => this.cleanup(), this.cleanupIntervalM * 60 * 1000);
   }
 
+  /**
+   * ### Get
+   * @param {String} key the key string 
+   * @returns {Object} keyObject 
+   */
   get(key) {
     return this.records.get(key);
   }

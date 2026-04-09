@@ -8,7 +8,6 @@ import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
  */
 export class CompanyController {
 
-
     static viewCompanies(req, res) {
 
         const companies = CompanyModel.select();

@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import homeRoute from './routes/home.mjs';
-import houseRoutes from './routes/house.mjs';
+//import houseRoutes from './routes/house.mjs';
 import showcaseRoutes from './routes/showcase.mjs';
 import { sanitiser } from './middleware/sanitiser.mjs';
 import { errorMiddleware } from './middleware/errorMiddleware.mjs';
@@ -10,7 +10,6 @@ import { logDanger, logWarning, logInfo } from "./utilities/logger.mjs";
 import companyRoutes from './routes/companies.mjs';
 import pricingRoutes from './routes/pricing.mjs';
 import cors from 'cors';
-
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger.config.mjs';
 import { fileURLToPath } from "url";
@@ -19,34 +18,36 @@ import { fileURLToPath } from "url";
 const PORT = process.env.PORT || 3000;
 console.log(logInfo, `Environment: ${process.env?.NODE_ENV}`);
 
-
+// setup express
 const app = express();  // setup express app
-
 app.set("view engine", "ejs");  // use ejs for the view engine
 app.set("views", path.join(import.meta.dirname, "/views")); // define where the views are
-
 // setup basic express middleware
 app.use(express.json());  // handle json payloads that come in
 app.use(express.urlencoded({ extended: true }));  // handle querystring nested data inputs
 app.use(express.static(path.join(import.meta.dirname, "public"))); // handle any static images, stylesheets, etc.
 
+
+// add cors support
 var corsOptions = {
-  origin: [`http://127.0.0.1:${PORT}, 'http://localhost:${PORT}`]
+  origin: [`http://127.0.0.1:${PORT}`, `http://localhost:${PORT}`]
 }
 app.use(cors(corsOptions));
+console.log(logInfo, `Cors enabled, and allowing: ${corsOptions.origin}`);
 
+// add swagger docs
+const __filename = fileURLToPath(import.meta.url);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // must run before before routes and idemponcyMiddleware
 app.use(sanitiser("reject")); // sanitises req.body prop values - Options are 'clean' (default), 'warn', 'fail', or 'disable'
+
 // must run before routes
 let devOptions;
 if (process.env?.NODE_ENV === "development") {
     devOptions = { ttlMs: 3 * 60 * 1000, cleanupIntervalM: 1 }
 }
 app.use(idempotencyMiddleware(devOptions)); // adds idempotence functionality for post, put, and patch - (flushes tokens every 5 minutes)
-
-const __filename = fileURLToPath(import.meta.url);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // add top-level routes
 app.use("/", homeRoute);

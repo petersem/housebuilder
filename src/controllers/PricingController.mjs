@@ -8,7 +8,13 @@ import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
  */
 export class PricingController {
 
-
+    /**
+    * ### readPrice
+    * Gets the global pricing data
+    * @param {Express.Request} req 
+    * @param {Express.Response} res 
+    * @returns{JSON} An pricing array object
+    */
     static readPrice(req, res) {
 
         const pricing = PricingModel.select();
