@@ -1,4 +1,4 @@
-import { logDanger, logWarning, logInfo } from "../helpers/logger.mjs";
+import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
 
 /**
  * Defines the errorMiddleware function. Reads the process.env to determine if environment is development or not. If not development, stack traces will not be shown. 
