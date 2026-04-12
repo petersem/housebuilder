@@ -1,5 +1,3 @@
-# Housebuilder
-
 ![Docker Pulls](https://img.shields.io/docker/pulls/petersem/housebuilder) 
 ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/petersem/housebuilder/latest?logo=docker) 
 ![GitHub Stars](https://img.shields.io/github/stars/petersem/housebuilder?style=flat)![Version](https://img.shields.io/github/package-json/v/petersem/housebuilder?logoColor=blue)
@@ -8,7 +6,7 @@
 
 TAFE assessment application
 
-## Features
+# Features
 
 - Express MVC app
 - Express-validator business rule schemas
@@ -30,30 +28,30 @@ TAFE assessment application
   - Copy GitHub doco to DockerHub 
   - Multi-arch build for X86 and ARM
 
-### Run scripts
+# Run scripts
 
 - `npm run prod` - Runs app using `.envprod` values, specific idempotency options, minimal logging, and hidden error stacktraces.
 - `npm run dev` - Runs app using `.env` values
 - `npm run doc` - Creates JSDoc doco in /docs
 - `npm run test` - Runs unit tests with coverage report /coverage
 
-### Server-side implementation
+# Server-side implementation
 
 - house showcase CRUD
 - pricing R
 - companies R
 
-### Custom middleware
+# Custom middleware
 
 - Sanitiser - removes prohibitted characters from requests
 - ErrorMiddleware - only allows error stacktraces to be visible in a development environment
 - Idempotency - uses stored tokens to manage non-idempotent methods (e.g Post)
 
-### Install
+# Install
 
 Clone repo and run `npm i` from the project folder
 
-#### Docker install (compose)
+### Docker install (compose)
 
 ```
 services:

@@ -5,12 +5,7 @@ import { addShowcaseValidationSchema, updateShowcaseValidationSchema, getShowcas
 
 const showcaseRoutes = express.Router();
 
-/**
- * @swagger
- * tags:
- *   name: Item
- *   description: Item management
- */
+
 
 /**
  * @swagger
