@@ -12,7 +12,7 @@ TAFE assessment application
 - Express-validator business rule schemas
 - In-memory data (no database at this stage)
 - End-points do not render views, only return data (at this stage)
-- Swagger implementation (only for reads at the moment) /api-docs
+- Swagger implementation /api-docs
 - Unit tests (with JEST), including code coverage /coverage
 - Code documentation with JSDOC /docs
 - CORS for localhost and 127.0.0.1

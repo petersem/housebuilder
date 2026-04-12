@@ -32,7 +32,7 @@ var corsOptions = {
   origin: [`http://127.0.0.1:${PORT}`, `http://localhost:${PORT}`]
 }
 app.use(cors(corsOptions));
-console.log(logInfo, `Cors enabled, and allowing: ${corsOptions.origin}`);
+console.log(logInfo, `Cors enabled, and allowing: ${corsOptions.origin[1]}`);
 
 // add swagger docs
 const __filename = fileURLToPath(import.meta.url);
