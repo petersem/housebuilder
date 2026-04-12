@@ -13,7 +13,7 @@ TAFE assessment application
 - In-memory data (no database at this stage)
 - End-points do not render views, only return data (at this stage)
 - Swagger implementation /api-docs
-- Unit tests (with JEST), including code coverage /coverage
+- Unit tests (with JEST), including code coverage /coverage (in development)
 - Code documentation with JSDOC /docs
 - CORS for localhost and 127.0.0.1
 - Enhanced logging in development environment
