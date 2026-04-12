@@ -2,8 +2,7 @@
 
 ![Docker Pulls](https://img.shields.io/docker/pulls/petersem/housebuilder) 
 ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/petersem/housebuilder/latest?logo=docker) 
-![GitHub Stars](https://img.shields.io/github/stars/petersem/housebuilder?style=flat)
-![Version](https://img.shields.io/github/package-json/v/petersem/housebuilder?logoColor=blue)
+![GitHub Stars](https://img.shields.io/github/stars/petersem/housebuilder?style=flat)![Version](https://img.shields.io/github/package-json/v/petersem/housebuilder?logoColor=blue)
 ![GitHub last commit](https://img.shields.io/github/last-commit/petersem/housebuilder)
 ![Platforms](https://img.shields.io/badge/platform-docker-blue)
 

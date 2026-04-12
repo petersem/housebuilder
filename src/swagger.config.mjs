@@ -2,6 +2,7 @@
 import swaggerJsdoc from "swagger-jsdoc";
 import path from "path";
 import { fileURLToPath } from "url";
+import pkg from '../package.json' with { type: 'json' };
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,7 +14,7 @@ const options = {
     openapi: "3.0.0",
     info: {
       title: "HouseBuilder API",
-      version: "1.0.0",
+      version: pkg.version,
       description: "API documentation for my HouseBuilder Node app"
     },
     servers: [{url: `http://127.0.0.1:${PORT}`}, {url: `http://localhost:${PORT}`}]

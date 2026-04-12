@@ -1,6 +1,6 @@
 services:
   basics:
-    image: petersem/housebuilder
+    image: petersem/housebuilder:latest
     container_name: housebuilder
     environment:
       TZ: "Australia/Brisbane"
