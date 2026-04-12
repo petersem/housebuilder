@@ -1,4 +1,12 @@
 # Housebuilder
+
+![Docker Pulls](https://img.shields.io/docker/pulls/petersem/housebuilder) 
+![Docker Image Size (tag)](https://img.shields.io/docker/image-size/petersem/housebuilder/latest?logo=docker) 
+![GitHub Stars](https://img.shields.io/github/stars/petersem/housebuilder?style=flat)
+![Version](https://img.shields.io/github/package-json/v/petersem/housebuilder?logoColor=blue)
+![GitHub last commit](https://img.shields.io/github/last-commit/petersem/housebuilder)
+![Platforms](https://img.shields.io/badge/platform-docker-blue)
+
 TAFE assessment application
 
 ## Features
@@ -21,6 +29,7 @@ TAFE assessment application
   - GitHub pages build on push
   - Unit test execute on push
   - Copy GitHub doco to DockerHub 
+  - Multi-arch build for X86 and ARM
 
 ### Run scripts
 
@@ -44,5 +53,18 @@ TAFE assessment application
 ### Install
 
 Clone repo and run `npm i` from the project folder
+
+#### Docker install (compose)
+
+```
+services:
+  basics:
+    image: petersem/housebuilder
+    container_name: housebuilder
+    environment:
+      TZ: "Australia/Brisbane"
+    ports:
+      - 3000:3000
+```
 
 
