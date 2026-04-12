@@ -56,7 +56,30 @@ const showcaseRoutes = express.Router();
  */
 showcaseRoutes.get("/list", ShowcaseController.viewShowcase);
 
-
+/**
+ * @swagger
+ * /showcase/add:
+ *   post:
+ *     summary: add a showcase houses
+ *     tags: [House]
+ *     produces:
+ *      - application/json
+ *     consumes:
+ *      - application/json
+ *     parameters:
+ *       - name: Idempotency-Key
+ *         in: header
+ *         description: idempotency key
+ *         required: true
+ *         type: string
+ *       - in: requestBody
+ *         name: house
+ *         required: true
+ *         description: House object to add
+ *     responses:
+ *       201:
+ *         description: created
+ */
 showcaseRoutes.post("/add", checkSchema(addShowcaseValidationSchema), ShowcaseController.createHouse);
 showcaseRoutes.delete("/delete", ShowcaseController.deleteHouse);
 showcaseRoutes.put("/update",checkSchema(updateShowcaseValidationSchema), ShowcaseController.updateHouse);

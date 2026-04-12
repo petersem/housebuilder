@@ -12,7 +12,7 @@ TAFE assessment application
 - Express-validator business rule schemas
 - In-memory data (no database at this stage)
 - End-points do not render views, only return data (at this stage)
-- Swagger implementation /api-docs
+- Swagger implementation (only for reads at the moment) /api-docs
 - Unit tests (with JEST), including code coverage /coverage
 - Code documentation with JSDOC /docs
 - CORS for localhost and 127.0.0.1
@@ -22,11 +22,11 @@ TAFE assessment application
 - Multi-environment support for dev and prod
 - GitHub Workflows 
   - Docker image build on push with tags
-  - Docker Hub `:latest` and `:n` incrementing docker images
+  - Docker Hub `:latest` and `:n` incrementing docker image tags
   - GitHub pages build on push
-  - Unit test execute on push
-  - Copy GitHub doco to DockerHub 
-  - Multi-arch build for X86 and ARM
+  - Unit test execute on push (planned)
+  - Copy GitHub readme to DockerHub readme
+  - Multi-arch docker image build for X86 and ARM
 
 # Run scripts
 
