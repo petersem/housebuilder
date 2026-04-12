@@ -1,7 +1,11 @@
 import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
 
 
-// wrapper pattern to pass a variable in before the middleware is called. 
+/**
+ * ### Sanitises prohibitted characters from requests
+ * @param {String} action the action to take for the sanitiser 
+ * @returns {Request,Response,next} Middleware types
+ */
 export const sanitiser = function (action = "fail") {
     // options can be
     //      clean = to replace bad characters

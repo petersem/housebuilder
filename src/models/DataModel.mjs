@@ -1,3 +1,6 @@
+/**
+ * DataModel base class
+ */
 export class DataModel {
     /**
      * In memory data store of model entries

@@ -1,7 +1,6 @@
 import express from 'express';
 import path from 'path';
 import homeRoute from './routes/home.mjs';
-//import houseRoutes from './routes/house.mjs';
 import showcaseRoutes from './routes/showcase.mjs';
 import { sanitiser } from './middleware/sanitiser.mjs';
 import { errorMiddleware } from './middleware/errorMiddleware.mjs';
@@ -38,6 +37,7 @@ console.log(logInfo, `Cors enabled, and allowing: ${corsOptions.origin}`);
 // add swagger docs
 const __filename = fileURLToPath(import.meta.url);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+console.log(logInfo, `Swagger enabled on /api-docs`);
 
 // must run before before routes and idemponcyMiddleware
 app.use(sanitiser("reject")); // sanitises req.body prop values - Options are 'clean' (default), 'warn', 'fail', or 'disable'
@@ -47,16 +47,15 @@ let devOptions;
 if (process.env?.NODE_ENV === "development") {
     devOptions = { ttlMs: 3 * 60 * 1000, cleanupIntervalM: 1 }
 }
-app.use(idempotencyMiddleware(devOptions)); // adds idempotence functionality for post, put, and patch - (flushes tokens every 5 minutes)
+app.use(idempotencyMiddleware(devOptions)); // adds idempotence functionality for post, put, and patch - (flushes tokens as required)
 
 // add top-level routes
 app.use("/", homeRoute);
-// app.use("/house", houseRoutes);
 app.use("/showcase", showcaseRoutes);
 app.use("/pricing", pricingRoutes);
 app.use("/companies", companyRoutes);
 app.use("/err", (req, res) => {
-    throw new Error('Ooff! What an error!') // just here for testing
+    throw new Error('Ooff! What an error!') // just here for testing errorMiddleware
 });
 
 // must run last thing

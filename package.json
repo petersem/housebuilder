@@ -1,6 +1,6 @@
 {
   "name": "housebuilder",
-  "version": "1.0.0",
+  "version": "1.5.2",
   "description": "",
   "main": "server.mjs",
   "scripts": {
@@ -22,11 +22,9 @@
   },
   "dependencies": {
     "cors": "^2.8.6",
-    "crypto": "^1.0.1",
     "ejs": "^5.0.1",
     "express": "^5.2.1",
     "express-validator": "^7.3.1",
-    "he": "^1.2.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   }

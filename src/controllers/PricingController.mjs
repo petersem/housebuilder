@@ -4,7 +4,7 @@ import PricingModel from "../models/PricingModel.mjs"
 import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
 
 /**
- * Manages all interractions for houses
+ * Manages all interractions for pricing
  */
 export class PricingController {
 

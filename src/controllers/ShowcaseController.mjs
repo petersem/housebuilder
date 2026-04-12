@@ -9,43 +9,76 @@ import CompanyModel from '../models/CompanyModel.mjs';
  */
 export class ShowcaseController {
 
-        /**
-         * ### checkValidationErrors
-         * Checks for express-validator validation errors
-         * @param {Express.Request} req The request object
-         * @param {Express.Response} res  The response object
-         * @returns {JSON} [error] an array of errors
-         */
-        static checkValidationErrors(req, res) {
-            const result = validationResult(req);
-            // if errors present
-            if (!result.isEmpty()) {
-                // format all the errors nicely
-                let errors = [];
-                result.array().forEach(err => {
-                    const error = {
-                        "location": err.location,
-                        "field": err.path,
-                        "value": err.value,
-                        "msg": err.msg,
-                    };
-                    errors.push(error);
-                    if (process.env.NODE_ENV === "development") {
-                        console.log(logWarning, `Express-validator: ${error.field} - ${error.value} - ${error.msg}`);
-                    }    
-                });
-                return errors;
-            }
-            return;
+    /**
+     * ### checkValidationErrors
+     * Checks for express-validator validation errors
+     * @param {Express.Request} req The request object
+     * @param {Express.Response} res  The response object
+     * @returns {JSON} [error] an array of errors
+     */
+    static checkValidationErrors(req, res) {
+        const result = validationResult(req);
+        // if errors present
+        if (!result.isEmpty()) {
+            // format all the errors nicely
+            let errors = [];
+            result.array().forEach(err => {
+                const error = {
+                    "location": err.location,
+                    "field": err.path,
+                    "value": err.value,
+                    "msg": err.msg,
+                };
+                errors.push(error);
+                if (process.env.NODE_ENV === "development") {
+                    console.log(logWarning, `Express-validator: ${error.field} - ${error.value} - ${error.msg}`);
+                }
+            });
+            return errors;
         }
+        return;
+    }
 
-/**
- * ### viewShowcase
- * Retrieves all showcase houses
- * @param {Express.Request} req The express request object
- * @param {Express.Reponse} res The express response object
- * @returns {Array} An array of house objects
- */        
+    /**
+     * 
+     * @param {house} house a showcase house
+     * @returns {Number} The total price for the house
+     */
+    static costCalculator(house) {
+        const pricing = PricingModel.select();
+
+        let companyBasePrice = 0;
+        let totalRoomPrice = 0;
+        let totalBathroomPrice = 0;
+        let totalGarargePrice = 0;
+        let totalSqmPrice = 0;
+        let totalExtrasPrice = 0;
+
+        // get company base price
+        companyBasePrice = CompanyModel.select(comp => comp.name == house.companyName)[0].basePrice;
+
+        // calculate other costs
+        totalRoomPrice = house.rooms * pricing[0].perRoom;
+        totalBathroomPrice = house.rooms * pricing[0].perBathroom;
+        totalGarargePrice = house.garages * pricing[0].perGarage;
+        totalSqmPrice = house.floorAreaSqm * pricing[0].perSqm;
+
+        // calculate any extras
+        house.extras.forEach(extra => {
+            totalExtrasPrice += [pricing[0].extras.find((ex) => ex.extra == extra)][0].price;
+        });
+
+        // return total cost
+        return (companyBasePrice + totalRoomPrice + totalBathroomPrice + totalGarargePrice + totalSqmPrice + totalExtrasPrice);
+    }
+
+    /**
+     * ### viewShowcase
+     * Retrieves all showcase houses
+     * @param {Express.Request} req The express request object
+     * @param {Express.Reponse} res The express response object
+     * @returns {Array} An array of house objects
+     */
     static viewShowcase(req, res) {
         let houses = ShowcaseModel.select();
 
@@ -107,7 +140,6 @@ export class ShowcaseController {
      * Updates an individual showcase house
      * @param {Express.Request} req The express request object
      * @param {Express.Reponse} res The express response object
-     * @returns {json} house The updated showcase house record
      */
     static updateHouse(req, res) {
         // validate fields and exit if errors
@@ -145,10 +177,13 @@ export class ShowcaseController {
             res.status(204).json({ message: "record not found" });
         }
         res.end();
-
-        //res.redirect("/showcase/list");
     }
 
+    /**
+     * Creates a showcase house
+     * @param {Request} req request object
+     * @param {Response} res response object 
+     */
     static createHouse(req, res) {
 
         // validate fields and exit if errors
@@ -168,7 +203,7 @@ export class ShowcaseController {
         const storyCount = req.body.storyCount;
         const totalCost = req.body.totalCost;
         const extras = req.body.extras;
-        
+
         const house = new ShowcaseModel(id, title, companyName, rooms, bathrooms, garages, floorAreaSqm, storyCount, totalCost, extras);
         res.setHeader('Content-Type', 'application/json');
 
@@ -179,26 +214,29 @@ export class ShowcaseController {
         }
         catch (err) {
             res.status(400);
-            res.json({ message: "bad request", data: err.message})
+            res.json({ message: "bad request", data: err.message })
             throw err;
         } finally {
             res.end();
         }
     }
 
+    /**
+     * Deletes a showcase house
+     * @param {Request} req 
+     * @param {Response} res 
+     */
     static deleteHouse(req, res) {
         const outcome = ShowcaseModel.delete(house => house.id == req.body.houseId);
 
         // if deleted or not found
         if (outcome != 0) {
-            // no json response allowed with a 204
+            // no json response of content type allowed with a 204
             res.status(204);
         } else {
             res.setHeader('Content-Type', 'application/json');
             res.status(404).json({ message: "record not found" });
         }
         res.end();
-
-        //res.redirect("/house/list");
     }
 }
