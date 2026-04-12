@@ -1,0 +1,11 @@
+services:
+  basics:
+    image: housebuilder
+    container_name: housebuilder
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      TZ: "Australia/Brisbane"
+    ports:
+      - 3000:3000
