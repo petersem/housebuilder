@@ -13,6 +13,7 @@ import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger.config.mjs';
 import { fileURLToPath } from "url";
 import helmet from 'helmet';
+import { rateLimit } from 'express-rate-limit'
 
 // Load environment values to variables
 const PORT = process.env.PORT || 3000;
@@ -27,6 +28,19 @@ app.use(express.json());  // handle json payloads that come in
 app.use(express.urlencoded({ extended: true }));  // handle querystring nested data inputs
 app.use(express.static(path.join(import.meta.dirname, "public"))); // handle any static images, stylesheets, etc.
 
+// implement express rate limiter
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+	standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+	ipv6Subnet: 56, // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
+	// store: ... , // Redis, Memcached, etc. See below.
+})
+
+// Apply the rate limiting middleware to all requests.
+app.use(limiter)
+console.log(logInfo, `Express-rate-limiter enabled`);
 
 // add cors support
 var corsOptions = {
@@ -37,6 +51,7 @@ console.log(logInfo, `Cors enabled, and allowing: ${corsOptions.origin[1]}`);
 
 // add helmet middleware
 app.use(helmet());
+console.log(logInfo, `Helmet enabled`);
 
 // add swagger docs
 const __filename = fileURLToPath(import.meta.url);
