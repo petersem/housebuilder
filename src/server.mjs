@@ -12,6 +12,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger.config.mjs';
 import { fileURLToPath } from "url";
+import helmet from 'helmet';
 
 // Load environment values to variables
 const PORT = process.env.PORT || 3000;
@@ -33,6 +34,9 @@ var corsOptions = {
 }
 app.use(cors(corsOptions));
 console.log(logInfo, `Cors enabled, and allowing: ${corsOptions.origin[1]}`);
+
+// add helmet middleware
+app.use(helmet());
 
 // add swagger docs
 const __filename = fileURLToPath(import.meta.url);
