@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { DataModel } from '../models/DataModel.mjs';
+import { DataModel } from './DataModel.mjs';
 
 // A simple mock entry class with clone support
 class MockEntry extends DataModel {

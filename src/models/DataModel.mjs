@@ -6,11 +6,11 @@ export class DataModel {
      * In memory data store of model entries
      */
     static data = null;
-    
+
     static setDataSource(data) {
         this.data = data;
     }
-    
+
     /**
      * Find and return matching entries based in the filter predicate provided.
      * 
@@ -28,7 +28,7 @@ export class DataModel {
             return this.data.map(e => e.clone())
         }
     }
-    
+
     /**
      * Updates matching entries based in the filter predicate provided.
      * 
@@ -54,7 +54,7 @@ export class DataModel {
         }
         return count;
     }
-    
+
     /**
      * 
      * @param {any} entry - The entry object to insert into the data store.
@@ -87,8 +87,10 @@ export class DataModel {
         this.data = this.data.filter(entry => !filter(entry));
         return countBefore - this.data.length;
     }
-    
+
     clone() {
-        return Object.assign(Object.create(Object.getPrototypeOf(this)), this)
+        const cloned = structuredClone(this);
+        Object.setPrototypeOf(cloned, Object.getPrototypeOf(this));
+        return cloned;
     }
 }

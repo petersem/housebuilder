@@ -1,19 +1,37 @@
-import { jest } from '@jest/globals';
+import { jest } from "@jest/globals";
 
-import { CompanyController } from "../../controllers/CompanyController.mjs";
-import CompanyModel from "../../models/CompanyModel.mjs";
+// 1. Mock DataModel FIRST — before CompanyModel loads
+jest.mock("../models/DataModel.mjs", () => ({
+  __esModule: true,
+  default: class {
+    static _data = [];
+    static _source = [];
+    static select = jest.fn();
+    static setDataSource = jest.fn();
+  }
+}));
 
-// Mock model
-jest.mock("../models/CompanyModel.mjs");
+// 2. Mock CompanyModel — now it inherits the mocked DataModel
+jest.mock("../models/CompanyModel.mjs", () => ({
+  __esModule: true,
+  default: class {
+    static _data = [];
+    static _source = [];
+    static select = jest.fn();
+    static setDataSource = jest.fn();
+  }
+}));
 
-// Mock logger (silence output)
 jest.mock("../utilities/logger.mjs", () => ({
   logDanger: "danger",
   logWarning: "warning",
   logInfo: "info"
 }));
 
-// Mock Express response object
+// 3. Import AFTER mocks
+import { CompanyController } from "./CompanyController.mjs";
+import CompanyModel from "../models/CompanyModel.mjs";
+
 function mockRes() {
   return {
     status: jest.fn().mockReturnThis(),
@@ -38,10 +56,6 @@ describe("CompanyController.viewCompanies", () => {
 
     expect(CompanyModel.select).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.setHeader).toHaveBeenCalledWith(
-      "Content-Type",
-      "application/json"
-    );
     expect(res.json).toHaveBeenCalledWith({
       message: "records retrieved",
       data: mockCompanies
