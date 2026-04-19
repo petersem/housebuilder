@@ -1,0 +1,180 @@
+name: Jest Test Details
+
+on:
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  test-and-notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Set up node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 'latest'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Jest tests
+        id: jest
+        run: |
+          set +e
+          npm test -- --json --outputFile=jest-results.json --coverage --coverageReporters=json --coverageReporters=json-summary
+          EXIT_CODE=$?
+          echo "exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
+          set -e
+
+      - name: Send discord notification
+        if: always()
+        env:
+          EXIT_CODE: ${{ steps.jest.outputs.exit_code }}
+          BRANCH: ${{ github.ref_name }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+        #   GOTIFY_URL: ${{ secrets.GOTIFY_URL }}
+        #   GOTIFY_TOKEN: ${{ secrets.GOTIFY_TOKEN }}
+        #   NTFY_URL: ${{ secrets.NTFY_URL }}
+        #   NTFY_TOKEN: ${{ secrets.NTFY_TOKEN }}
+        run: |
+          PROJECT_NAME=$(jq -r '.name' package.json)
+
+          SUMMARY=$(jq -r '
+            .testResults
+            | group_by(.status)
+            | map("\(.[0].status): \(length)")
+            | join("\n")
+          ' jest-results.json)
+
+          DETAILS=$(jq -r '
+            .testResults
+            | map(
+                "# File: \(.name)\n"
+                +
+                (
+                  .assertionResults
+                  | map(
+                      if .status == "passed" then
+                        "  ✅ PASSED - \(.fullName)"
+                      else
+                        "  ❌ FAILED - \(.fullName)"
+                      end
+                    )
+                  | join("\n")
+                )
+              )
+            | join("\n\n")
+          ' jest-results.json)
+
+          COVERAGE=$(jq -r '
+            .total
+            | "Statements: \(.statements.pct)%\nBranches: \(.branches.pct)%\nFunctions: \(.functions.pct)%\nLines: \(.lines.pct)%"
+          ' coverage/coverage-summary.json)
+
+          # SAFE UNCOVERED (no em-dash, no unicode, no markdown triggers)
+          UNCOVERED=$(jq -r '
+            to_entries
+            | map(
+                .key as $file
+                | .value as $cov
+                | ($cov.lines.pct // 0) as $lines
+                | ($cov.functions.pct // 0) as $funcs
+                | ($cov.branches.pct // 0) as $branches
+                | select($lines < 100 or $funcs < 100 or $branches < 100)
+                | "\($file)\n  Lines: \($lines)%\n  Functions: \($funcs)%\n  Branches: \($branches)%"
+              )
+            | join("\n\n")
+          ' coverage/coverage-final.json)
+
+          # SAFE UNCOVERED LINES (no em-dash, no unicode, no markdown triggers)
+          UNCOVERED_LINES=$(jq -r '
+            to_entries
+            | map(
+                .key as $file
+                | .value as $cov
+                | ($cov.s // {}) as $counts
+                | ($cov.statementMap // {}) as $stmts
+                | [
+                    $stmts
+                    | to_entries[]
+                    | select(($counts[.key|tostring] // 1) == 0)
+                    | .value.start.line
+                  ]
+                | select(length > 0)
+                | "\($file) - Uncovered lines: \(join(", "))"
+              )
+            | if length == 0 then
+                "No uncovered lines 🎉"
+              else
+                join("\n")
+              end
+          ' coverage/coverage-final.json)
+
+          if [ "$EXIT_CODE" = "0" ]; then
+            STATUS="UnitTests passed"
+            ICON="✅"
+          else
+            STATUS="UnitTests failed"
+            ICON="❌"
+          fi
+
+          {
+            echo "# Project: $PROJECT_NAME"
+            echo "## Automated Unit Testing"
+            echo "### $ICON $STATUS on branch **$BRANCH**."
+
+            echo "**Summary**"
+            echo '```'
+            echo "$SUMMARY"
+            echo '```'
+
+            echo "**Test Details**"
+            echo '```'
+            echo "$DETAILS"
+            echo '```'
+
+            echo "**Coverage**"
+            echo '```'
+            echo "$COVERAGE"
+            echo '```'
+
+            # echo "**Uncovered**"
+            # echo '```'
+            # echo "$UNCOVERED"
+            # echo '```'
+
+            echo "**Lines Not Covered**"
+            echo '```'
+            echo "$UNCOVERED_LINES"
+            echo '```'
+          } > message.txt
+
+          # Send to Discord
+          jq -n --rawfile content message.txt '{content: $content}' \
+            | curl -H "Content-Type: application/json" \
+                  -X POST \
+                  -d @- \
+                  "$WEBHOOK_URL"
+
+          # Send to Gotify
+          # jq -n \
+          #   --rawfile msg message.txt \
+          #   --arg title "Unit Test Results: $PROJECT_NAME" \
+          #   '{title: $title, message: $msg, priority: 5}' \
+          #   | curl -X POST \
+          #       -H "Content-Type: application/json" \
+          #       -d @- \
+          #       "$GOTIFY_URL/message?token=$GOTIFY_TOKEN"          
+
+          # Send to ntfy (Markdown-compatible)
+          # curl -X POST \
+          #     -H "Title: Unit Test Results: $PROJECT_NAME" \
+          #     -H "Priority: 5" \
+          #     -H "Authorization: Bearer $NTFY_TOKEN" \
+          #     --data-binary @message.txt \
+          #     "$NTFY_URL"
