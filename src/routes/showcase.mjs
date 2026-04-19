@@ -3,7 +3,7 @@ import { ShowcaseController } from '../controllers/ShowcaseController.mjs';
 import { query, body, param, checkSchema } from "express-validator"
 import { addShowcaseValidationSchema, updateShowcaseValidationSchema, getShowcaseValidationSchema} from '../controllers/validators/showcaseSchema.mjs';
 
-const showcaseRoutes = express.Router();
+export const showcaseRoutes = express.Router();
 
 
 
@@ -216,4 +216,3 @@ showcaseRoutes.put("/update",checkSchema(updateShowcaseValidationSchema), Showca
  */
 showcaseRoutes.get("/:houseId", checkSchema(getShowcaseValidationSchema), ShowcaseController.readHouse);
 
-export default showcaseRoutes

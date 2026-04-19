@@ -2,7 +2,7 @@ import express from 'express';
 import { CompanyController } from '../controllers/CompanyController.mjs';
 import { query, body, param, checkSchema } from "express-validator"
 
-const companyRoutes = express.Router();
+export const companyRoutes = express.Router();
 
 /**
  * @swagger
@@ -31,5 +31,3 @@ const companyRoutes = express.Router();
  *                     example: 4
  */
 companyRoutes.get("/", CompanyController.viewCompanies);
-
-export default companyRoutes
