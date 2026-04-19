@@ -2,7 +2,8 @@ name: Jest Test Details
 
 on:
   push:
-    branches: [main]
+    branches:
+      - 'main'
   workflow_dispatch:
 
 jobs:
@@ -49,11 +50,17 @@ jobs:
           DETAILS=$(jq -r '
             .testResults
             | map(
-                "File: \(.name)\n"
+                "# File: \(.name)\n"
                 +
                 (
                   .assertionResults
-                  | map("  \(.status | ascii_upcase) - \(.fullName)")
+                  | map(
+                      if .status == "passed" then
+                        "  ✅ PASSED - \(.fullName)"
+                      else
+                        "  ❌ FAILED - \(.fullName)"
+                      end
+                    )
                   | join("\n")
                 )
               )
@@ -81,7 +88,11 @@ jobs:
                 | select(length > 0)
                 | "\($file) - Uncovered lines: \(join(", "))"
               )
-            | if length == 0 then "No uncovered lines" else join("\n") end
+            | if length == 0 then
+                "No uncovered lines 🎉"
+              else
+                join("\n")
+              end
           ' coverage/coverage-final.json)
 
           if [ "$EXIT_CODE" = "0" ]; then
@@ -92,47 +103,39 @@ jobs:
             ICON="❌"
           fi
 
-          {
-            echo "# Project: $PROJECT_NAME"
-            echo "## $ICON $STATUS"
-            echo "Branch: $BRANCH"
-
-            echo "**Summary**"
-            echo '```'
-            echo "$SUMMARY"
-            echo '```'
-
-            echo "**Coverage**"
-            echo '```'
-            echo "$COVERAGE"
-            echo '```'
-
-            echo "**Uncovered Lines**"
-            echo '```'
-            echo "$UNCOVERED_LINES"
-            echo '```'
-
-            echo "**Details**"
-            echo '```'
-            echo "$DETAILS"
-            echo '```'
-          } > message.txt
-
-          CONTENT=$(cat message.txt)
-          MAX=1900
-          i=0
-
-          while [ $i -lt ${#CONTENT} ]; do
-            CHUNK="${CONTENT:$i:$MAX}"
-
-            # Ensure formatting stays intact
-            CHUNK="\`\`\`\n$CHUNK\n\`\`\`"
-
-            jq -n --arg c "$CHUNK" '{content:$c}' \
+          send_msg() {
+            jq -n --arg c "$1" '{content:$c}' \
               | curl -H "Content-Type: application/json" \
                     -X POST \
                     -d @- \
                     "$WEBHOOK_URL"
+          }
 
-            i=$((i+MAX))
-          done
+          # 1) Header
+          send_msg "# Project: $PROJECT_NAME
+## $ICON $STATUS
+Branch: **$BRANCH**"
+
+          # 2) Summary
+          send_msg "**Summary**
+\`\`\`
+$SUMMARY
+\`\`\`"
+
+          # 3) Coverage
+          send_msg "**Coverage**
+\`\`\`
+$COVERAGE
+\`\`\`"
+
+          # 4) Uncovered Lines
+          send_msg "**Lines Not Covered**
+\`\`\`
+$UNCOVERED_LINES
+\`\`\`"
+
+          # 5) Full Details
+          send_msg "**Test Details**
+\`\`\`
+$DETAILS
+\`\`\`"
