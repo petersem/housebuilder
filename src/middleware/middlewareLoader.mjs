@@ -3,7 +3,9 @@ export { sanitiser } from './sanitiser.mjs';
 export { errorMiddleware } from './errorMiddleware.mjs';
 export { idempotencyMiddleware } from './idempotency.mjs';
 export { rateLimit } from 'express-rate-limit'
-import { logDanger, logWarning, logInfo } from "./utilities/logger.mjs";
+export { swaggerSpec } from './../swagger.config.mjs';
+
+import { logDanger, logWarning, logInfo } from "./../utilities/logger.mjs";
 
 // express limiter
 const allowList = ['localhost', '127.0.0.1', '::1'] // whitelist for local address calls
@@ -14,7 +16,7 @@ export const limiterOptions = {
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
     ipv6Subnet: 56, // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
     handler: (req, res, next, options) => { // custom message for limit exceeded
-        console.log(logWarning, `Rate limit execeeded for ${req.ip.replace('::ffff:','')}`);
+        console.log(logWarning, `Rate limit execeeded for ${req.ip.replace('::ffff:','')} ${req.path}`);
         return res.status(options.statusCode).send(`Rate limit execeeded for ${req.ip.replace('::ffff:','')}. ${options.message} (after ${options.windowMs/60/1000} minutes)`);
     },
     skip: (req, res) => allowList.includes(req.ip.replace('::ffff:','')) // use whitelist

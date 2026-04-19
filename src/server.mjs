@@ -1,11 +1,10 @@
 import express from 'express';
 import path from 'path';
-import { sanitiser, errorMiddleware, idempotencyMiddleware, devOptions, limiterOptions, rateLimit, corsOptions } from './middleware/middlewareLoader.mjs';
+import { sanitiser, errorMiddleware, idempotencyMiddleware, devOptions, limiterOptions, rateLimit, corsOptions, swaggerSpec } from './middleware/middlewareLoader.mjs';
 import { logDanger, logWarning, logInfo } from "./utilities/logger.mjs";
 import { homeRoute, companyRoutes, pricingRoutes, showcaseRoutes } from './routes/routesLoader.mjs';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
-import { swaggerSpec } from './swagger.config.mjs';
 import { fileURLToPath } from "url";
 import helmet from 'helmet';
 
