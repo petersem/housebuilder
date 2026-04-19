@@ -2,8 +2,7 @@ name: Jest Test Details
 
 on:
   push:
-    branches:
-      - 'main'
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -37,10 +36,6 @@ jobs:
           EXIT_CODE: ${{ steps.jest.outputs.exit_code }}
           BRANCH: ${{ github.ref_name }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-        #   GOTIFY_URL: ${{ secrets.GOTIFY_URL }}
-        #   GOTIFY_TOKEN: ${{ secrets.GOTIFY_TOKEN }}
-        #   NTFY_URL: ${{ secrets.NTFY_URL }}
-        #   NTFY_TOKEN: ${{ secrets.NTFY_TOKEN }}
         run: |
           PROJECT_NAME=$(jq -r '.name' package.json)
 
@@ -54,17 +49,11 @@ jobs:
           DETAILS=$(jq -r '
             .testResults
             | map(
-                "# File: \(.name)\n"
+                "File: \(.name)\n"
                 +
                 (
                   .assertionResults
-                  | map(
-                      if .status == "passed" then
-                        "  ✅ PASSED - \(.fullName)"
-                      else
-                        "  ❌ FAILED - \(.fullName)"
-                      end
-                    )
+                  | map("  \(.status | ascii_upcase) - \(.fullName)")
                   | join("\n")
                 )
               )
@@ -76,22 +65,6 @@ jobs:
             | "Statements: \(.statements.pct)%\nBranches: \(.branches.pct)%\nFunctions: \(.functions.pct)%\nLines: \(.lines.pct)%"
           ' coverage/coverage-summary.json)
 
-          # SAFE UNCOVERED (no em-dash, no unicode, no markdown triggers)
-          UNCOVERED=$(jq -r '
-            to_entries
-            | map(
-                .key as $file
-                | .value as $cov
-                | ($cov.lines.pct // 0) as $lines
-                | ($cov.functions.pct // 0) as $funcs
-                | ($cov.branches.pct // 0) as $branches
-                | select($lines < 100 or $funcs < 100 or $branches < 100)
-                | "\($file)\n  Lines: \($lines)%\n  Functions: \($funcs)%\n  Branches: \($branches)%"
-              )
-            | join("\n\n")
-          ' coverage/coverage-final.json)
-
-          # SAFE UNCOVERED LINES (no em-dash, no unicode, no markdown triggers)
           UNCOVERED_LINES=$(jq -r '
             to_entries
             | map(
@@ -108,11 +81,7 @@ jobs:
                 | select(length > 0)
                 | "\($file) - Uncovered lines: \(join(", "))"
               )
-            | if length == 0 then
-                "No uncovered lines 🎉"
-              else
-                join("\n")
-              end
+            | if length == 0 then "No uncovered lines" else join("\n") end
           ' coverage/coverage-final.json)
 
           if [ "$EXIT_CODE" = "0" ]; then
@@ -125,8 +94,8 @@ jobs:
 
           {
             echo "# Project: $PROJECT_NAME"
-            echo "## Unit Testing ($ICON $STATUS)"
-            echo "**Branch:** $BRANCH"
+            echo "## $ICON $STATUS"
+            echo "Branch: $BRANCH"
 
             echo "**Summary**"
             echo '```'
@@ -149,32 +118,21 @@ jobs:
             echo '```'
           } > message.txt
 
-          # Trim to 1990 chars (Discord hard limit = 2000)
-          CONTENT=$(cat message.txt | head -c 1995)
+          CONTENT=$(cat message.txt)
+          MAX=1900
+          i=0
 
-          echo "$CONTENT" > message.txt
+          while [ $i -lt ${#CONTENT} ]; do
+            CHUNK="${CONTENT:$i:$MAX}"
 
-          # Send to Discord
-          jq -n --rawfile content message.txt '{content: $content}' \
-            | curl -H "Content-Type: application/json" \
-                  -X POST \
-                  -d @- \
-                  "$WEBHOOK_URL"
+            # Ensure formatting stays intact
+            CHUNK="\`\`\`\n$CHUNK\n\`\`\`"
 
-          # Send to Gotify
-          # jq -n \
-          #   --rawfile msg message.txt \
-          #   --arg title "Unit Test Results: $PROJECT_NAME" \
-          #   '{title: $title, message: $msg, priority: 5}' \
-          #   | curl -X POST \
-          #       -H "Content-Type: application/json" \
-          #       -d @- \
-          #       "$GOTIFY_URL/message?token=$GOTIFY_TOKEN"          
+            jq -n --arg c "$CHUNK" '{content:$c}' \
+              | curl -H "Content-Type: application/json" \
+                    -X POST \
+                    -d @- \
+                    "$WEBHOOK_URL"
 
-          # Send to ntfy (Markdown-compatible)
-          # curl -X POST \
-          #     -H "Title: Unit Test Results: $PROJECT_NAME" \
-          #     -H "Priority: 5" \
-          #     -H "Authorization: Bearer $NTFY_TOKEN" \
-          #     --data-binary @message.txt \
-          #     "$NTFY_URL"
+            i=$((i+MAX))
+          done
