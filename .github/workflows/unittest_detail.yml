@@ -56,9 +56,9 @@ jobs:
                   .assertionResults
                   | map(
                       if .status == "passed" then
-                        "  ✅ PASSED - \(.fullName)"
+                        "  PASSED - \(.fullName)"
                       else
-                        "  ❌ FAILED - \(.fullName)"
+                        "  FAILED - \(.fullName)"
                       end
                     )
                   | join("\n")
@@ -88,11 +88,7 @@ jobs:
                 | select(length > 0)
                 | "\($file) - Uncovered lines: \(join(", "))"
               )
-            | if length == 0 then
-                "No uncovered lines 🎉"
-              else
-                join("\n")
-              end
+            | if length == 0 then "No uncovered lines" else join("\n") end
           ' coverage/coverage-final.json)
 
           if [ "$EXIT_CODE" = "0" ]; then
@@ -111,31 +107,57 @@ jobs:
                     "$WEBHOOK_URL"
           }
 
-          # 1) Header
-          send_msg "# Project: $PROJECT_NAME
+          # -------------------------
+          # Message 1/5 — Header
+          # -------------------------
+          send_msg "$(cat <<EOF
+**Message 1/5**
+# Project: $PROJECT_NAME
 ## $ICON $STATUS
-Branch: **$BRANCH**"
+Branch: $BRANCH
+EOF
+)"
 
-          # 2) Summary
-          send_msg "**Summary**
+          # -------------------------
+          # Message 2/5 — Summary
+          # -------------------------
+          send_msg "$(cat <<EOF
+**Message 2/5 — Summary**
 \`\`\`
 $SUMMARY
-\`\`\`"
+\`\`\`
+EOF
+)"
 
-          # 3) Coverage
-          send_msg "**Coverage**
+          # -------------------------
+          # Message 3/5 — Coverage
+          # -------------------------
+          send_msg "$(cat <<EOF
+**Message 3/5 — Coverage**
 \`\`\`
 $COVERAGE
-\`\`\`"
+\`\`\`
+EOF
+)"
 
-          # 4) Uncovered Lines
-          send_msg "**Lines Not Covered**
+          # -------------------------
+          # Message 4/5 — Uncovered Lines
+          # -------------------------
+          send_msg "$(cat <<EOF
+**Message 4/5 — Lines Not Covered**
 \`\`\`
 $UNCOVERED_LINES
-\`\`\`"
+\`\`\`
+EOF
+)"
 
-          # 5) Full Details
-          send_msg "**Test Details**
+          # -------------------------
+          # Message 5/5 — Test Details
+          # -------------------------
+          send_msg "$(cat <<EOF
+**Message 5/5 — Test Details**
 \`\`\`
 $DETAILS
-\`\`\`"
+\`\`\`
+EOF
+)"
