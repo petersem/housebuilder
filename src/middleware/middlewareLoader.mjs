@@ -4,14 +4,21 @@ export { errorMiddleware } from './errorMiddleware.mjs';
 export { idempotencyMiddleware } from './idempotency.mjs';
 export { rateLimit } from 'express-rate-limit'
 export { swaggerSpec } from './../swagger.config.mjs';
-
 import { logDanger, logWarning, logInfo } from "./../utilities/logger.mjs";
 
 // express limiter
+let period = 15 * 60 * 1000;
+let limit = 100;
+// if dev, set limits and period low
+if (process.env?.NODE_ENV === "development") {
+    period = 2 * 60 * 1000;
+    limit = 10;
+}
+
 const allowList = ['localhost', '127.0.0.1', '::1'] // whitelist for local address calls
 export const limiterOptions = {
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    limit: 10, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+    windowMs: period, // 15 minutes
+    limit: limit, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
     standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
     ipv6Subnet: 56, // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
