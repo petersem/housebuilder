@@ -105,70 +105,23 @@ jobs:
 
           # Message 1/5 – Header
           {
-            echo "Message 1/5"
             echo "# Project: $PROJECT_NAME"
             echo "Status: $ICON - $STATUS"
             echo "Branch: $BRANCH"
-          } > message.txt
-
-          jq -n --rawfile content message.txt '{content: $content}' \
-            | curl -H "Content-Type: application/json" \
-                  -X POST \
-                  -d @- \
-                  "$WEBHOOK_URL"
-
-          # Message 2/5 – Summary
-          {
-            echo "Message 2/5 - Summary"
+            echo "Summary"
             echo '```'
             echo "$SUMMARY"
             echo '```'
-          } > message.txt
-
-          jq -n --rawfile content message.txt '{content: $content}' \
-            | curl -H "Content-Type: application/json" \
-                  -X POST \
-                  -d @- \
-                  "$WEBHOOK_URL"
-
-          # # Message 3/5 – Coverage
-          # {
-          #   echo "Message 3/5 - Coverage"
-          #   echo '```'
-          #   echo "$COVERAGE"
-          #   echo '```'
-          # } > message.txt
-
-          # jq -n --rawfile content message.txt '{content: $content}' \
-          #   | curl -H "Content-Type: application/json" \
-          #         -X POST \
-          #         -d @- \
-          #         "$WEBHOOK_URL"
-
-          # # Message 4/5 – Uncovered lines
-          # {
-          #   echo "Message 4/5 - Lines Not Covered"
-          #   echo '```'
-          #   echo "$UNCOVERED_LINES"
-          #   echo '```'
-          # } > message.txt
-
-          # jq -n --rawfile content message.txt '{content: $content}' \
-          #   | curl -H "Content-Type: application/json" \
-          #         -X POST \
-          #         -d @- \
-          #         "$WEBHOOK_URL"
-
-          # Message 5/5 – Test details
-          {
-            echo "Message 5/5 - Test Details"
+            echo "Test Details"
             echo '```'
             echo "$DETAILS"
             echo '```'
-          } > message.txt
+            } > message.txt
 
           jq -n --rawfile content message.txt '{content: $content}' \
             | curl -H "Content-Type: application/json" \
                   -X POST \
                   -d @- \
                   "$WEBHOOK_URL"
+
+
