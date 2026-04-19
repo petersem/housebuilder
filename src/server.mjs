@@ -1,12 +1,11 @@
 import express from 'express';
 import path from 'path';
-import { sanitiser, errorMiddleware, idempotencyMiddleware, devOptions, limiterOptions, rateLimit, corsOptions, swaggerSpec } from './middleware/middlewareLoader.mjs';
-import { logDanger, logWarning, logInfo } from "./utilities/logger.mjs";
-import { homeRoute, companyRoutes, pricingRoutes, showcaseRoutes } from './routes/routesLoader.mjs';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
-import { fileURLToPath } from "url";
 import helmet from 'helmet';
+import { sanitiser, errorMiddleware, idempotencyMiddleware, devOptions, limiterOptions, rateLimit, corsOptions, swaggerSpec, fileURLToPath } from './middleware/middlewareLoader.mjs';
+import { homeRoute, companyRoutes, pricingRoutes, showcaseRoutes } from './routes/routesLoader.mjs';
+import { logDanger, logWarning, logInfo } from "./utilities/logger.mjs";
 
 // Load environment values to variables
 const PORT = process.env.PORT || 3000;
@@ -21,6 +20,7 @@ app.use(express.json());  // handle json payloads that come in
 app.use(express.urlencoded({ extended: true }));  // handle querystring nested data inputs
 app.use(express.static(path.join(import.meta.dirname, "public"))); // handle any static images, stylesheets, etc.
 
+
 // implement express rate limiter
 const limiter = rateLimit(limiterOptions)
 app.use(limiter) // Apply the rate limiting middleware to all requests.
@@ -28,13 +28,15 @@ console.log(logInfo, `Express-rate-limiter enabled.
                 - Requests: ${limiterOptions.limit} 
                 - Period: ${limiterOptions.windowMs / 1000 / 60} minutes`);
 
-// add cors support
-app.use(cors(corsOptions));
-console.log(logInfo, `Cors enabled, and allowing: ${corsOptions.origin[1]}`);
-
 // add helmet middleware
 app.use(helmet());
 console.log(logInfo, `Helmet enabled`);
+
+// add cors support
+app.use(cors(corsOptions));
+console.log(logInfo, `Cors enabled, and allowing: ${corsOptions.origin}`);
+
+
 
 // add swagger docs
 const __filename = fileURLToPath(import.meta.url);

@@ -4,6 +4,7 @@ export { errorMiddleware } from './errorMiddleware.mjs';
 export { idempotencyMiddleware } from './idempotency.mjs';
 export { rateLimit } from 'express-rate-limit'
 export { swaggerSpec } from './../swagger.config.mjs';
+export { fileURLToPath } from "url";
 import { logDanger, logWarning, logInfo } from "./../utilities/logger.mjs";
 
 // express limiter
