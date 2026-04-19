@@ -3,6 +3,7 @@ export { sanitiser } from './sanitiser.mjs';
 export { errorMiddleware } from './errorMiddleware.mjs';
 export { idempotencyMiddleware } from './idempotency.mjs';
 export { rateLimit } from 'express-rate-limit'
+import { logDanger, logWarning, logInfo } from "./utilities/logger.mjs";
 
 // express limiter
 const allowList = ['localhost', '127.0.0.1', '::1'] // whitelist for local address calls
