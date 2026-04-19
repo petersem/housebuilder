@@ -125,17 +125,12 @@ jobs:
 
           {
             echo "# Project: $PROJECT_NAME"
-            echo "## Automated Unit Testing"
-            echo "### $ICON $STATUS on branch **$BRANCH**."
+            echo "## Unit Testing ($ICON $STATUS)"
+            echo "**Branch:** $BRANCH"
 
             echo "**Summary**"
             echo '```'
             echo "$SUMMARY"
-            echo '```'
-
-            echo "**Test Details**"
-            echo '```'
-            echo "$DETAILS"
             echo '```'
 
             echo "**Coverage**"
@@ -143,16 +138,21 @@ jobs:
             echo "$COVERAGE"
             echo '```'
 
-            # echo "**Uncovered**"
-            # echo '```'
-            # echo "$UNCOVERED"
-            # echo '```'
-
-            echo "**Lines Not Covered**"
+            echo "**Uncovered Lines**"
             echo '```'
             echo "$UNCOVERED_LINES"
             echo '```'
+
+            echo "**Details**"
+            echo '```'
+            echo "$DETAILS"
+            echo '```'
           } > message.txt
+
+          # Trim to 1990 chars (Discord hard limit = 2000)
+          CONTENT=$(cat message.txt | head -c 1995)
+
+          echo "$CONTENT" > message.txt
 
           # Send to Discord
           jq -n --rawfile content message.txt '{content: $content}' \
