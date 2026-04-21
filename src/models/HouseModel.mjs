@@ -29,7 +29,7 @@ export default class HouseModel extends DataModel {
 
 }
 
-// Load static sample data. In the future we will use a database instead. bull is first param for new house records
+// Load static sample data. In the future we will use a database instead. 
 HouseModel.setDataSource([
     new HouseModel(null, "Matt's House","DreamBuild Homes",5,2,1,300,1,["Built-in Wardrobe","Double Glazing Windows","Solar Panel Installation (Standard)"]),
     new HouseModel(null, "Joe's House","DreamBuild Homes",5,2,1,400,1,["Built-in Wardrobe","Double Glazing Windows"]),
