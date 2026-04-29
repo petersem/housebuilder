@@ -5,7 +5,7 @@ import { addShowcaseValidationSchema, updateShowcaseValidationSchema, getShowcas
 
 export const showcaseRoutes = express.Router();
 
-
+showcaseRoutes.get("/render", ShowcaseController.renderShowcase);
 
 /**
  * @swagger
@@ -17,7 +17,7 @@ export const showcaseRoutes = express.Router();
  *       200:
  *         description: A list of houses
  */
-showcaseRoutes.get("/list", ShowcaseController.viewShowcase);
+showcaseRoutes.get("/list", ShowcaseController.listShowcase);
 
 /**
  * @swagger

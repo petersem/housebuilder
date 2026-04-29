@@ -13,10 +13,9 @@ body {
 
 body:has(#special-element) {
   background-image: url("/images/hbd.png");
-  background-size: cover;        /* scales image to fill window */
-  background-repeat: no-repeat;  /* prevents tiling */
-  background-position: center;   /* keeps it centered */
-  background-attachment: fixed; 
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 section {

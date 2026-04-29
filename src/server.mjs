@@ -4,7 +4,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import helmet from 'helmet';
 import { sanitiser, errorMiddleware, idempotencyMiddleware, devOptions, limiterOptions, rateLimit, corsOptions, swaggerSpec, fileURLToPath } from './middleware/middlewareLoader.mjs';
-import { homeRoute, companyRoutes, pricingRoutes, showcaseRoutes } from './routes/routesLoader.mjs';
+import {homeRoute, companyRoutes, pricingRoutes, showcaseRoutes } from './routes/routesLoader.mjs';
 import { logDanger, logWarning, logInfo } from "./utilities/logger.mjs";
 
 // Load environment values to variables
@@ -29,7 +29,7 @@ console.log(logInfo, `Express-rate-limiter enabled.
                 - Period: ${limiterOptions.windowMs / 1000 / 60} minutes`);
 
 // add helmet middleware
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false}));
 console.log(logInfo, `Helmet enabled`);
 
 // add cors support

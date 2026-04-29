@@ -34,7 +34,7 @@ export const limiterOptions = {
 // cors
 const PORT = process.env.PORT || 3000;
 export const corsOptions = {
-  origin: [`http://127.0.0.1:${PORT}`, `http://localhost:${PORT}`]
+  origin: [`http://localhost:${PORT}`]
 }
 
 // idempotency options

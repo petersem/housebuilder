@@ -14,7 +14,7 @@ export default class ShowcaseModel extends DataModel {
     totalCost;
     extras;
 
-    constructor(id, title, companyName, rooms, bathrooms, garages, floorAreaSqm, storyCount, totalCost, extras) {
+    constructor(id, title, companyName, rooms, bathrooms, garages, floorAreaSqm, storyCount, totalCost, extras=[]) {
         super();
         this.id = id;
         this.title = title;
@@ -30,14 +30,14 @@ export default class ShowcaseModel extends DataModel {
 }
 
 // Load static sample data. In the future we will use a database instead. null is first param for new house records
-// HouseModel.setDataSource([
-//     new HouseModel(null, "Matt's House","DreamBuild Homes",5,2,1,300,1,["Built-in Wardrobe","Double Glazing Windows","Solar Panel Installation (Standard)"]),
-//     new HouseModel(null, "Joe's House","DreamBuild Homes",5,2,1,400,1,["Built-in Wardrobe","Double Glazing Windows"]),
-//     new HouseModel(null, "Lances's House","Value Builders",5,2,1,300,1,["Built-in Wardrobe"]),
-//     new HouseModel(null, "Hannah's House","Premium Living Co.",7,2,2,800,2,["Built-in Wardrobe","Solar Panel Installation (Standard)"]),
-//     new HouseModel(null, "Nicola's House","Value Builders",8,3,2,600,1,null),
-//     new HouseModel(null, "Dan's House","Premium Living Co.",5,2,1,300,1,["Built-in Wardrobe"]),
-//     new HouseModel(null, "Laura's House","DreamBuild Homes",5,2,1,400,1,["Built-in Wardrobe","Double Glazing Windows"])
-// ]);
+ShowcaseModel.setDataSource([
+    new ShowcaseModel("46ac80a9-3ea6-4481-b903-8b304764bc15", "Matt's Super-Strange, Subterranean Abode of Dysfunction","Hannah's Horrible Homes",27,207,69,300000,-27,98800500,["Berylium Sphere","Anti-gravity generator","Toe clipping trophy room","Satanic alter"]),
+    new ShowcaseModel("46ac8019-3ea6-4481-b903-8b304764bc15", "Joe's House","DreamBuild Homes",5,1,1,400,1,500550,["Built-in Wardrobe","Double Glazing Windows"]),
+    new ShowcaseModel("46ac80a9-3ea6-4482-b903-8b304764bc15", "Hannah's House of Horrors","Surea Constructions",7,2,2,800,2,1200500,["Child-size freezer","Industrial mincer","Chunda chamber","Salami fruit stuffing room"]),
+    new ShowcaseModel("46ac81a9-3ea6-4481-b903-8b304764bc15", "Lances's House","Value Builders",15,2,1,300,1,1400500,["War room"]),
+    new ShowcaseModel("46ac80a9-3ea6-4481-b903-8b304764bc45", "Nicola's House","Value Builders",8,3,2,600,1,700500),
+    new ShowcaseModel("46ac80a9-3ea6-4481-b963-8b304764bc15", "Dan's House","Premium Living Co.",9,2,2,300,1,8000500,["Built-in Wardrobe"]),
+    new ShowcaseModel("46ac80a9-3ea6-4488-b903-8b304764bc15", "Laura's House","DreamBuild Homes",5,1,1,600,1,1450500,["Built-in Wardrobe","Double Glazing Windows"])
+]);
 
-ShowcaseModel.setDataSource([]);
+// ShowcaseModel.setDataSource([]);

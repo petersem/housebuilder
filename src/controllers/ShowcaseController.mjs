@@ -3,6 +3,7 @@ import { matchedData, validationResult } from "express-validator"
 import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
 import PricingModel from '../models/PricingModel.mjs';
 import CompanyModel from '../models/CompanyModel.mjs';
+import pkg from '../../package.json' with { type: 'json' };
 
 /**
  * Manages all interractions for showcase houses
@@ -79,18 +80,29 @@ export class ShowcaseController {
      * @param {Express.Reponse} res The express response object
      * @returns {Array} An array of house objects
      */
-    static viewShowcase(req, res) {
+    static listShowcase(req, res) {
         let houses = ShowcaseModel.select();
 
         res.status(200);
         res.setHeader('Content-Type', 'application/json');
         res.json({ message: "records retrieved", data: houses });
+    }
 
-        // res.status(200);
-        // res.render('showcaselist', {
-        //     title: "Showcase",
-        //     data: houses
-        // });
+        /**
+     * ### viewShowcase
+     * Retrieves all showcase houses
+     * @param {Express.Request} req The express request object
+     * @param {Express.Reponse} res The express response object
+     * @returns {Array} An array of house objects
+     */
+    static renderShowcase(req, res) {
+        let houses = ShowcaseModel.select();
+
+        res.status(200);
+        res.render('showcaselist.ejs', {
+            title: "Showcase",
+            data: houses, ver: pkg.version 
+        });
     }
 
     /**
@@ -125,13 +137,6 @@ export class ShowcaseController {
             res.status(200);
             res.setHeader('Content-Type', 'application/json');
             res.json({ message: "record retrieved", data: house });
-
-            // Render details page
-            // res.status(200);
-            // res.render('housedetails', {
-            // title: "House Details",
-            // data: [house, companies, pricing]
-            // });
         }
     }
 

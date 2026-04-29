@@ -1,16 +1,35 @@
-    <header>
-        <logo>
-            <a href="#"><img src="/images/yoda.gif" alt="Logo"></a>
-        </logo>
-        
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/api-docs">Swagger</a></li>
-                <li><a href="https://petersem.github.io/housebuilder/">Doco</a></li>
-                <li><a href="/showcase/list">Showcase</a></li>
-                <!-- <li><a href="/err">ErrorTest</a></li> -->
-            </ul>
-        </nav>
-        <ver>Version: <%= ver %></ver>
-    </header>
+<header>
+    <script src="/scripts/menu.js" defer></script>
+    <!-- HAMBURGER (mobile only) -->
+    <button id="hamburger" aria-label="Menu" class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <span class="app-title">House Builder</span>
+
+    <nav id="main-nav">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/showcase/render">Showcase</a></li>
+
+            <li class="has-sub">
+
+                <!-- DESKTOP LINK -->
+                <a href="#" class="about-link">About</a>
+
+                <!-- MOBILE TOGGLE BUTTON -->
+                <button class="sub-toggle">About ▸</button>
+                <!-- SUBMENU -->
+                <ul class="sub-menu">
+                    <li><a href="/api-docs">Swagger</a></li>
+                    <li><a href="https://petersem.github.io/housebuilder/">Doco</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <ver>Version: <%= ver %></ver>
+
+</header>
