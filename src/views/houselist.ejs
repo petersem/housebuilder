@@ -6,7 +6,7 @@
         <%= title %>
     </title>
     <%- include("partials/head.ejs") %>
-    <script src="/script/house.js"></script>
+        <script src="/scripts/showcase.js" defer></script>
 </head>
 
 <body>
@@ -15,52 +15,63 @@
             <h1>
                 <%= title %>
             </h1>
-            <ul id="houses">
-                <span class='listHeader'>House List</span>
-                
+
+                <input id="searchBox" placeholder="Search by house title..." value="<%=searchTerm%>"
+                    onkeyup="dSearch(this.value)" />
+
+                <select id="sortPrice" onchange="sortByPrice()">
+                    <option value="">Sort by Price</option>
+                    <option value="asc">Price: Low to High</option>
+                    <option value="desc">Price: High to Low</option>
+                </select>
+
+            <section>
+                   
                 <% data.forEach((house)=> { %>
-                    <li><div>
+                    <article>
                         <% let money=new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3
                             }).format(house.totalCost); %>
                             <span class="money">$<%= money %></span>
                             <span class="title">
                                 <%= house.title %>
-                            </span> -
+                            </span>
                             <span class="company">
                                 <%= house.companyName %>
-                            </span> -
-                            <a href="\house\<%= house.id %>"><i class="fa-regular fa-pen-to-square" title="Edit"></i></a>
-                            <i class="fa-solid fa-upload" title="Publish to Showcase" onclick="addShowcase('<%= house %>');"></i>
-                            <i class="fa-solid fa-trash-can" title="Delete" onclick="houseDelete('<%= house.id %>');"></i>
-                            <div>
+                            </span>
+
+                            <p class="specs">
                                 <span>
-                                    <%= house.rooms %> rooms
-                                </span> -
-                                <span>
-                                    <%= house.bathrooms %> bathrooms
-                                </span> -
-                                <span>
-                                    <%= house.garages %> garage
-                                </span> -
-                                <span>
-                                    <%= house.floorAreaSqm %> sqm
-                                </span> -
-                                <span>
-                                    <%= house.storyCount %> level
+                                    <i class="fa-brands fa-unity" title="Stories"></i>
+                                    <%= house.storyCount %>
                                 </span>
-                            </div>
-                            <% house.extras.forEach(extra=> { %>
-                                <div id="extras">
-                                    <span>
+                                <span>
+                                    <i class="fa-solid fa-users-rectangle" title="Rooms"></i>
+                                    <%= house.rooms %> 
+                                </span>
+                                <span>
+                                    <i class="fa-solid fa-toilet" title="Bathrooms"></i>
+                                    <%= house.bathrooms %>
+                                </span>
+                                <span>
+                                    <i class="fa-solid fa-square-parking" title="Garages"></i>
+                                    <%= house.garages %>
+                                </span>
+                                <span>
+                                    <i class="fa-solid fa-ruler-horizontal" title="Area"></i>
+                                    <%= house.floorAreaSqm %> sqm
+                                </span>
+                            </p>
+                            <div class="extras">
+                                <% house.extras.forEach(extra=> { %>
+                                    <div>
                                         <%= extra %>
-                                    </span>
-                                </div>
-                                <% }); %>
-                    </li>
-                    </div>
+                                    </div>
+                                    <% }) %>
+                            </div>
+                            <a href="#" class="delete-btn" data-id="<%= house.id %>||<%= house.title %>">Delete</a>
+                    </article>
                     <% }); %>
-            </ul>
-        </section>
+            </section>
 </body>
 
 </html>

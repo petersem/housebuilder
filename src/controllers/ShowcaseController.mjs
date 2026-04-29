@@ -41,6 +41,51 @@ export class ShowcaseController {
     }
 
     /**
+     * sortBy
+     * @param {Array} arr 
+     * @param {string} prop 
+     * @param {string} direction 
+     * @returns {Array} sorted array by the given property and direction 
+     */
+    static sortBy(arr, prop, direction = "asc") {
+        return arr.sort((a, b) => {
+            const x = a[prop];
+            const y = b[prop];
+
+            if (typeof x === "number" && typeof y === "number") {
+                return direction === "asc" ? x - y : y - x;
+            }
+
+            return direction === "asc"
+                ? String(x).localeCompare(String(y))
+                : String(y).localeCompare(String(x));
+        });
+    }
+
+    /**
+     * getSortValues
+     * @param {Array} houses 
+     * @returns {Array} data for sort array
+     */
+    static getSortValues(houses) {
+        const sortArray = [];
+        sortArray.push({ value: "unsorted", label: "No Sort" });
+        if (houses.length !== 0) {
+            const props = Object.keys(houses[0]);
+
+            for (const k of props) {
+                if (k !== "id" && k !== "extras") {
+                    const label = k.charAt(0).toUpperCase() + k.slice(1);
+                    sortArray.push({ value: `${k}|asc`, label: `${label}: Asc` });
+                    sortArray.push({ value: `${k}|desc`, label: `${label}: Desc` });
+                }
+            }
+        }   
+
+        return sortArray;
+    }
+
+    /**
      * 
      * @param {house} house a showcase house
      * @returns {Number} The total price for the house
@@ -88,20 +133,46 @@ export class ShowcaseController {
         res.json({ message: "records retrieved", data: houses });
     }
 
-        /**
-     * ### viewShowcase
-     * Retrieves all showcase houses
-     * @param {Express.Request} req The express request object
-     * @param {Express.Reponse} res The express response object
-     * @returns {Array} An array of house objects
-     */
+    /**
+ * ### viewShowcase
+ * Retrieves all showcase houses
+ * @param {Express.Request} req The express request object
+ * @param {Express.Reponse} res The express response object
+ * @returns {Array} An array of house objects
+ */
     static renderShowcase(req, res) {
-        let houses = ShowcaseModel.select();
+        let houses;
 
+        // manage title searches
+        let searchTerm = null
+        if (req.params.titleSearch?.length > 0) {
+            houses = ShowcaseModel.select(house => house.title.toLowerCase().includes(req.params.titleSearch.toLowerCase()));
+            searchTerm = req.params.titleSearch;
+        } else {
+            houses = ShowcaseModel.select();
+            searchTerm = "";
+        }
+
+        let sortTerm = "unsorted"
+        if (req.params.sortTerm?.length > 0) {
+            sortTerm = req.params.sortTerm;
+            const sortParams = sortTerm.split("|");
+            // Sort
+            houses = ShowcaseController.sortBy(houses, sortParams[0], sortParams[1]);
+
+        } else {
+            sortTerm = "unsorted";
+        }
+
+        // open showcase page with data
         res.status(200);
         res.render('showcaselist.ejs', {
             title: "Showcase",
-            data: houses, ver: pkg.version 
+            data: houses,
+            ver: pkg.version,
+            searchTerm: searchTerm,
+            sortTerm: sortTerm,
+            sortOptions: ShowcaseController.getSortValues(houses)
         });
     }
 

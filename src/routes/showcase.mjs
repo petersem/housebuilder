@@ -7,6 +7,13 @@ export const showcaseRoutes = express.Router();
 
 showcaseRoutes.get("/render", ShowcaseController.renderShowcase);
 
+showcaseRoutes.get("/render/:titleSearch", ShowcaseController.renderShowcase);
+
+showcaseRoutes.get("/render/unfiltered/:sortTerm", ShowcaseController.renderShowcase);
+
+showcaseRoutes.get("/render/:titleSearch/:sortTerm", ShowcaseController.renderShowcase);
+
+
 /**
  * @swagger
  * /showcase/list:

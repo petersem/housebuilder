@@ -15,9 +15,4 @@ if (subToggle && subMenu) {
     });
 }
 
-document.addEventListener("click", function (e) {
-    if (e.target.matches(".delete-btn")) {
-        const id = e.target.dataset.id;
-        showcaseDelete(id);
-    }
-});
+

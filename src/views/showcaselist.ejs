@@ -6,7 +6,7 @@
         <%= title %>
     </title>
     <%- include("partials/head.ejs") %>
-        <script src="/scripts/showcase.js"></script>
+        <script src="/scripts/showcase.js" defer></script>
 </head>
 
 <body>
@@ -15,18 +15,21 @@
             <h1>
                 <%= title %>
             </h1>
-House name search: <input 
-  type="text" 
-  id="searchBox" 
-  placeholder="Search by house title..."
-  onkeyup="dSearch(this.value)"
-/>
-            <select id="sortPrice" onchange="sortByPrice()">
-  <option value="">Sort by Price</option>
-  <option value="asc">Price: Low to High</option>
-  <option value="desc">Price: High to Low</option>
-</select>
+
+                <input id="searchBox" placeholder="Search by house title..." value="<%=searchTerm%>"
+                    onkeyup="search()" />
+
+                
+                <select id="sort" onchange="sort()" data-id="<%=sortTerm%>">
+                    <% sortOptions.forEach(option=> { %>
+                    <option value="<%= option.value %>">
+                        <%= option.label %>
+                    </option>
+                    <% }) %>
+                </select>
+
             <section>
+                   
                 <% data.forEach((house)=> { %>
                     <article>
                         <% let money=new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3
@@ -38,24 +41,28 @@ House name search: <input
                             <span class="company">
                                 <%= house.companyName %>
                             </span>
+
                             <p class="specs">
                                 <span>
-                                    Rooms: <%= house.rooms %>, 
-                                </span> 
-                                <span>
-                                    Stories: <%= house.storyCount %> 
+                                    <i class="fa-brands fa-unity" title="Stories"></i>
+                                    <%= house.storyCount %>
                                 </span>
-                            </p>
-                            <p class="specs">
                                 <span>
-                                    <i class="fa-solid fa-toilet" title="Bathrooms"></i> <%= house.bathrooms %> 
-                                </span> 
+                                    <i class="fa-solid fa-users-rectangle" title="Rooms"></i>
+                                    <%= house.rooms %> 
+                                </span>
                                 <span>
-                                    <i class="fa-solid fa-square-parking" title="Garages"></i> <%= house.garages %> 
-                                </span> 
+                                    <i class="fa-solid fa-toilet" title="Bathrooms"></i>
+                                    <%= house.bathrooms %>
+                                </span>
                                 <span>
-                                    <i class="fa-solid fa-ruler-horizontal" title="Area"></i> <%= house.floorAreaSqm %>sqm 
-                                </span> 
+                                    <i class="fa-solid fa-square-parking" title="Garages"></i>
+                                    <%= house.garages %>
+                                </span>
+                                <span>
+                                    <i class="fa-solid fa-ruler-horizontal" title="Area"></i>
+                                    <%= house.floorAreaSqm %> sqm
+                                </span>
                             </p>
                             <div class="extras">
                                 <% house.extras.forEach(extra=> { %>
