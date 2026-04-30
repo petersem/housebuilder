@@ -32,7 +32,7 @@ section {
 #sort {
   display: inline-block;      /* sit side-by-side when possible */
   vertical-align: top;
-  width: 330px;
+  width: 180px;
   margin: 0 0.5rem 1rem;      /* spacing */
   border-radius: 10px;
   padding: 10px;
@@ -136,7 +136,7 @@ nav a:hover {
 }
 
 /* Desktop hover dropdown */
-@media (min-width: 701px) {
+@media (min-width: 601px) {
   .has-sub:hover .sub-menu {
     display: block;
     position: absolute;
@@ -155,7 +155,7 @@ nav a:hover {
    Mobile
 ------------------------------ */
 
-@media (max-width: 700px) {
+@media (max-width: 600px) {
   body:has(#special-element) {
     background-image: url("/images/hbm.png");
     background-size: cover;
@@ -325,7 +325,8 @@ article {
 }
 
 article {
-  width: 330px;
+  width: 100%;
+  max-width: 320px;
 }
 
 /* ------------------------------
