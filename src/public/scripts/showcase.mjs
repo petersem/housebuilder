@@ -10,11 +10,9 @@ function showcaseDelete(id) {
       body: JSON.stringify({
         "houseId": params[0]
       })
-    });
-    window.location.replace("/showcase/render");
-  } else {
-    log.innerText = "Glad you're staying!";
-  }
+    })
+    .then(response => window.location.reload(true));
+  } 
 
 }
 
