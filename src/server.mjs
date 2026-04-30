@@ -29,8 +29,8 @@ console.log(logInfo, `Express-rate-limiter enabled.
                 - Period: ${limiterOptions.windowMs / 1000 / 60} minutes`);
 
 // add helmet middleware
-app.use(helmet({ contentSecurityPolicy: false}));
-console.log(logInfo, `Helmet enabled`);
+// app.use(helmet({ contentSecurityPolicy: false}));
+// console.log(logInfo, `Helmet enabled`);
 
 // add cors support
 app.use(cors(corsOptions));

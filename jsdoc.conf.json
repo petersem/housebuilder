@@ -7,7 +7,7 @@
   "plugins": ["plugins/markdown"],
   "opts": {
     "encoding": "utf8",
-    "destination": "./docs",
+    "destination": "./src/public/docs",
     "recurse": true,
     "verbose": true
   }
