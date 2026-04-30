@@ -5,6 +5,7 @@
     "excludePattern": "(^|\\/|\\\\)_"
   },
   "plugins": ["plugins/markdown"],
+  "recurseDepth": 10,
   "opts": {
     "encoding": "utf8",
     "destination": "./src/public/docs",

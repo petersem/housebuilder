@@ -17,7 +17,7 @@ const options = {
       version: pkg.version,
       description: "API documentation for my HouseBuilder Node app"
     },
-    servers: [{url: `http://localhost:${PORT}`}]
+    servers: [{url: '/'},{url: `http://localhost:${PORT}`}]
   },
   apis: [path.join(__dirname, "routes/*.mjs")]
 };

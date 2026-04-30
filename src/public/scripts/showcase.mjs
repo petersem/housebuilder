@@ -29,7 +29,12 @@ function debounce(func, delay) {
     };
 }
 
-// Function to be debounced
+/**
+ * The global function for search and sorts that directs to the appropriate route. 
+ * @param {String} query The title search text to search for. Can be empty or undefined if only sorting is required.
+ * @param {String} sort the sort property and asc/dec delimetered by '|'
+ * @returns {void}
+ */
 function searchTitle(query, sort = "unsorted") {
     console.log('Searching for:', query);
     console.log('Sort by:', sort);
@@ -45,15 +50,26 @@ function searchTitle(query, sort = "unsorted") {
     }
 }
 
-// Create a debounced version of the search function
+/**
+ * Debounced version of the search function to prevent excessive calls while typing. Adjust the delay as needed.
+ * @param {function} searchTitle The function to be debounced
+ * @param {Number} The debounce delay in milliseconds
+ * @returns {void}
+*/
 const dSearch = debounce(searchTitle, 1000);
 
+/**
+ * Grouped title search and sort function to direct to the appropriate route based on the parameters provided. Uses debounce, so called when titleSearch changes
+ */
 function search() {
   const searchValue = document.getElementById("searchBox").value;
   const sortTerm = document.getElementById("sort").value;
   dSearch(searchValue, sortTerm);
 }
 
+/**
+ * Grouped title search and sort function to direct to the appropriate route based on the parameters provided. No debounce, so called when sort criteria changes
+ */
 function sort() {
   const searchValue = document.getElementById("searchBox").value;
   const sortTerm = document.getElementById("sort").value;
@@ -65,6 +81,7 @@ const searchBox = document.getElementById('searchBox')
 searchBox.focus();
 searchBox.selectionStart = searchBox.selectionEnd = searchBox.value.length;
 
+// add listeners for delete buttons using the house ID from the data-id attribute
 document.addEventListener("click", function (e) {
     if (e.target.matches(".delete-btn")) {
         const id = e.target.dataset.id;
@@ -72,6 +89,7 @@ document.addEventListener("click", function (e) {
     }
 });
 
+// set the sort value, based upon selected previous value before refresh
 const sortOptions =  document.getElementById('sort');
 sortOptions.value=sortOptions.dataset.id;
 
