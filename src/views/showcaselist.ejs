@@ -16,20 +16,19 @@
                 <%= title %>
             </h1>
 
-                <input id="searchBox" placeholder="Search by house title..." value="<%=searchTerm%>"
-                    onkeyup="search()" />
+            <input id="searchBox" placeholder="Search by house title..." value="<%=searchTerm%>" onkeyup="search()" />
 
-                
-                <select id="sort" onchange="sort()" data-id="<%=sortTerm%>">
-                    <% sortOptions.forEach(option=> { %>
+
+            <select id="sort" onchange="sort()" data-id="<%=sortTerm%>">
+                <% sortOptions.forEach(option=> { %>
                     <option value="<%= option.value %>">
                         <%= option.label %>
                     </option>
                     <% }) %>
-                </select>
+            </select>
 
             <section>
-                   
+
                 <% data.forEach((house)=> { %>
                     <article>
                         <% let money=new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3
@@ -49,7 +48,7 @@
                                 </span>
                                 <span>
                                     <i class="fa-solid fa-users-rectangle" title="Rooms"></i>
-                                    <%= house.rooms %> 
+                                    <%= house.rooms %>
                                 </span>
                                 <span>
                                     <i class="fa-solid fa-toilet" title="Bathrooms"></i>
@@ -71,10 +70,15 @@
                                     </div>
                                     <% }) %>
                             </div>
-                            <a href="#" class="delete-btn" data-id="<%= house.id %>||<%= house.title %>">Delete</a>
+                            <div class="card-actions">
+                                <a href="#" class="delete-btn" data-id="<%= house.id %>||<%= house.title %>">Delete</a>
+                            </div>
                     </article>
                     <% }); %>
             </section>
+            <footer>
+                <span>© 2026 Uptown I.T. All rights reserved.</span> <span>Version: <%= ver %></span>
+            </footer>
 </body>
 
 </html>

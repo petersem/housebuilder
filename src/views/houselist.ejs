@@ -6,7 +6,7 @@
         <%= title %>
     </title>
     <%- include("partials/head.ejs") %>
-        <script src="/scripts/showcase.js" defer></script>
+        <!-- <script src="/scripts/showcase.mjs" defer></script> -->
 </head>
 
 <body>
@@ -16,62 +16,158 @@
                 <%= title %>
             </h1>
 
-                <input id="searchBox" placeholder="Search by house title..." value="<%=searchTerm%>"
-                    onkeyup="dSearch(this.value)" />
+            <input id="searchBox" placeholder="Search by house title..." value="" onkeyup="search()" />
 
-                <select id="sortPrice" onchange="sortByPrice()">
-                    <option value="">Sort by Price</option>
-                    <option value="asc">Price: Low to High</option>
-                    <option value="desc">Price: High to Low</option>
-                </select>
 
-            <section>
-                   
-                <% data.forEach((house)=> { %>
-                    <article>
-                        <% let money=new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3
-                            }).format(house.totalCost); %>
-                            <span class="money">$<%= money %></span>
-                            <span class="title">
-                                <%= house.title %>
-                            </span>
-                            <span class="company">
-                                <%= house.companyName %>
-                            </span>
+            <select id="sort" onchange="sort()" data-id=""">
+                    <option value=" unsorted">
+                No sort
+                </option>
+            </select>
 
-                            <p class="specs">
-                                <span>
-                                    <i class="fa-brands fa-unity" title="Stories"></i>
-                                    <%= house.storyCount %>
-                                </span>
-                                <span>
-                                    <i class="fa-solid fa-users-rectangle" title="Rooms"></i>
-                                    <%= house.rooms %> 
-                                </span>
-                                <span>
-                                    <i class="fa-solid fa-toilet" title="Bathrooms"></i>
-                                    <%= house.bathrooms %>
-                                </span>
-                                <span>
-                                    <i class="fa-solid fa-square-parking" title="Garages"></i>
-                                    <%= house.garages %>
-                                </span>
-                                <span>
-                                    <i class="fa-solid fa-ruler-horizontal" title="Area"></i>
-                                    <%= house.floorAreaSqm %> sqm
-                                </span>
-                            </p>
-                            <div class="extras">
-                                <% house.extras.forEach(extra=> { %>
-                                    <div>
-                                        <%= extra %>
-                                    </div>
-                                    <% }) %>
-                            </div>
-                            <a href="#" class="delete-btn" data-id="<%= house.id %>||<%= house.title %>">Delete</a>
-                    </article>
-                    <% }); %>
+            <a id="newBtn" href="/houses/new">New House Build</a>
+
+            <section id="house-list">
+                <article>
+                    <span class="money">$876,543</span>
+                    <span class="title">
+                        A house
+                    </span>
+                    <span class="company">
+                        ABC Co.
+                    </span>
+
+                    <p class="specs">
+                        <span>
+                            <i class="fa-brands fa-unity" title="Stories"></i>
+                            1
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-users-rectangle" title="Rooms"></i>
+                            12
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-toilet" title="Bathrooms"></i>
+                            1
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-square-parking" title="Garages"></i>
+                            2
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-ruler-horizontal" title="Area"></i>
+                            300 sqm
+                        </span>
+                    </p>
+                    <div class="extras">
+                        <div>
+                            xyz
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="delete-btn">Delete</a>
+                        <a href="#" class="edit-btn">Edit</a>
+                        <a href="#" class="showcase-btn">Showcase</a>
+                    </div>
+                </article>
+
+                <article>
+                    <span class="money">$876,543</span>
+                    <span class="title">
+                        B house
+                    </span>
+                    <span class="company">
+                        ABC Co.
+                    </span>
+
+                    <p class="specs">
+                        <span>
+                            <i class="fa-brands fa-unity" title="Stories"></i>
+                            1
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-users-rectangle" title="Rooms"></i>
+                            12
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-toilet" title="Bathrooms"></i>
+                            1
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-square-parking" title="Garages"></i>
+                            2
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-ruler-horizontal" title="Area"></i>
+                            300 sqm
+                        </span>
+                    </p>
+                    <div class="extras">
+                        <div>
+                            xyz
+                        </div>
+                        <div>
+                            xyz
+                        </div>
+                        <div>
+                            xyz
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="showcase-btn">Showcase</a>
+                        <a href="#" class="edit-btn">Edit</a>
+                        <a href="#" class="delete-btn">Delete</a>
+                    </div>
+                </article>
+
+                <article>
+                    <span class="money">$876,543</span>
+                    <span class="title">
+                        C house
+                    </span>
+                    <span class="company">
+                        ABC Co.
+                    </span>
+
+                    <p class="specs">
+                        <span>
+                            <i class="fa-brands fa-unity" title="Stories"></i>
+                            1
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-users-rectangle" title="Rooms"></i>
+                            12
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-toilet" title="Bathrooms"></i>
+                            1
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-square-parking" title="Garages"></i>
+                            2
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-ruler-horizontal" title="Area"></i>
+                            300 sqm
+                        </span>
+                    </p>
+                    <div class="extras">
+                        <div>
+                            xyz
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="showcase-btn">Showcase</a>
+                        <a href="#" class="edit-btn">Edit</a>
+                        <a href="#" class="delete-btn">Delete</a>
+                    </div>
+                </article>
+
+
             </section>
+            <footer>
+                <span>© 2026 Uptown I.T. All rights reserved.</span> <span>Version: <%= ver %></span>
+            </footer>
 </body>
 
 </html>

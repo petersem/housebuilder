@@ -80,7 +80,7 @@ export class ShowcaseController {
                     sortArray.push({ value: `${k}|desc`, label: `${label}: Desc` });
                 }
             }
-        }   
+        }
 
         return sortArray;
     }
@@ -134,12 +134,12 @@ export class ShowcaseController {
     }
 
     /**
- * ### viewShowcase
- * Retrieves all showcase houses
- * @param {Express.Request} req The express request object
- * @param {Express.Reponse} res The express response object
- * @returns {Array} An array of house objects
- */
+     * ### viewShowcase
+     * Retrieves all showcase houses
+     * @param {Express.Request} req The express request object
+     * @param {Express.Reponse} res The express response object
+     * @returns {Array} An array of house objects
+     */
     static renderShowcase(req, res) {
         let houses;
 

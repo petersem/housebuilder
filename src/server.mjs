@@ -4,7 +4,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import helmet from 'helmet';
 import { sanitiser, errorMiddleware, idempotencyMiddleware, devOptions, limiterOptions, rateLimit, corsOptions, swaggerSpec, fileURLToPath } from './middleware/middlewareLoader.mjs';
-import {homeRoute, companyRoutes, pricingRoutes, showcaseRoutes } from './routes/routesLoader.mjs';
+import {homeRoute, companyRoutes, pricingRoutes, showcaseRoutes, houseBuilderRoutes} from './routes/routesLoader.mjs';
 import { logDanger, logWarning, logInfo } from "./utilities/logger.mjs";
 
 // Load environment values to variables
@@ -55,6 +55,7 @@ app.use("/", homeRoute);
 app.use("/showcase", showcaseRoutes);
 app.use("/pricing", pricingRoutes);
 app.use("/companies", companyRoutes);
+app.use("/housebuilder", houseBuilderRoutes);
 app.use("/err", (req, res) => {
     throw new Error('Ooff! What an error!') // just here for testing errorMiddleware
 });

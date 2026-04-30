@@ -30,6 +30,7 @@ export default class ShowcaseModel extends DataModel {
 }
 
 // Load static sample data. In the future we will use a database instead. null is first param for new house records
+
 ShowcaseModel.setDataSource([
     new ShowcaseModel("46ac80a9-3ea6-4481-b903-8b304764bc15", "Matt's Super-Strange Abode of Dysfunction","Hannah's Horrible Homes",27,207,69,300000,27,98800500,["Berylium Sphere","Anti-gravity generator","Trophy shelves","Sacrifical alter"]),
     new ShowcaseModel("46ac8019-3ea6-4481-b903-8b304764bc15", "Joe's House","DreamBuild Homes",5,1,1,400,1,500550,["Built-in Wardrobe","Double Glazing Windows"]),

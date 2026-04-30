@@ -1,14 +1,50 @@
 /* ------------------------------
+   THEME VARIABLES (added)
+------------------------------ */
+
+:root {
+  --bg: #f5f5f5;
+  --text: #222;
+  --card-bg: #ffffff;
+  --header-bg: #2e2e2e;
+  --submenu-bg: #3a3a3a;
+
+  --btn-showcase: #a190fd;
+  --btn-edit: #8be0a4;
+  --btn-delete: #EF8354;
+  --btn-new: #c2c2c2;
+}
+
+.dark {
+  --bg: #1a1a1a;
+  --text: #e6e6e6;
+  --card-bg: #2a2a2a;
+  --header-bg: #111;
+  --submenu-bg: #222;
+
+  --btn-showcase: #7d6dfd;
+  --btn-edit: #4bbf6b;
+  --btn-delete: #d96a3c;
+  --btn-new: #a8a8a8;
+}
+
+/* ------------------------------
    Base
 ------------------------------ */
+html, body {
+  height: 100%;
+}
 
 body {
   margin: 0;
   padding: 0;
   font-family: system-ui, sans-serif;
   line-height: 1.6;
-  background-color: #f5f5f5;
-  color: #222;
+  background-color: var(--bg);
+  color: var(--text);
+  position: relative;
+  min-height: 100%;
+  padding-bottom: 60px; /* same as footer height */
 }
 
 body:has(#special-element) {
@@ -24,27 +60,63 @@ body:has(#special-element) {
 ------------------------------ */
 
 section {
-  /* padding-left: 20px; */
-  text-align: center; /* center inline-block children */
+  text-align: center;
 }
 
 #searchBox,
 #sort {
-  display: inline-block;      /* sit side-by-side when possible */
+  display: inline-block;
   vertical-align: top;
   width: 300px;
-  margin: 0 0.5rem 1rem;      /* spacing */
+  margin: 0 0.5rem 1rem;
   border-radius: 10px;
   padding: 10px;
   font-size: 1rem;
 }
 
+
+footer {
+  background: #2e2e2e;     /* or any fixed color you want */
+  color: #fff;          /* fixed text color */
+  width: 100%;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+}
+
+/* NEW BUTTON + THEME BUTTON (added, no layout changes) */
+#newBtn,
+#themeToggle {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 0.5rem 1rem;
+  padding: 10px 20px;
+  /* height: 42px; */
+  line-height: 22px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  background: var(--btn-new);
+  color: #000;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s, transform 0.2s, color 0.2s;
+}
+
+#newBtn:hover,
+#themeToggle:hover {
+  background: #a8a8a8;
+  transform: scale(1.05);
+  color: #fff;
+}
+
 /* ------------------------------
-   Header  (NOW STICKY)
+   Header (sticky)
 ------------------------------ */
 
 header {
-  background: #2e2e2e;
+  background: var(--header-bg);
   padding: 0 1rem;
   height: 80px;
 
@@ -52,20 +124,22 @@ header {
   align-items: center;
   justify-content: space-between;
 
-  position: sticky;   /* <-- makes it stick */
-  top: 0;             /* <-- stick to top */
-  z-index: 9999;      /* <-- stay above everything */
+  position: sticky;
+  top: 0;
+  z-index: 9999;
 }
 
 ver {
   color: whitesmoke;
   margin-right: 20px;
+  align-self: right;
 }
 
 /* App title (hidden on desktop) */
 .app-title {
   display: none;
 }
+
 
 /* ------------------------------
    Navigation (desktop)
@@ -141,7 +215,7 @@ nav a:hover {
     display: block;
     position: absolute;
     top: 100%;
-    background: #3a3a3a;
+    background: var(--submenu-bg);
     padding: 0.5rem 1rem;
     z-index: 30;
   }
@@ -158,12 +232,21 @@ nav a:hover {
 @media (max-width: 600px) {
   body:has(#special-element) {
     background-image: url("/images/hbm.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
   }
 
+  nav a,
+  .sub-toggle,
+  .sub-menu li a {
+    padding-left: 20px !important;
+  }
+
+  /* Ensure no li adds extra offset */
+  nav li,
+  .sub-menu li {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+  
   .hamburger {
     display: flex;
   }
@@ -180,7 +263,7 @@ nav a:hover {
   nav ul {
     display: none;
     flex-direction: column;
-    background: #2e2e2e;
+    background: var(--header-bg);
     width: 100%;
     min-height: 100vh;
     position: absolute;
@@ -193,59 +276,10 @@ nav a:hover {
 
   nav ul.open {
     display: flex;
-  }
-
-  nav li {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    border: 0;
-  }
-
-  .about-link {
-    display: none;
-  }
-
-  nav a,
-  .sub-toggle,
-  .sub-menu li a {
-    display: block;
-    padding: 0.5rem 0 0.5rem 20px;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: 800;
-    line-height: 1.2;
-    letter-spacing: inherit;
-    color: rgb(221, 221, 221);
-    text-decoration: none;
-    text-align: left;
-
-    background: none;
-    border: 0;
-    appearance: none;
-    -webkit-appearance: none;
-    box-sizing: border-box;
-  }
-
-  .sub-toggle {
-    cursor: pointer;
-  }
-
-  .has-sub {
-    display: block;
-  }
-
-  .sub-menu {
-    display: none;
-    background: #3a3a3a;
-    margin: 0;
-    padding: 0;
-  }
-
-  .sub-menu.open {
-    display: block;
+    padding-left: 20px;
   }
 }
+
 
 /* ------------------------------
    Showcase Grid
@@ -258,7 +292,6 @@ section > section {
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-
   row-gap: 2rem;
   column-gap: 1rem;
 }
@@ -269,87 +302,42 @@ section > section {
 
 article {
   box-shadow: 0 2px 6px rgba(0, 0, 0, .5);
-  background: white;
-  border-radius: 6px;
+  background: var(--card-bg);
+  border-radius: 10px;
   padding: 1.25rem;
 
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  max-width: 420px;
+  max-width: 320px;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
-  max-width: 320px;
 }
 
-.money {
-  font-weight: bold;
+.card-actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.title {
-  font-weight: bold;
-  color: #360da8;
-}
-
-.company {
-  font-weight: bold;
-  color: rgb(0, 102, 22);
-}
-
-.specs {
-  margin: 0;
-  padding: 0;
-  color: #333;
-}
-
-.extras {
-  margin-top: 0.5em;
-  font-size: 0.9em;
-  color: #444;
-}
-
-.extras div {
-  margin-left: 1em;
-}
-
+.showcase-btn,
+.edit-btn,
 .delete-btn {
+  display: inline-block;
   padding: 10px 20px;
-  background: #EF8354;
-  color: #000000;
+  background: var(--btn-showcase);
+  color: #000;
   font-weight: bold;
   text-decoration: none;
   border-radius: 4px;
-
-  display: inline-block;
-  margin-top: auto;
-  align-self: flex-end;
+  transition: background 0.2s, transform 0.2s, color 0.2s;
 }
 
+.edit-btn { background: var(--btn-edit); }
+.delete-btn { background: var(--btn-delete); }
 
-/* ------------------------------
-   Icons
------------------------------- */
-
-.fa-trash-can,
-.fa-upload,
-.fa-pen-to-square {
-  color: #000;
-  cursor: pointer;
-  transition: color 0.2s, transform 0.2s;
-}
-
-.fa-trash-can:hover {
-  color: red;
-  transform: scale(1.1);
-}
-
-.fa-upload:hover {
-  color: #360da8;
-  transform: scale(1.1);
-}
-
-.fa-pen-to-square:hover {
-  color: rgb(0, 102, 22);
-  transform: scale(1.1);
-}
+.showcase-btn:hover { background: #7d6dfd; transform: scale(1.05); color: #fff; }
+.edit-btn:hover     { background: #4bbf6b; transform: scale(1.05); color: #fff; }
+.delete-btn:hover   { background: #d96a3c; transform: scale(1.05); color: #fff; }

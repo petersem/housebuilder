@@ -15,4 +15,30 @@ if (subToggle && subMenu) {
     });
 }
 
+const body = document.body;
+const toggle = document.getElementById("themeToggle");
+const icon = toggle.querySelector("i");
+
+// Load saved theme
+if (localStorage.theme === "dark") {
+    body.classList.add("dark");
+    icon.classList.remove("fa-moon");
+    icon.classList.add("fa-sun");
+}
+
+// Toggle theme
+toggle.onclick = () => {
+    body.classList.toggle("dark");
+    const dark = body.classList.contains("dark");
+
+    localStorage.theme = dark ? "dark" : "light";
+
+    if (dark) {
+        icon.classList.remove("fa-moon");
+        icon.classList.add("fa-sun");
+    } else {
+        icon.classList.remove("fa-sun");
+        icon.classList.add("fa-moon");
+    }
+};
 

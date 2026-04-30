@@ -13,7 +13,6 @@ showcaseRoutes.get("/render/unfiltered/:sortTerm", ShowcaseController.renderShow
 
 showcaseRoutes.get("/render/:titleSearch/:sortTerm", ShowcaseController.renderShowcase);
 
-
 /**
  * @swagger
  * /showcase/list:
