@@ -16,7 +16,12 @@ function showcaseDelete(id) {
 
 }
 
-// Debounce function
+/**
+ * debounce function to limit the rate at which a function can fire.
+ * @param {function} func takes a function to debounce
+ * @param {number} delay the delay time for the debounce in milliseconds
+ * @returns {void}
+ */
 function debounce(func, delay) {
     let timeout;
     return function (...args) {
