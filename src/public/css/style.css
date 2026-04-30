@@ -24,7 +24,7 @@ body:has(#special-element) {
 ------------------------------ */
 
 section {
-  padding-left: 20px;
+  /* padding-left: 20px; */
   text-align: center; /* center inline-block children */
 }
 
@@ -32,7 +32,7 @@ section {
 #sort {
   display: inline-block;      /* sit side-by-side when possible */
   vertical-align: top;
-  width: 180px;
+  width: 300px;
   margin: 0 0.5rem 1rem;      /* spacing */
   border-radius: 10px;
   padding: 10px;
@@ -279,6 +279,8 @@ article {
   max-width: 420px;
   margin-left: auto;
   margin-right: auto;
+  width: 100%;
+  max-width: 320px;
 }
 
 .money {
@@ -324,10 +326,6 @@ article {
   align-self: flex-end;
 }
 
-article {
-  width: 100%;
-  max-width: 320px;
-}
 
 /* ------------------------------
    Icons
