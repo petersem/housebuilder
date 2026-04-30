@@ -4,5 +4,6 @@ services:
     container_name: housebuilder
     environment:
       TZ: "Australia/Brisbane"
+      NODE_ENV: development
     ports:
       - 3000:3000
