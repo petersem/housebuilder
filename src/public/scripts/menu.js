@@ -42,6 +42,7 @@ toggle.onclick = () => {
     }
 };
 
+// manage legend popup clicks
 document.getElementById('legend-btn').addEventListener('click', () => {
   const btn = document.getElementById('legend-btn');
   const popup = document.getElementById('legend-popup');
