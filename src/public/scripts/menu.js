@@ -42,3 +42,10 @@ toggle.onclick = () => {
     }
 };
 
+document.getElementById('legend-btn').addEventListener('click', () => {
+  const btn = document.getElementById('legend-btn');
+  const popup = document.getElementById('legend-popup');
+
+  popup.classList.toggle('show');
+  btn.classList.toggle('show');
+});

@@ -160,7 +160,55 @@ header {
   margin-left: 6px; /* your required spacing */
 }
 
+/* Legend button styled like theme button */
+#legend-btn {
+  vertical-align: top;
+  margin-left: auto;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  background: var(--btn-new);
+  color: #000;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s, transform 0.2s, color 0.2s;
+  position: relative;   /* establishes positioning context */
+}
 
+
+#legend-btn:hover {
+  background: #a8a8a8;
+  transform: scale(1.05);
+  color: #fff;
+}
+
+#legend-btn:has(#legend-popup.show:hover) {
+  background: var(--btn-new);
+  color: #000;
+  transform: none;
+}
+
+/* Popup */
+#legend-popup {
+  position: absolute;
+  top: 100%;            /* directly below the button */
+  left: -70px;              /* aligned to the left edge of the button */
+  margin-top: 6px;      /* small gap */
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--text);
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  width: 180px;
+  display: none;
+  z-index: 999;
+}
+
+#legend-popup.show {
+  display: block;
+}
 
 
 ver {
