@@ -76,8 +76,8 @@ export class ShowcaseController {
             for (const k of props) {
                 if (k !== "id" && k !== "extras") {
                     const label = k.charAt(0).toUpperCase() + k.slice(1);
-                    sortArray.push({ value: `${k}|asc`, label: `${label}: Asc` });
-                    sortArray.push({ value: `${k}|desc`, label: `${label}: Desc` });
+                    sortArray.push({ value: `${k}|asc`, label: `${label}: asc` });
+                    sortArray.push({ value: `${k}|desc`, label: `${label}: desc` });
                 }
             }
         }
