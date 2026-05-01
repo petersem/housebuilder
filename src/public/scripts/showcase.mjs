@@ -81,8 +81,10 @@ function sort() {
 
 // set focus to title search and set cursor to end of text
 const searchBox = document.getElementById('searchBox')
-searchBox.focus();
-searchBox.selectionStart = searchBox.selectionEnd = searchBox.value.length;
+if (searchBox.value != "") {
+  searchBox.focus();
+  searchBox.selectionStart = searchBox.selectionEnd = searchBox.value.length;
+}
 
 // add listeners for delete buttons using the house ID from the data-id attribute
 document.addEventListener("click", function (e) {
