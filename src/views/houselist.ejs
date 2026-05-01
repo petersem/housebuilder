@@ -13,20 +13,22 @@
     <main>
         <%- include("partials/menu.ejs") %>
             <section>
-                <h1>
+                <span id="pageTitle">
                     <%= title %>
-                </h1>
+                </span>
+                <div id="top-controls"></div>
+                <div id="search-sort-row">
+                    <input id="searchBox" placeholder="Search house title..." value="" onkeyup="search()" />
 
-                <input id="searchBox" placeholder="Search house title..." value="" onkeyup="search()" />
-
-
-                <select id="sort" onchange="sort()" data-id=""">
+                    <select id="sort" onchange="sort()" data-id=""">
                     <option value=" unsorted">
-                    No sort
-                    </option>
-                </select>
+                        No sort
+                        </option>
+                    </select>
+                    <a id="newBtn" href="/houses/new">Build New</a>
+                </div>
+                </div>
 
-                <a id="newBtn" href="/houses/new">New</a>
 
                 <section id="house-list">
                     <article>

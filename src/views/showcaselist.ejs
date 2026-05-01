@@ -10,26 +10,27 @@
 </head>
 
 <body>
-        <main>
+    <main>
 
-    <%- include("partials/menu.ejs") %>
+        <%- include("partials/menu.ejs") %>
             <section>
-                <h1>
+                <span id="pageTitle">
                     <%= title %>
-                </h1>
+                </span>
 
-                <input id="searchBox" placeholder="Search house title..." value="<%=searchTerm%>"
-                    onkeyup="search()" />
+                <div id="search-sort-row">
+                    <input id="searchBox" placeholder="Search house title..." value="<%=searchTerm%>"
+                        onkeyup="search()" />
 
 
-                <select id="sort" onchange="sort()" data-id="<%=sortTerm%>">
-                    <% sortOptions.forEach(option=> { %>
-                        <option value="<%= option.value %>">
-                            <%= option.label %>
-                        </option>
-                        <% }) %>
-                </select>
-
+                    <select id="sort" onchange="sort()" data-id="<%=sortTerm%>">
+                        <% sortOptions.forEach(option=> { %>
+                            <option value="<%= option.value %>">
+                                <%= option.label %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
                 <section id="house-list">
 
                     <% data.forEach((house)=> { %>
@@ -84,7 +85,7 @@
             <footer>
                 <span>© 2026 Uptown I.T. All rights reserved.</span> <span>Version: <%= ver %></span>
             </footer>
-        </main>
+    </main>
 </body>
 
 </html>

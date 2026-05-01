@@ -70,16 +70,49 @@ body:has(#special-element) {
 ------------------------------ */
 
 section {
-  text-align: center;
+  text-align: left;
 }
 
-#searchBox {
-  width: 160px;
+#filter-row {
+  text-align: left;
+  width: 100%;
+  margin-top: 10px;
 }
 
+#search-sort-row {
+  display: block;
+  width: 100%;
+  margin-left: 20px;
+  margin-top: 5px;
+  text-align: left;
+}
+
+#pageTitle {
+  font-size: 1rem;
+  /* display: inline-block; */
+  font-weight: bold;
+  font-size: 2rem;
+  margin-left: 20px;
+  padding-top: 10px;
+  margin-right: auto;   /* pushes everything else to the right */
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+#searchBox,
 #sort {
-  width: 170px;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 8px 0.5rem 1rem;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1em;
 }
+
+#house-list {
+  clear: both;
+} 
 
 #searchBox,
 #sort {
@@ -87,8 +120,9 @@ section {
   vertical-align: top;
   margin: 0 0.5rem 1rem;
   border-radius: 10px;
+  padding-top: 20px;
   padding: 10px;
-  font-size: 1.1rem;
+  font-size: 1.0em;
 }
 
 /* ------------------------------
@@ -103,6 +137,11 @@ footer {
   padding: 1rem 0;
   font-size: 0.9rem;
   margin-top: 2rem;
+}
+
+#newBtn {
+  margin-top: 8px !important;
+    padding: 8px 12px !important;
 }
 
 /* NEW BUTTON + THEME BUTTON */
@@ -223,6 +262,16 @@ ver {
 
 .title {
   font-weight: bold;
+  font-size: 1.5rem;
+}
+
+ #searchBox, #sort {
+  margin-top: 8px;
+ }
+
+.money {
+  font-weight: bold;
+  font-size: 2.5rem;
 }
 
 /* ------------------------------
@@ -386,7 +435,7 @@ article {
   background: var(--card-bg);
   border-radius: 10px;
   padding: 1.25rem;
-
+  text-align: left;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -395,6 +444,13 @@ article {
   margin-right: auto;
   width: 100%;
 }
+
+.extras > div::before {
+  content: "- ";        /* small dash bullet */
+  color: var(--text);   /* matches your theme */
+  opacity: 0.3;         /* subtle */
+}
+
 
 .card-actions {
   margin-top: auto;

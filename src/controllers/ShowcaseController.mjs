@@ -183,7 +183,7 @@ export class ShowcaseController {
         // open showcase page with data
         res.status(200);
         res.render('showcaselist.ejs', {
-            title: "Showcase",
+            title: "Showcase Houses",
             data: houses,
             ver: pkg.version,
             searchTerm: searchTerm,
