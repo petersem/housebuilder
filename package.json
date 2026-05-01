@@ -1,13 +1,13 @@
 {
   "name": "housebuilder",
-  "version": "1.8.25",
+  "version": "1.8.26",
   "description": "",
   "main": "server.mjs",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "dev": "nodemon --env-file=./src/.env src/server.mjs",
     "prod": "nodemon --env-file=./src/.envprod src/server.mjs",
-    "doc": "cls && node ./node_modules/jsdoc/jsdoc.js -c ./jsdoc.conf.json"
+    "doc": "node ./node_modules/jsdoc/jsdoc.js -c ./jsdoc.conf.json"
   },
   "keywords": [],
   "author": "Matt Petersen",

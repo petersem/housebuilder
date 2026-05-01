@@ -80,8 +80,9 @@ function sort() {
 }
 
 // set focus to title search and set cursor to end of text
+// but not if search text is empty or in mobile view (stops keyboard from opening on focus in mobile)
 const searchBox = document.getElementById('searchBox')
-if (searchBox.value != "") {
+if (searchBox.value != "" || window.innerWidth > 600) {
   searchBox.focus();
   searchBox.selectionStart = searchBox.selectionEnd = searchBox.value.length;
 }

@@ -28,9 +28,21 @@
   --btn-new: #a8a8a8;
 }
 
+/* debug outlines */
+/* * {
+  outline: 1px solid red !important;
+} */
+
 /* ------------------------------
    Sticky footer layout (fixed)
 ------------------------------ */
+
+header h1 {
+  width: 100%;
+  margin: 0;
+}
+
+
 
 html, body {
   height: 100%;
@@ -59,17 +71,17 @@ main > section {
 
 body:has(#special-element) {
   background-image: url("/images/hbd.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
+  background-size: auto;       /* do not scale */
+  background-repeat: repeat; 
+  background-position: top left;
+  background-attachment: scroll;
 }
 
 /* ------------------------------
    Search + Dropdown
 ------------------------------ */
 
-section {
+main > section {
   text-align: left;
 }
 
@@ -81,18 +93,21 @@ section {
 
 #search-sort-row {
   display: block;
-  width: 100%;
-  margin-left: 20px;
+  width: 80%;
+  margin-left: 0;
+  padding-left: 20px; 
   margin-top: 5px;
   text-align: left;
 }
 
 #pageTitle {
   font-size: 1rem;
+  width: 100%;
+
   /* display: inline-block; */
   font-weight: bold;
   font-size: 2rem;
-  margin-left: 20px;
+  /* margin-left: 20px; */
   padding-top: 10px;
   margin-right: auto;   /* pushes everything else to the right */
   display: block;
@@ -108,26 +123,18 @@ section {
 #sort {
   display: inline-block;
   vertical-align: middle;
-  /* margin: 8px 0.5rem 1rem; */
+  margin: 8px 0.5rem 1rem;
   border-radius: 10px;
   padding: 10px;
   font-size: 1em;
+  box-sizing: border-box;
 }
 
 #house-list {
   clear: both;
 } 
 
-#searchBox,
-#sort {
-  display: inline-block;
-  vertical-align: top;
-  margin: 0 0.5rem 1rem;
-  border-radius: 10px;
-  padding-top: 20px;
-  padding: 10px;
-  font-size: 1.0em;
-}
+
 
 /* ------------------------------
    Footer (sticky bottom)
@@ -236,7 +243,8 @@ header {
 #legend-popup {
   position: absolute;
   top: 100%;            /* directly below the button */
-  left: -70px;              /* aligned to the left edge of the button */
+left: 50%;
+transform: translateX(-50%);
   margin-top: 6px;      /* small gap */
   background: var(--card-bg);
   color: var(--text);
@@ -281,6 +289,11 @@ ver {
 /* ------------------------------
    Navigation (desktop)
 ------------------------------ */
+
+#main-nav {
+
+    font-size: 1.3em;
+}
 
 nav ul {
   display: flex;
@@ -368,6 +381,10 @@ nav a:hover {
 @media (max-width: 600px) {
   body:has(#special-element) {
     background-image: url("/images/hbm.png");
+  background-size: cover;       /* do not scale */
+  background-repeat: repeat; 
+  background-position: top left;
+  background-attachment: scroll;
   }
 
   nav a,
