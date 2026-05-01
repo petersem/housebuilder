@@ -100,11 +100,15 @@ section {
   text-align: left;
 }
 
+#searchBox {
+  width: 140px;   /* or whatever size you want */
+}
+
 #searchBox,
 #sort {
   display: inline-block;
   vertical-align: middle;
-  margin: 8px 0.5rem 1rem;
+  /* margin: 8px 0.5rem 1rem; */
   border-radius: 10px;
   padding: 10px;
   font-size: 1em;
@@ -218,7 +222,7 @@ header {
 
 #legend-btn:hover {
   background: #a8a8a8;
-  transform: scale(1.05);
+  /* transform: scale(1.05); */
   color: #fff;
 }
 
