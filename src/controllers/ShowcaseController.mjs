@@ -75,7 +75,23 @@ export class ShowcaseController {
 
             for (const k of props) {
                 if (k !== "id" && k !== "extras") {
-                    const label = k.charAt(0).toUpperCase() + k.slice(1);
+                    let label = k.charAt(0).toUpperCase() + k.slice(1);
+                    switch (label) {
+                        case "CompanyName":
+                            label = "Company";
+                            break;
+                        case "FloorAreaSqm":
+                            label = "Area";
+                            break;
+                        case "StoryCount":
+                            label = "Stories";
+                            break;
+                       case "TotalCost":
+                            label = "Price";
+                            break;
+                        default:
+                            break;
+                    }
                     sortArray.push({ value: `${k}|asc`, label: `${label}: asc` });
                     sortArray.push({ value: `${k}|desc`, label: `${label}: desc` });
                 }
