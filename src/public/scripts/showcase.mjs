@@ -95,4 +95,3 @@ document.addEventListener("click", function (e) {
 // set the sort value, based upon selected previous value before refresh
 const sortOptions =  document.getElementById('sort');
 sortOptions.value=sortOptions.dataset.id;
-

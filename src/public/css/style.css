@@ -147,6 +147,22 @@ header {
   z-index: 9999;
 }
 
+.specs {
+  display: block;
+  font-size: 0; /* forces inline-blocks to wrap correctly */
+}
+
+.specs span {
+  display: inline-block;
+  font-size: 1rem; /* restore text size */
+  white-space: nowrap;
+  margin-right: 6px; /* your required spacing */
+  margin-left: 6px; /* your required spacing */
+}
+
+
+
+
 ver {
   color: whitesmoke;
   margin-right: 20px;
