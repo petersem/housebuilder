@@ -29,22 +29,32 @@
 }
 
 /* ------------------------------
-   Base
+   Sticky footer layout (fixed)
 ------------------------------ */
+
 html, body {
   height: 100%;
+  margin: 0;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: system-ui, sans-serif;
-  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
   background-color: var(--bg);
   color: var(--text);
-  position: relative;
-  min-height: 100%;
-  padding-bottom: 60px; /* same as footer height */
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* Main content expands to fill space */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+main > section {
+  flex: 1;
 }
 
 body:has(#special-element) {
@@ -56,7 +66,7 @@ body:has(#special-element) {
 }
 
 /* ------------------------------
-   Search + Dropdown (fixed)
+   Search + Dropdown
 ------------------------------ */
 
 section {
@@ -74,10 +84,13 @@ section {
   font-size: 1rem;
 }
 
+/* ------------------------------
+   Footer (sticky bottom)
+------------------------------ */
 
 footer {
-  background: var(--header-bg);     
-  color: #fff;          /* fixed text color */
+  background: var(--header-bg);
+  color: #fff;
   width: 100%;
   text-align: center;
   padding: 1rem 0;
@@ -85,15 +98,13 @@ footer {
   margin-top: 2rem;
 }
 
-/* NEW BUTTON + THEME BUTTON (added, no layout changes) */
+/* NEW BUTTON + THEME BUTTON */
 #newBtn,
 #themeToggle {
   display: inline-block;
   vertical-align: top;
   margin: 0 0.5rem 0rem;
   padding: 10px 20px;
-  /* height: 42px; */
-  line-height: 22px;
   border-radius: 10px;
   font-weight: bold;
   text-decoration: none;
@@ -135,13 +146,12 @@ ver {
   align-self: right;
 }
 
-/* App title (hidden on desktop) */
 .app-title {
   display: none;
 }
 
 .title {
-  font-weight:bold;
+  font-weight: bold;
 }
 
 /* ------------------------------
@@ -212,7 +222,6 @@ nav a:hover {
   display: none;
 }
 
-/* Desktop hover dropdown */
 @media (min-width: 601px) {
   .has-sub:hover .sub-menu {
     display: block;
@@ -243,13 +252,12 @@ nav a:hover {
     padding-left: 20px !important;
   }
 
-  /* Ensure no li adds extra offset */
   nav li,
   .sub-menu li {
     margin-left: 0 !important;
     padding-left: 0 !important;
   }
-  
+
   .hamburger {
     display: flex;
   }
@@ -282,7 +290,6 @@ nav a:hover {
     padding-left: 20px;
   }
 }
-
 
 /* ------------------------------
    Showcase Grid

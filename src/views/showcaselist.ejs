@@ -10,75 +10,81 @@
 </head>
 
 <body>
+        <main>
+
     <%- include("partials/menu.ejs") %>
-        <section>
-            <h1>
-                <%= title %>
-            </h1>
-
-            <input id="searchBox" placeholder="Search by house title..." value="<%=searchTerm%>" onkeyup="search()" />
-
-
-            <select id="sort" onchange="sort()" data-id="<%=sortTerm%>">
-                <% sortOptions.forEach(option=> { %>
-                    <option value="<%= option.value %>">
-                        <%= option.label %>
-                    </option>
-                    <% }) %>
-            </select>
-
             <section>
+                <h1>
+                    <%= title %>
+                </h1>
 
-                <% data.forEach((house)=> { %>
-                    <article>
-                        <% let money=new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3
-                            }).format(house.totalCost); %>
-                            <span class="money">$<%= money %></span>
-                            <span class="title">
-                                <%= house.title %>
-                            </span>
-                            <span class="company">
-                                <%= house.companyName %>
-                            </span>
+                <input id="searchBox" placeholder="Search by house title..." value="<%=searchTerm%>"
+                    onkeyup="search()" />
 
-                            <p class="specs">
-                                <span>
-                                    <i class="fa-brands fa-unity" title="Stories"></i>
-                                    <%= house.storyCount %>
+
+                <select id="sort" onchange="sort()" data-id="<%=sortTerm%>">
+                    <% sortOptions.forEach(option=> { %>
+                        <option value="<%= option.value %>">
+                            <%= option.label %>
+                        </option>
+                        <% }) %>
+                </select>
+
+                <section id="house-list">
+
+                    <% data.forEach((house)=> { %>
+                        <article>
+                            <% let money=new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3
+                                }).format(house.totalCost); %>
+                                <span class="money">$<%= money %></span>
+                                <span class="title">
+                                    <%= house.title %>
                                 </span>
-                                <span>
-                                    <i class="fa-solid fa-users-rectangle" title="Rooms"></i>
-                                    <%= house.rooms %>
+                                <span class="company">
+                                    <%= house.companyName %>
                                 </span>
-                                <span>
-                                    <i class="fa-solid fa-toilet" title="Bathrooms"></i>
-                                    <%= house.bathrooms %>
-                                </span>
-                                <span>
-                                    <i class="fa-solid fa-square-parking" title="Garages"></i>
-                                    <%= house.garages %>
-                                </span>
-                                <span>
-                                    <i class="fa-solid fa-ruler-horizontal" title="Area"></i>
-                                    <%= house.floorAreaSqm %> sqm
-                                </span>
-                            </p>
-                            <div class="extras">
-                                <% house.extras.forEach(extra=> { %>
-                                    <div>
-                                        <%= extra %>
-                                    </div>
-                                    <% }) %>
-                            </div>
-                            <div class="card-actions">
-                                <a href="#" class="delete-btn" data-id="<%= house.id %>||<%= house.title %>">Delete</a>
-                            </div>
-                    </article>
-                    <% }); %>
+
+                                <p class="specs">
+                                    <span>
+                                        <i class="fa-brands fa-unity" title="Stories"></i>
+                                        <%= house.storyCount %>
+                                    </span>
+                                    <span>
+                                        <i class="fa-solid fa-users-rectangle" title="Rooms"></i>
+                                        <%= house.rooms %>
+                                    </span>
+                                    <span>
+                                        <i class="fa-solid fa-toilet" title="Bathrooms"></i>
+                                        <%= house.bathrooms %>
+                                    </span>
+                                    <span>
+                                        <i class="fa-solid fa-square-parking" title="Garages"></i>
+                                        <%= house.garages %>
+                                    </span>
+                                    <span>
+                                        <i class="fa-solid fa-ruler-horizontal" title="Area"></i>
+                                        <%= house.floorAreaSqm %> sqm
+                                    </span>
+                                </p>
+                                <div class="extras">
+                                    <% house.extras.forEach(extra=> { %>
+                                        <div>
+                                            <%= extra %>
+                                        </div>
+                                        <% }) %>
+                                </div>
+                                <div class="card-actions">
+                                    <a href="#" class="delete-btn"
+                                        data-id="<%= house.id %>||<%= house.title %>">Delete</a>
+                                </div>
+                        </article>
+                        <% }); %>
+                </section>
             </section>
             <footer>
                 <span>© 2026 Uptown I.T. All rights reserved.</span> <span>Version: <%= ver %></span>
             </footer>
+        </main>
 </body>
 
 </html>
