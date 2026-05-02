@@ -39,12 +39,12 @@ export default class ClientHouseModel extends ClientDataModel {
 // ]);
 
 // const houses = ClientHouseModel.select();
-// localStorage.clear;
+localStorage.clear;
 // localStorage.setItem("houses", JSON.stringify(houses)); 
 
 // load houses from local storage and populate HouseModelArray
 let houseModelArray = [];
-if (localStorage.getItem("houses") != "") {
+if (localStorage.getItem("houses") != null) {
     for (let house of JSON.parse(localStorage.getItem("houses"))) {
         const newHouse = new ClientHouseModel(house["id"],
             house["title"],
