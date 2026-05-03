@@ -1,3 +1,4 @@
+import { ClientDataModel } from "../models/ClientDataModel.mjs";
 import { ClientHouseModel } from "../models/ClientHouseModel.mjs";
 
 
@@ -19,7 +20,9 @@ export class ClientHouseController {
       let article = document.createElement("article");
       let moneySpan = document.createElement("span");
       moneySpan.className = "money";
+      moneySpan.id = "totalCost";
       moneySpan.innerText = "$" + new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3 }).format(house.totalCost);
+      moneySpan.setAttribute("data-id", house.totalCost);
       let titleSpan = document.createElement("span");
       titleSpan.className = "title";
       titleSpan.innerText = house.title;
@@ -27,10 +30,10 @@ export class ClientHouseController {
       companySpan.className = "company";
       companySpan.innerText = house.companyName;
 
+      // specs p > span
       let specsP = document.createElement("p");
       specsP.className = "specs";
       let specsSpan = document.createElement("span");
-
 
       // stories spec
       let specsStoriesI = document.createElement("i");
@@ -163,9 +166,24 @@ export class ClientHouseController {
 
   }
 
-  static updateHouse(id) {
+  static updateHouse(updatedHouse) {
 
-    // also update showcase if published there
+
+    const houseToUpdate = ClientHouseModel.select(house => house.id == updatedHouse.id);
+    houseToUpdate.title = updatedHouse.title;
+    houseToUpdate.company = updatedHouse.company;
+    houseToUpdate.rooms = updatedHouse.rooms;
+    houseToUpdate.bathrooms = updatedHouse.bathrooms;
+    houseToUpdate.storyCount = updatedHouse.storyCount;
+    houseToUpdate.floorAreaSqm = updatedHouse.floorAreaSqm;
+    houseToUpdate.totalCost = updatedHouse.totalCost;
+    houseToUpdate.extras = updatedHouse.extras;
+
+    ClientHouseModel.update(house => house.id == updatedHouse.id, updatedHouse);
+    
+    window.location.href = "/housebuilder";
+
+    // TODO: also update showcase if published there
   }
 
   static deleteHouse(id) {

@@ -670,3 +670,27 @@ select:invalid {
     border-color: #d9534f;
     box-shadow: 0 0 0 2px rgba(217,83,79,0.2);
 }
+
+#saveBtn,
+#cancelBtn {
+    padding: 14px 20px !important;
+    border-radius: 10px !important;
+    border: none !important;
+    height: auto !important;
+    background: var(--btn-edit) !important;
+    color: #000 !important;
+    font-weight: 800 !important;
+    transform: none;
+    margin-top: 1.2rem;
+}
+
+/* Correct theme colors */
+#saveBtn { background: var(--btn-edit) !important; }
+#cancelBtn { background: var(--btn-delete) !important; }
+
+/* Hover effect */
+#saveBtn:hover,
+#cancelBtn:hover {
+    transform: scale(1.05);
+    color: #fff !important;
+}

@@ -31,22 +31,30 @@ export class ClientHouseModel extends ClientDataModel {
         this.extras = extras ?? [];
     }
 
+  
+    // override update to also save to local storage
+    static update(filter, entry) {
+        super.update(filter, entry);
+        const houses = ClientHouseModel.select();
+        localStorage.clear;
+        localStorage.setItem("houses", JSON.stringify(houses))
+    }
 }
 
 // Create sample data
-//
+
 // ClientHouseModel.setDataSource([
 //     new ClientHouseModel("46ac80a9-3ea6-4481-b903-8b304764bc15", "Matt's Weird Place","Premium Living Co.",15,2,1,800,2,1605550,["Built-in Wardrobe","Double Glazing Windows","Solar Panel Installation (Standard)"]),
-//     new ClientHouseModel("46ac8019-3ea6-4481-b903-8b304764bc15", "Joe's House","DreamBuild Homes",5,2,1,400,1,765000,["Built-in Wardrobe","Double Glazing Windows"]),
+//     new ClientHouseModel("46ac8019-3ea6-4481-b903-8b304764bc16", "Joe's House","DreamBuild Homes",5,2,1,400,1,765000,["Built-in Wardrobe","Double Glazing Windows"]),
 //     new ClientHouseModel(null, "Matt's 2nd place", "DreamBuild Homes",5,2,1,400,1,978000,["Built-in Wardrobe","Double Glazing Windows"]),
-//     new ClientHouseModel("46ac80a9-3ea6-4481-b963-8b304764bc15", "Dan's House","Premium Living Co.",9,2,2,300,1,8000500,["Built-in Wardrobe"]),
+//     new ClientHouseModel("46ac80a9-3ea6-4481-b963-8b304764bc17", "Dan's House","Premium Living Co.",9,2,2,300,1,8000500,["Built-in Wardrobe"]),
 // ]);
 
 // const houses = ClientHouseModel.select();
 // localStorage.clear;
 // localStorage.setItem("houses", JSON.stringify(houses)); 
 
-// load houses from local storage and populate HouseModelArray
+// // load houses from local storage and populate HouseModelArray
 let houseModelArray = [];
 if (localStorage.getItem("houses") != null) {
     for (let house of JSON.parse(localStorage.getItem("houses"))) {
@@ -69,3 +77,5 @@ if (localStorage.getItem("houses") != null) {
 } else {
     ClientHouseModel.setDataSource([]);
 }
+
+

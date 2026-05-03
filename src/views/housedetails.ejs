@@ -18,11 +18,12 @@
                 </span>
 
                 <section>
-                    <form method="post">
-                        <span class="money" id="totalCost">$1,000,000</span>
+                    <form>
+                        <span class="money" id="totalCost" value="">$0</span>
 
                         <label for="title">Title</label>
-                        <input id="title" name="title" required pattern="^(?!.*  )[A-Za-z0-9 .,'&\-]{3,30}$" type="text" value="A house title">
+                        <input id="title" name="title" required pattern="^(?!.*  )[A-Za-z0-9 .,'&\-]{3,30}$" type="text"
+                            value="A house title">
                         <span class="error">Must be 3 to 30 characters in length, with no double spaces</span>
 
                         <label for="companyName">Company</label>
@@ -41,13 +42,14 @@
                         <label for="bathrooms">Bathrooms</label>
                         <input id="bathrooms" name="bathrooms" type="text" value="2" required pattern="^[12]$">
                         <span class="error">Bathrooms must be 1 or 2</span>
-                        
+
                         <label for="garages">Garages</label>
                         <input id="garages" name="garages" type="text" value="2" required pattern="^[12]$">
                         <span class="error">Garages must be 1 or 2</span>
 
                         <label for="floorAreaSqm">Floor area sqm</label>
-                        <input id="floorAreaSqm" name="floorAreaSqm" type="text" value="400" required pattern="^(?:[2-7][0-9]{2}|800)$">
+                        <input id="floorAreaSqm" name="floorAreaSqm" type="text" value="400" required
+                            pattern="^(?:[2-7][0-9]{2}|800)$">
                         <span class="error">Floor area must be 200–800 sqm</span>
 
                         <label for="storyCount">Stories</label>
@@ -56,18 +58,21 @@
 
                         <label>Extras</label>
                         <div class="checkbox-row">
-                            <div><input id="builtIns" name="builtIns" type="checkbox">Built-ins</div>
-                            <div><input id="doubleGlazing" name="doubleGlazing" type="checkbox">Double Glazing Windows
+                            <div><input id="builtIns" name="builtIns" type="checkbox" value="Built-ins">Built-ins</div>
+                            <div><input id="doubleGlazing" name="doubleGlazing" type="checkbox"
+                                    value="Double Glazing Windows">Double Glazing Windows</div>
+                            <div><input id="solarPanels" name="solarPanel" type="checkbox"
+                                    value="Solar Panel Installation (standard)">Solar Panel Installation (standard)
                             </div>
-                            <div><input id="solarPanels" name="solarPanel" type="checkbox">Solar Panel Installation
-                                (standard)</div>
                         </div>
-                        <button type="submit" value="Save">Save</button>
+
+
+                        <button id="saveBtn" type="button" onclick="updateHouse()">Save</button>
+                        <button id="cancelBtn" type="button" onclick="history.back();">Cancel</button>
                     </form>
+
                 </section>
             </section>
-
-
 
             <footer>
                 <span>© 2026 Uptown I.T. All rights reserved.</span> <span>Version: <%= ver %></span>

@@ -1,16 +1,43 @@
 import { ClientHouseController } from "./controllers/ClientHouseController.mjs";
 
-
 // if editing, then need to populate fields, else leave blank. 
 // ClientHouseController.renderEditHouse();
 
 
 //TODO  update()
+function updateHouse() {
+
+    let parameters = window.location.href.split("/");
+    let houseId = parameters[parameters.length - 1];
+
+    let extras = [];
+    const bi = document.getElementById("builtIns");
+    if (bi.checked) extras.push(bi.value)
+    const dg = document.getElementById("doubleGlazing");
+    if (dg.checked) extras.push(dg.value)
+    const sp = document.getElementById("solarPanels");
+    if (sp.checked) extras.push(sp.value)
+
+    const newHouse = {
+        id: houseId,
+        title: document.getElementById("title").value,
+        companyName: document.getElementById("companyName").value,
+        bathrooms: document.getElementById("bathrooms").value,
+        extras: extras,
+        floorAreaSqm: document.getElementById("floorAreaSqm").value,
+        garages: document.getElementById("garages").value,
+        rooms: document.getElementById("rooms").value,
+        storyCount: document.getElementById("storyCount").value,
+        totalCost: document.getElementById("totalCost").getAttribute("data-id")
+    }
+
+    ClientHouseController.updateHouse(newHouse);
+}
 
 
-// 100% check that DOM has loaded before populating. x-browser safety
+// 100% check that DOM has loaded before populating. x-browser safety as issues sometimes with defer
 window.addEventListener("DOMContentLoaded", () => {
-
+    // setup for edit or new page
     if (window.location.href.toLowerCase().includes("housebuilder/create")) {
         // dont do anything 
         console.log('new');
@@ -20,6 +47,7 @@ window.addEventListener("DOMContentLoaded", () => {
         let houseId = parameters[parameters.length - 1];
 
         const house = ClientHouseController.getHouse(houseId);
+
         if (house.length > 0) {
             updateValidity("title", house[0].title);
             populateCompanyDropdown("companyName", companies, house[0].companyName);
@@ -30,6 +58,7 @@ window.addEventListener("DOMContentLoaded", () => {
             updateValidity("floorAreaSqm", house[0].floorAreaSqm);
             const price = document.getElementById("totalCost");
             price.innerText = "$" + new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3 }).format(house[0].totalCost);
+            price.setAttribute("data-id",house[0].totalCost);
             setCheckbox("builtIns", house[0].extras.includes("Built-in Wardrobe"));
             setCheckbox("doubleGlazing", house[0].extras.includes("Double Glazing Windows"));
             setCheckbox("solarPanels", house[0].extras.includes("Solar Panel Installation (Standard)"));
@@ -124,3 +153,18 @@ function setCheckbox(id, value) {
     // value should be true or false
     el.checked = Boolean(value);
 }
+
+document.addEventListener("input", () => {
+    const form = document.querySelector("form");
+    const saveBtn = document.getElementById("saveBtn");
+
+    if (form.checkValidity()) {
+        saveBtn.style.display = "inline-block";
+    } else {
+        saveBtn.style.display = "none";
+    }
+});
+
+
+// expose update to client (as this is a module)
+window.updateHouse = updateHouse;

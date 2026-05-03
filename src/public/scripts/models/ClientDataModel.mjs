@@ -3,11 +3,11 @@ export class ClientDataModel {
      * In memory data store of model entries
      */
     static data = null;
-    
+
     static setDataSource(data) {
         this.data = data;
     }
-    
+
     /**
      * Find and return matching entries based in the filter predicate provided.
      * 
@@ -25,33 +25,37 @@ export class ClientDataModel {
             return this.data.map(e => e.clone())
         }
     }
-    
+
     /**
      * Updates matching entries based in the filter predicate provided.
      * 
      * @param {*} filter - A filter predicate, matching entries are deleted.
      * @param {*} entry - The updated entry.
-     * @returns the number of deleted entries
+     * @returns the number of updated entries
      */
     static update(filter, entry) {
         if (!this.data) {
             throw new Error("Data source not initialised.");
         }
-
         if (typeof filter !== "function") {
             throw new Error("Filter must be a predicate function.");
         }
 
+        // Ensure entry is a proper model instance
+        const modelEntry = entry instanceof this
+            ? entry
+            : Object.assign(new this(), entry);
+
         let count = 0;
         for (let index = 0; index < this.data.length; index++) {
             if (filter(this.data[index])) {
-                this.data[index] = entry.clone();
+                this.data[index] = modelEntry.clone();
                 count++;
             }
         }
         return count;
     }
-    
+
     /**
      * 
      * @param {any} entry - The entry object to insert into the data store.
@@ -84,7 +88,7 @@ export class ClientDataModel {
         this.data = this.data.filter(entry => !filter(entry));
         return countBefore - this.data.length;
     }
-    
+
     clone() {
         return Object.assign(Object.create(Object.getPrototypeOf(this)), this)
     }
