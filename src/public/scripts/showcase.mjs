@@ -1,3 +1,5 @@
+import { ClientHouseController } from "./controllers/ClientHouseController.mjs";
+
 function showcaseDelete(id) {
   const params = id.split("||");
   
@@ -98,3 +100,24 @@ document.addEventListener("click", function (e) {
 // set the sort value, based upon selected previous value before refresh
 const sortOptions =  document.getElementById('sort');
 sortOptions.value=sortOptions.dataset.id;
+
+
+// Remove delete button for any house witch doesn have an entry in local storage
+//
+const localStorageHouses = ClientHouseController.GetHouseList(); // get localStorageHouses
+// get all the delete buttons on the showcase page
+const articles = document.querySelectorAll('.delete-btn[data-id]');
+// check showcase delete buttons to see if they have matching data-id to local storage houses, then show dlt button
+articles.forEach(a => {
+  let scId = a.getAttribute("data-id").split("||")[0];
+  const result = localStorageHouses.find(({ id }) => id === scId)
+  for (let house in result) {
+    // set the show attribute for css to display button
+    a.setAttribute("data-show", "true");
+  }
+});
+
+
+// expose functions globally, as setting this as a module type removed them from global scope.
+window.search = search;
+window.sort = sort;

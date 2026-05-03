@@ -6,7 +6,8 @@
         <%= title %>
     </title>
     <%- include("partials/head.ejs") %>
-        <script src="/scripts/showcase.mjs" defer></script>
+    <!-- set as module type because i am calling in clientHouseController code for the hide/show of delete button logic -->
+        <script src="/scripts/showcase.mjs" type="module" defer></script>
 </head>
 
 <body>
@@ -74,8 +75,9 @@
                                         <% }) %>
                                 </div>
                                 <div class="card-actions">
-                                    <a href="#" class="delete-btn"
-                                        data-id="<%= house.id %>||<%= house.title %>">Delete</a>
+                                    <a href="#" class="delete-btn" title="Delete from showcase"
+                                        data-id="<%= house.id %>||<%= house.title %>"
+                                        data-show="false">Delete</a>
                                 </div>
                         </article>
                         <% }); %>

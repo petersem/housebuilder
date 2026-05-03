@@ -1,28 +1,55 @@
 /* ------------------------------
-   THEME VARIABLES (added)
+   THEME VARIABLES
 ------------------------------ */
 
 :root {
   --bg: #f5f5f5;
   --text: #222;
+  --text-strong: #111;
+
   --card-bg: #ffffff;
+  --surface: var(--card-bg);
+  --surface-raised: #ffffff;
+
   --header-bg: #2e2e2e;
   --submenu-bg: #3a3a3a;
 
-  --btn-showcase: #a190fd;
+  --border-soft: rgba(0,0,0,0.2);
+
+  --accent: #90a0fd;
+  --accent-soft: rgba(144,160,253,0.35);
+
+  --btn-showcase: #90a0fd;
   --btn-edit: #8be0a4;
   --btn-delete: #EF8354;
   --btn-new: #c2c2c2;
+
+  --surface: var(--card-bg);
+  --surface-raised: #ffffff;
+  --border-soft: rgba(0,0,0,0.2);
+  --text-strong: #111;
+  --accent: #90a0fd;
+  --accent-soft: rgba(144,160,253,0.35);
 }
 
 .dark {
   --bg: #1a1a1a;
   --text: #e6e6e6;
+  --text-strong: #fff;
+
   --card-bg: #2a2a2a;
+  --surface: var(--card-bg);
+  --surface-raised: #2f2f2f;
+
   --header-bg: #111;
   --submenu-bg: #222;
 
-  --btn-showcase: #7d6dfd;
+  --border-soft: rgba(255,255,255,0.15);
+
+  --accent: #90a0fd;
+  --accent-soft: rgba(144,160,253,0.35);
+
+  --btn-showcase: #90a0fd;
   --btn-edit: #4bbf6b;
   --btn-delete: #d96a3c;
   --btn-new: #a8a8a8;
@@ -451,6 +478,10 @@ section > section {
    Article cards
 ------------------------------ */
 
+.delete-btn[data-show="false"] {
+  display: none;
+}
+
 article {
   box-shadow: 0 2px 6px rgba(0, 0, 0, .5);
   background: var(--card-bg);
@@ -468,7 +499,7 @@ article {
 
 .extras > div::before {
   content: "- ";        /* small dash bullet */
-  color: var(--text);   /* matches your theme */
+  color: var(--text);   /* matches theme */
   opacity: 0.3;         /* subtle */
 }
 
@@ -479,6 +510,12 @@ article {
   justify-content: space-between;
   gap: 1rem;
 }
+
+/* .showcase-btn {
+  font-size: 80%;
+} */
+
+
 
 .showcase-btn,
 .edit-btn,
@@ -496,6 +533,140 @@ article {
 .edit-btn { background: var(--btn-edit); }
 .delete-btn { background: var(--btn-delete); }
 
-.showcase-btn:hover { background: #7d6dfd; transform: scale(1.05); color: #fff; }
-.edit-btn:hover     { background: #4bbf6b; transform: scale(1.05); color: #fff; }
-.delete-btn:hover   { background: #d96a3c; transform: scale(1.05); color: #fff; }
+.showcase-btn:hover { background: var(--btn-showcase); transform: scale(1.05); color: #fff; }
+.edit-btn:hover     { background: var(--btn-edit); transform: scale(1.05); color: #fff; }
+.delete-btn:hover   { background: var(--btn-delete); transform: scale(1.05); color: #fff; }
+
+
+/* ============================
+   EDIT FORM — LAYOUT + VISIBILITY
+   ============================ */
+
+/* Form container fits the app width */
+main section form {
+  width: 80%;
+  max-width: 640px;
+  margin: 1.6rem auto 2.6rem auto;
+  padding: 1.8rem 1.4rem 2.4rem 1.4rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: 0 2px 6px rgba(0,0,0,.25);
+}
+
+/* Labels more visible */
+main section form label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-top: 1.2rem;
+    margin-bottom: 0.45rem;
+    color: var(--text-strong);
+}
+
+/* Inputs more visible and easier to scan */
+main section form input[type="text"],
+main section form input[type="number"],
+main section form select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.65rem 0.7rem;
+    font-size: 1.05rem;
+    border: 1px solid var(--border-soft);
+    border-radius: 5px;
+    background: var(--surface-raised);
+    color: var(--text);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+main section form select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    line-height: normal;
+    padding-right: 2rem; /* space for arrow */
+}
+
+main section form input[type="text"]:focus,
+main section form input[type="number"]:focus,
+main section form select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+/* Checkbox rows spaced and readable */
+main section form .checkbox-row {
+    margin-top: 1rem;
+    padding: 0.6rem 0.4rem;
+    border: 1px solid var(--border-soft);
+    border-radius: 5px;
+    background: var(--surface-raised);
+}
+
+main section form .checkbox-row input[type="checkbox"] {
+    margin-right: 0.5rem;
+    transform: translateY(1px);
+}
+
+main section form .checkbox-row label {
+    display: inline;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Save button consistent with app buttons */
+main section form button[type="submit"] {
+    margin-top: 2rem;
+    padding: 0.7rem 1.6rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    background: var(--accent);
+    color: white;
+    cursor: pointer;
+    transition: background 0.15s ease-in-out;
+}
+
+main section form button[type="submit"]:hover {
+    background: var(--accent-strong);
+}
+
+/* Mobile refinement */
+@media (max-width: 600px) {
+    main section form {
+        padding: 1.2rem 1rem 1.8rem 1rem;
+        margin-top: 1rem;
+    }
+}
+
+/* TODO — isolate edit/new pages */
+body:has(main form) main > section {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem 1.2rem;
+    box-sizing: border-box;
+    display: block; /* prevents grid inheritance */
+}
+
+.error {
+    display: none;
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+    color: #d9534f;
+}
+
+/* When the input is invalid, show the error message */
+input:invalid + .error,
+select:invalid + .error {
+    display: block;
+}
+
+/* Optional: red border on invalid fields */
+input:invalid,
+select:invalid {
+    border-color: #d9534f;
+    box-shadow: 0 0 0 2px rgba(217,83,79,0.2);
+}

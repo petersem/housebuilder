@@ -1,7 +1,14 @@
-import ClientHouseModel from "../models/ClientHouseModel.mjs";
+import { ClientHouseModel } from "../models/ClientHouseModel.mjs";
 
+
+/**
+ * Manages houses stored in the client local storage.
+ */
 export class ClientHouseController {
 
+  /**
+   * renderHouses - Builds HTML elements, based upon the contents of houses in local storage 
+   */
   static renderHouses() {
     // get house list and clear houses before load
     let houseList = document.getElementById("house-list");
@@ -94,6 +101,7 @@ export class ClientHouseController {
       dltLink.href="#";
       dltLink.setAttribute('data-id', house.id + "||" + house.title);
       dltLink.innerText = "Delete"
+      dltLink.title = "Delete house"
       cardActions.appendChild(dltLink);
       
       // edit button
@@ -102,6 +110,7 @@ export class ClientHouseController {
       edtLink.href="#";
       edtLink.setAttribute('data-id', house.id );
       edtLink.innerText = "Edit"
+      edtLink.title = "Edit house"
       cardActions.appendChild(edtLink);
       
       // showcase button
@@ -110,6 +119,7 @@ export class ClientHouseController {
       scLink.href="#";
       scLink.setAttribute('data-id', house.id);
       scLink.innerText = "Showcase"
+      scLink.title = "Add to showcase"
       cardActions.appendChild(scLink);
 
       // build card
@@ -135,11 +145,10 @@ export class ClientHouseController {
   }
 
   static getPricing() {
-
   }
 
   static getHouse(id) {
-
+    return ClientHouseModel.select(house => house.id == id)
   }
 
   /**
@@ -161,6 +170,7 @@ export class ClientHouseController {
 
   static deleteHouse(id) {
 
+    // delete from showcase also
   }
 
   static sendToShowcase() {
