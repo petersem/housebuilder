@@ -1,5 +1,9 @@
 import { ClientHouseController } from "./controllers/ClientHouseController.mjs";
 
+// TODO - Show a toggle to only show your own sc items, or everyones. 
+
+// TODO - Show star ratings next to companies
+
 function showcaseDelete(id) {
   const params = id.split("||");
   

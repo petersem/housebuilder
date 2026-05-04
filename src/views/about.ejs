@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <%- include("partials/head.ejs") %>
+</head>
+
+<body>
+    <main>
+        <%- include("partials/menu.ejs") %>
+            <section>
+                <span id="pageTitle">
+                    &nbsp;&nbsp;<i class="fa-duotone fa-regular fa-circle-info"></i>&nbsp;&nbsp;<%= title %>
+                </span>
+                <section>
+                    <article>
+                        <h3>Education project for Tafe QLD</h3>
+                        A part of the 2026 Diploma in front-end web development, this is my assessment project. 
+                        <br><br>
+                        © 2026 Matthew Petersen
+                    </article>
+                    <article>
+                        <h3>Scope</h3>
+                        Develop a full stack application for a fictional 'house builder' app.
+                        <br>Data is stored on the server and in local client storage.
+                    </article>
+                    <article>
+                        <h3>Running</h3>
+                        <ul>
+                            <li>Development: 'npm run dev'</li>
+                            <li>Production: 'npm run prod'</li>
+                            <li>Create JDocs: 'npm run docs'</li>
+                            <li>Unit tests: 'npm run test'</li>
+                        </ul>
+                    </article>
+                    <article>
+                        <h3>Links</h3>
+                        <aboutLinks>
+                        <ul>
+                            <li><a href='/api-docs'>Swagger link</a></li>
+                            <li><a href='/docs/index.html'>JSDocs</a></li>
+                            <li><a href='https://github.com/petersem/housebuilder'>GitHub</a></li>
+                            <li><a href='https://hub.docker.com/repository/docker/petersem/housebuilder/general'>Docker Hub listing</a></li>
+                            <li><a href='https://petersem.github.io/housebuilder/'>Pages link</a></li>
+                            <li><a href='https://house.nesretep.net'>LIVE link</a></li>
+                        </ul>
+                        </aboutLinks>
+                    </article>
+                    <article>
+                        <h3>Special Features</h3>
+                        Uses GitHub actions to run unit tests on push. Results are sent to Discord.
+                        <br><br>
+                        GitHub actions also creates a multi-arch (Intel and ARM) Docker image, on push. This is published with incrementing version tags, along with updates to the Docker Hub repo's readme.md, from the GitHub readme.md. 
+                        <br><br>
+                        Uses Snyc and DependaBot to report on package dependancing updates and issues. (via email)
+                    </article>
+                    <article>
+                        <h3>Design Considerations</h3>
+                        Express MVC app, with custom middleware for error handling, idempotency control, and sanitisation of bad inputs. Has rate-limiting, and supports one-hop reverse proxy configuration. 
+                        <br><br>
+                        Implements environment support for production and development, with development implementing different settings and showing more verbose information in the logs. 
+                    </article>
+                </section>
+            </section>
+
+
+            <footer>
+                <span>© 2026 Uptown I.T. All rights reserved.</span> <span>Version: <%= ver %></span>
+            </footer>
+    </main>
+</body>
+
+</html>

@@ -8,3 +8,8 @@ homeRoute.get("/", (req, res) => {
     }
 );
 
+homeRoute.get("/about", (req, res) => {
+    res.render('about', { title: "About House Builder", ver: pkg.version });
+    }
+);
+

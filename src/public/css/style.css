@@ -3,9 +3,10 @@
 ------------------------------ */
 
 :root {
-  --bg: #f5f5f5;
+  --bg: #ebe7d8;
   --text: #222;
   --text-strong: #111;
+  --pageTitle: #660000;
 
   --card-bg: #ffffff;
   --surface: var(--card-bg);
@@ -33,9 +34,10 @@
 }
 
 .dark {
-  --bg: #1a1a1a;
+  --bg: #434040;
   --text: #e6e6e6;
   --text-strong: #fff;
+  --pageTitle: #fffeda;
 
   --card-bg: #2a2a2a;
   --surface: var(--card-bg);
@@ -59,10 +61,6 @@
 /* * {
   outline: 1px solid red !important;
 } */
-
-/* ------------------------------
-   Sticky footer layout (fixed)
------------------------------- */
 
 header h1 {
   width: 100%;
@@ -130,7 +128,7 @@ main > section {
 #pageTitle {
   font-size: 1rem;
   width: 100%;
-
+  color: var(--pageTitle);
   /* display: inline-block; */
   font-weight: bold;
   font-size: 2rem;
@@ -273,6 +271,7 @@ header {
 left: 50%;
 transform: translateX(-55%);
   margin-top: 6px;      /* small gap */
+  text-align: left;
   background: var(--card-bg);
   color: var(--text);
   border: 1px solid var(--text);
@@ -283,6 +282,11 @@ transform: translateX(-55%);
   display: none;
   z-index: 999;
 }
+
+#legend-popup > h2 {
+  color: var(--pageTitle);
+}
+            
 
 #legend-popup.show {
   display: block;
@@ -311,6 +315,7 @@ ver {
 .money {
   font-weight: bold;
   font-size: 2.5rem;
+  color: var(--money);
 }
 
 /* ------------------------------
@@ -319,7 +324,7 @@ ver {
 
 #main-nav {
 
-    font-size: 1.3em;
+    font-size: 1.12em;
 }
 
 nav ul {
@@ -334,10 +339,12 @@ nav a {
   text-decoration: none;
   font-weight: 800;
   color: rgb(221, 221, 221);
+  transition-duration: 0.4s;
 }
 
 nav a:hover {
-  color: #eeea18;
+  color: #f8e5cb;
+  color: var(--btn-delete); 
 }
 
 /* ------------------------------
@@ -551,17 +558,34 @@ main section form {
   border: 1px solid var(--border-soft);
   border-radius: 10px;
   background: var(--surface);
-  box-shadow: 0 2px 6px rgba(0,0,0,.25);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .5);
 }
 
 /* Labels more visible */
 main section form label {
     display: block;
-    font-size: 0.95rem;
+    font-size: 1.5rem;
     font-weight: 600;
     margin-top: 1.2rem;
     margin-bottom: 0.45rem;
     color: var(--text-strong);
+}
+
+input[type=checkbox] {
+  transform: scale(2); 
+  padding: 10px;
+  color: red;
+  margin-right: 40px;
+}
+
+main section form div {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.65rem 0.7rem;
+    font-size: 1.3rem;
+    background: var(--surface-raised);
+    color: var(--text);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
 }
 
 /* Inputs more visible and easier to scan */
@@ -571,7 +595,7 @@ main section form select {
     width: 100%;
     box-sizing: border-box;
     padding: 0.65rem 0.7rem;
-    font-size: 1.05rem;
+    font-size: 1.3rem;
     border: 1px solid var(--border-soft);
     border-radius: 5px;
     background: var(--surface-raised);
@@ -593,6 +617,7 @@ main section form select:focus {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 2px var(--accent-soft);
+    background-color: var(--bg);
 }
 
 /* Checkbox rows spaced and readable */
@@ -606,7 +631,6 @@ main section form .checkbox-row {
 
 main section form .checkbox-row input[type="checkbox"] {
     margin-right: 0.5rem;
-    transform: translateY(1px);
 }
 
 main section form .checkbox-row label {
@@ -654,7 +678,7 @@ body:has(main form) main > section {
 .error {
     display: none;
     margin-top: 0.3rem;
-    font-size: 0.85rem;
+    font-size: 1.2rem;
     color: #d9534f;
 }
 
@@ -674,6 +698,7 @@ select:invalid {
 #saveBtn,
 #cancelBtn {
     padding: 14px 20px !important;
+    margin-right: 15px;
     border-radius: 10px !important;
     border: none !important;
     height: auto !important;
@@ -693,4 +718,11 @@ select:invalid {
 #cancelBtn:hover {
     transform: scale(1.05);
     color: #fff !important;
+}
+
+aboutLinks > a {
+  text-decoration: none;
+  font-weight: 800;
+  color: rgb(221, 11, 11) !important;
+  transition-duration: 0.4s;
 }

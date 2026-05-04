@@ -3,8 +3,44 @@ import { ClientHouseController } from "./controllers/ClientHouseController.mjs";
 // if editing, then need to populate fields, else leave blank. 
 // ClientHouseController.renderEditHouse();
 
+// TODO add calculate proce function and call in add/update modes
 
-//TODO  update()
+// TODO fetch company list and details
+
+// TODO fetch pricing data
+
+// TODO delete function
+
+// TODO Search and sort 
+
+// TODO send to showcase (and maybe remove button if already there)
+
+function addHouse() {
+
+    let extras = [];
+    const bi = document.getElementById("builtIns");
+    if (bi.checked) extras.push("Built-in Wardrobe")
+
+    const dg = document.getElementById("doubleGlazing");
+    if (dg.checked) extras.push("Double Glazing Windows")
+    const sp = document.getElementById("solarPanels");
+    if (sp.checked) extras.push("Solar Panel Installation (Standard)")
+
+    const newHouse = {
+        title: document.getElementById("title").value,
+        companyName: document.getElementById("companyName").value,
+        bathrooms: document.getElementById("bathrooms").value,
+        extras: extras,
+        floorAreaSqm: document.getElementById("floorAreaSqm").value,
+        garages: document.getElementById("garages").value,
+        rooms: document.getElementById("rooms").value,
+        storyCount: document.getElementById("storyCount").value,
+        totalCost: document.getElementById("totalCost").getAttribute("data-id")
+    }
+
+    ClientHouseController.addHouse(newHouse);
+}
+
 function updateHouse() {
 
     let parameters = window.location.href.split("/");
@@ -12,11 +48,12 @@ function updateHouse() {
 
     let extras = [];
     const bi = document.getElementById("builtIns");
-    if (bi.checked) extras.push(bi.value)
+    if (bi.checked) extras.push("Built-in Wardrobe")
+
     const dg = document.getElementById("doubleGlazing");
-    if (dg.checked) extras.push(dg.value)
+    if (dg.checked) extras.push("Double Glazing Windows")
     const sp = document.getElementById("solarPanels");
-    if (sp.checked) extras.push(sp.value)
+    if (sp.checked) extras.push("Solar Panel Installation (Standard)")
 
     const newHouse = {
         id: houseId,
@@ -45,7 +82,6 @@ window.addEventListener("DOMContentLoaded", () => {
         console.log('edit');
         let parameters = window.location.href.split("/");
         let houseId = parameters[parameters.length - 1];
-
         const house = ClientHouseController.getHouse(houseId);
 
         if (house.length > 0) {
@@ -165,6 +201,17 @@ document.addEventListener("input", () => {
     }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("form");
+    const saveBtn = document.getElementById("saveBtn");
+
+    if (form.checkValidity()) {
+        saveBtn.style.display = "inline-block";
+    } else {
+        saveBtn.style.display = "none";
+    }
+});
 
 // expose update to client (as this is a module)
 window.updateHouse = updateHouse;
+// window.updateHouse = addHouse;

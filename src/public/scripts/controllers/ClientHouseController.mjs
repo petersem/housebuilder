@@ -9,7 +9,8 @@ export class ClientHouseController {
 
   /**
    * renderHouses - Builds HTML elements, based upon the contents of houses in local storage 
-   */
+   * @returns {void} 
+  */
   static renderHouses() {
     // get house list and clear houses before load
     let houseList = document.getElementById("house-list");
@@ -150,13 +151,18 @@ export class ClientHouseController {
   static getPricing() {
   }
 
+  /**
+   * getHouse - Gets a house object, given the house ID
+   * @param {number} id 
+   * @returns {house[]} house object
+   */
   static getHouse(id) {
     return ClientHouseModel.select(house => house.id == id)
   }
 
   /**
    * Get House List
-   * @returns All client houses
+   * @returns {house[]} All client houses
    */
   static GetHouseList() {
     return ClientHouseModel.select();
