@@ -44,9 +44,21 @@ toggle.onclick = () => {
 
 // manage legend popup clicks
 document.getElementById('legend-btn').addEventListener('click', () => {
-  const btn = document.getElementById('legend-btn');
-  const popup = document.getElementById('legend-popup');
+    const btn = document.getElementById('legend-btn');
+    const popup = document.getElementById('legend-popup');
 
-  popup.classList.toggle('show');
-  btn.classList.toggle('show');
+    popup.classList.toggle('show');
+    btn.classList.toggle('show');
 });
+
+function toast(message, duration = 3000) {
+    Toastify({
+        text: message,
+        duration: duration,
+        close: true,
+        gravity: "top", // top or bottom
+        position: "right", // left, center or right
+        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+    }).showToast();
+}

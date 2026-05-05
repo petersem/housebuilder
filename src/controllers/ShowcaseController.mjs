@@ -277,7 +277,7 @@ export class ShowcaseController {
      * @param {Response} res response object 
      */
     static createHouse(req, res) {
-
+//TODO make sure there are no duplicate ID houses added.
         // validate fields and exit if errors
         const result = validationResult(req);
         const readErrs = ShowcaseController.checkValidationErrors(req, res);

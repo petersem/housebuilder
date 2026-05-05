@@ -28,7 +28,7 @@ export const limiterOptions = {
         return res.status(options.statusCode).send(`Rate limit execeeded for ${req.ip.replace('::ffff:','')}. ${options.message} (after ${options.windowMs/60/1000} minutes)`);
     },
     skip: (req, res) => allowList.includes(req.ip.replace('::ffff:','')) // use whitelist
-    // store: ... , // Redis, Memcached, etc. See below.
+    // TODO - store: ... , // Redis, Memcached, etc.
 }
 
 // cors

@@ -7,27 +7,12 @@ function houseDelete(id) {
   const params = id.split("||");
   
   if (window.confirm(`DELETE:\n     ${params[1]}?`)) {
-      // TODO - change logic to a client side call to remove 
-    // fetch("/showcase/delete/", {
-    //   method: "DELETE",
-    //   headers: {
-    //     "Content-type": "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     "houseId": params[0]
-    //   })
-    // })
-    // .then(response => window.location.reload(true));
+    ClientHouseController.deleteHouse(params[0]);
   } 
-
 }
 
 function houseEdit(id) {
   window.location.href = "/housebuilder/" + id;
-}
-
-function houseAddShowcase(id) {
-
 }
 
 /**
@@ -109,7 +94,7 @@ document.addEventListener("click", function (e) {
     }
 });
 
-// add listeners for delete buttons using the house ID from the data-id attribute
+// add listeners for edit buttons using the house ID from the data-id attribute
 document.addEventListener("click", function (e) {
     if (e.target.matches(".edit-btn")) {
         const id = e.target.dataset.id;
@@ -117,11 +102,15 @@ document.addEventListener("click", function (e) {
     }
 });
 
-// add listeners for delete buttons using the house ID from the data-id attribute
+// add listeners for add buttons using the house ID from the data-id attribute
 document.addEventListener("click", function (e) {
     if (e.target.matches(".showcase-btn")) {
         const id = e.target.dataset.id;
-        houseAddShowcase(id);
+        const house = ClientHouseController.GetHouseList().find(h => h.id == id);
+        ClientHouseController.sendToShowcase(house);
+
+
+        
     }
 });
 
@@ -149,3 +138,5 @@ document.addEventListener("click", function (e) {
 // expose functions globally, as setting this as a module type removed them from global scope.
 window.search = search;
 window.sort = sort;
+window.houseDelete = houseDelete;
+

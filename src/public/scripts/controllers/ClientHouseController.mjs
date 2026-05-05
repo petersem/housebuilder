@@ -14,7 +14,7 @@ export class ClientHouseController {
   static renderHouses() {
     // get house list and clear houses before load
     let houseList = document.getElementById("house-list");
-    houseList.innerHTML = ""; 
+    houseList.innerHTML = "";
 
     // build article
     ClientHouseController.GetHouseList().forEach(house => {
@@ -98,29 +98,29 @@ export class ClientHouseController {
       // card actions
       let cardActions = document.createElement("div");
       cardActions.className = "card-actions";
-      
+
       // delete button
       let dltLink = document.createElement("a");
       dltLink.className = "delete-btn";
-      dltLink.href="#";
+      dltLink.href = "#";
       dltLink.setAttribute('data-id', house.id + "||" + house.title);
       dltLink.innerText = "Delete"
       dltLink.title = "Delete house"
       cardActions.appendChild(dltLink);
-      
+
       // edit button
       let edtLink = document.createElement("a");
       edtLink.className = "edit-btn";
-      edtLink.href="#";
-      edtLink.setAttribute('data-id', house.id );
+      edtLink.href = "#";
+      edtLink.setAttribute('data-id', house.id);
       edtLink.innerText = "Edit"
       edtLink.title = "Edit house"
       cardActions.appendChild(edtLink);
-      
+
       // showcase button
       let scLink = document.createElement("a");
       scLink.className = "showcase-btn";
-      scLink.href="#";
+      scLink.href = "#";
       scLink.setAttribute('data-id', house.id);
       scLink.innerText = "Showcase"
       scLink.title = "Add to showcase"
@@ -140,14 +140,17 @@ export class ClientHouseController {
 
   }
 
+  // TODO - implement calculate 
   static calculatePrice(house) {
 
   }
 
+  // TODO  - call server side get companies
   static getCompanies() {
 
   }
 
+  // TODO - call server-side get pricing
   static getPricing() {
   }
 
@@ -168,13 +171,17 @@ export class ClientHouseController {
     return ClientHouseModel.select();
   }
 
-  static createHouse(){
-
+  static addHouse(newHouse) {
+    const houseToAdd = new ClientHouseModel(null, newHouse.title, newHouse.companyName, newHouse.rooms, newHouse.bathrooms, newHouse.garages, newHouse.floorAreaSqm, newHouse.storyCount, newHouse.totalCost, newHouse.extras);
+    ClientHouseModel.insert(houseToAdd);
+    window.location.href = "/housebuilder";
   }
 
+  /**
+   * Updates house details
+   * @param {object} updatedHouse 
+   */
   static updateHouse(updatedHouse) {
-
-
     const houseToUpdate = ClientHouseModel.select(house => house.id == updatedHouse.id);
     houseToUpdate.title = updatedHouse.title;
     houseToUpdate.company = updatedHouse.company;
@@ -186,18 +193,35 @@ export class ClientHouseController {
     houseToUpdate.extras = updatedHouse.extras;
 
     ClientHouseModel.update(house => house.id == updatedHouse.id, updatedHouse);
-    
+
     window.location.href = "/housebuilder";
 
     // TODO: also update showcase if published there
   }
 
+  // TODO implement delete house and remove from local storage, also remove from showcase if published there
   static deleteHouse(id) {
+    ClientHouseModel.delete(house => house.id == id);
+    ClientHouseController.renderHouses();
 
-    // delete from showcase also
+    // TODO - delete from showcase also if published there
+
   }
 
-  static sendToShowcase() {
+  // TODO implement add to showcase, also add to server side showcase
+  static sendToShowcase(house) {
+    fetch("/showcase/add/", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        "Idempotency-Key": crypto.randomUUID() // generate a unique id for this request to prevent duplicate calls
+      },
+      body: JSON.stringify(house)
+    })
+      .then(response => ClientHouseController.renderHouses());
 
+
+    toast("House sent to showcase!");
   }
+
 }

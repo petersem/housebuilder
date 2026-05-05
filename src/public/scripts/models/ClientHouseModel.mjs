@@ -39,6 +39,21 @@ export class ClientHouseModel extends ClientDataModel {
         localStorage.clear;
         localStorage.setItem("houses", JSON.stringify(houses))
     }
+
+    // override insert to also save to local storage
+    static insert(entry) {
+        super.insert(entry);
+        const houses = ClientHouseModel.select();
+        localStorage.clear;
+        localStorage.setItem("houses", JSON.stringify(houses))
+    }
+
+    static delete(filter) {
+        super.delete(filter);
+        const houses = ClientHouseModel.select();
+        localStorage.clear;
+        localStorage.setItem("houses", JSON.stringify(houses))
+    }
 }
 
 // Create sample data

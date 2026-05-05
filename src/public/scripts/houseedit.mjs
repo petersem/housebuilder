@@ -15,6 +15,12 @@ import { ClientHouseController } from "./controllers/ClientHouseController.mjs";
 
 // TODO send to showcase (and maybe remove button if already there)
 
+function deleteHouse() {
+    let parameters = window.location.href.split("/");
+    let houseId = parameters[parameters.length - 1];
+    ClientHouseController.deleteHouse(id);
+}
+
 function addHouse() {
 
     let extras = [];
@@ -78,8 +84,12 @@ window.addEventListener("DOMContentLoaded", () => {
     if (window.location.href.toLowerCase().includes("housebuilder/create")) {
         // dont do anything 
         console.log('new');
+        populateCompanyDropdown("companyName", companies);
+        document.getElementById("saveBtn").onclick = addHouse;
     } else {
         console.log('edit');
+        document.getElementById("saveBtn").onclick = updateHouse;
+
         let parameters = window.location.href.split("/");
         let houseId = parameters[parameters.length - 1];
         const house = ClientHouseController.getHouse(houseId);
@@ -144,6 +154,7 @@ function cleanString(str) {
  * @returns 
  */
 function populateCompanyDropdown(selectId, companies, selectedValue) {
+    // TODO - get this data from fetch of company api
     const sel = document.getElementById(selectId);
     if (!sel) return;
 
@@ -214,4 +225,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // expose update to client (as this is a module)
 window.updateHouse = updateHouse;
-// window.updateHouse = addHouse;
+window.createHouse = addHouse;

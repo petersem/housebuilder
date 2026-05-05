@@ -8,6 +8,9 @@
   --text-strong: #111;
   --pageTitle: #660000;
 
+  --link: #07db04;
+  --link-hover: #eb1b1b;
+
   --card-bg: #ffffff;
   --surface: var(--card-bg);
   --surface-raised: #ffffff;
@@ -72,6 +75,17 @@ header h1 {
 html, body {
   height: 100%;
   margin: 0;
+}
+
+#aboutLinks > ul > a:link,
+#aboutLinks > ul > a:visited,
+#aboutLinks > ul > a:active {
+  color: var(--link);
+
+}
+
+#aboutLinks > ul > a:hover {
+  color: var(--link-hover);
 }
 
 body {

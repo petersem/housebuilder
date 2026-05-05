@@ -1,6 +1,6 @@
 {
   "name": "housebuilder",
-  "version": "1.10.4",
+  "version": "1.10.5",
   "description": "",
   "main": "server.mjs",
   "scripts": {
@@ -28,6 +28,7 @@
     "express-validator": "^7.3.1",
     "helmet": "^8.1.0",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "toastify-js": "^1.12.0"
   }
 }
