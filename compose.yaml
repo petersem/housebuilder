@@ -1,5 +1,5 @@
 services:
-  basics:
+  housebuilder:
     image: housebuilder
     container_name: housebuilder
     build:

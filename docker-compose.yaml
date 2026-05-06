@@ -1,5 +1,5 @@
 services:
-  basics:
+  housebuilder:
     image: petersem/housebuilder:latest
     container_name: housebuilder
     environment:
