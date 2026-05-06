@@ -1,4 +1,4 @@
-name: Build Docker image and then push to DockerHub
+name: Build Docker dev image and then push to DockerHub (for *ANY* push or PR)
 on:
   push:
     branches: [ main ]
@@ -9,22 +9,31 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-container:
-    name: Build container
-    runs-on: ubuntu-latest
+  build-and-push-image:
+    runs-on: "ubuntu-latest"
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Push to Docker Hub
-        uses: docker/build-push-action@v1
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Set up Docker QEMU"
+        uses: docker/setup-qemu-action@v3
+
+      - name: "Set up Docker Buildx"
+        uses: docker/setup-buildx-action@v3
+
+      - name: "Log in to Docker Hub"
+        uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: petersem/housebuilder
-          tags: latest, ${{ github.run_number }}
-      - name: Run a one-line script
-        run: echo Hello, world!
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: "Build and push Docker image dev tag"
+        uses: docker/build-push-action@v5
+        with:
+          context: "."
+          platforms: "linux/amd64,linux/arm64"
+          push: true
+          tags: |
+            "${{ github.repository }}:development"
+          
