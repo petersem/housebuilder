@@ -13,6 +13,7 @@
     <main>
         <%- include("partials/menu.ejs") %>
             <section>
+                <h6>House list</h6>
                 <span id="pageTitle">
                     &nbsp;&nbsp;<i class="fa-duotone fa-light fa-user-helmet-safety"></i>&nbsp;&nbsp;<%= title %>
                 </span>
@@ -21,7 +22,7 @@
                     <label for="searchBox"></label><input id="searchBox" placeholder="Search title..." value=""
                         onkeyup="search()">
 
-                    <select id="sort" onchange="sort()" data-id=""">
+                    <select id="sort" onchange="sort()" data-id="">
                     <option value=" unsorted">
                         No sort
                         </option>

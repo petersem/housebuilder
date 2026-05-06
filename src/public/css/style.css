@@ -1,21 +1,4 @@
-/*
-* Prefixed by https://autoprefixer.github.io
-* PostCSS: v8.4.14,
-* Autoprefixer: v10.4.7
-* Browsers: last 4 version
-*/
-
-/*
-* Prefixed by https://autoprefixer.github.io
-* PostCSS: v8.4.14,
-* Autoprefixer: v10.4.7
-* Browsers: last 4 version
-*/
-
-/* ------------------------------
-   THEME VARIABLES
------------------------------- */
-
+/*  THEME VARIABLES  */
 :root {
   --bg: #ebe7d8;
   --text: #222;
@@ -85,7 +68,6 @@ header h1 {
 }
 
 
-
 html, body {
   height: 100%;
   margin: 0;
@@ -128,6 +110,10 @@ main {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+}
+
+main > section > h6 {
+  display: none;
 }
 
 main > section {
