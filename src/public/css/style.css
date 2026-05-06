@@ -112,7 +112,7 @@ main {
           flex-direction: column;
 }
 
-main > section > h6 {
+main > section h2 {
   display: none;
 }
 
