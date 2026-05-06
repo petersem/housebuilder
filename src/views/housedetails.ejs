@@ -6,6 +6,7 @@
         <%= title %>
     </title>
     <%- include("partials/head.ejs") %>
+    <!-- TODO this probably needs to move to a NEW controller -->
         <script src="/scripts/houseedit.mjs" type="module"></script>
 </head>
 
@@ -21,7 +22,7 @@
                 <section>
                     <h2>House details</h2>
                     <form>
-                        <span class="money" id="totalCost" value="">$0</span>
+                        <span class="money" id="totalCost">$0</span>
 
                         <label for="title">Title</label>
                         <input id="title" name="title" required pattern="^(?!.*  )[A-Za-z0-9 .,'&\-]{3,30}$" type="text"
@@ -29,7 +30,7 @@
                         <span class="error">Must be 3 to 30 characters in length, with no double spaces</span>
 
                         <label for="companyName">Company</label>
-                        <select id="companyName" name="companyName" type="select" required>
+                        <select id="companyName" name="companyName" required>
                             <option value="" disabled selected>Select a company…</option>
                             <option value="a">a</option>
                             <option value="b">b</option>
