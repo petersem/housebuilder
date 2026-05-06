@@ -5,6 +5,13 @@
 * Browsers: last 4 version
 */
 
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
 /* ------------------------------
    THEME VARIABLES
 ------------------------------ */
@@ -320,20 +327,19 @@ header {
           transform: none;
 }
 
-/* Popup */
 #legend-popup {
   position: absolute;
-  top: 100%;            /* directly below the button */
-left: 50%;
--webkit-transform: translateX(-55%);
-    -ms-transform: translateX(-55%);
-        transform: translateX(-55%);
-  margin-top: 6px;      /* small gap */
-  text-align: left;
+  top: 100%;
+  right: 20px;          /* align popup to the right edge of the button */
+  left: auto;        /* cancel the old centering */
+  -webkit-transform: none;
+      -ms-transform: none;
+          transform: none;   /* remove the centering shift */
+  margin-top: 6px;
   background: var(--card-bg);
   color: var(--text);
   border: 1px solid var(--text);
-  padding: 0.5rem 0.75rem;
+  padding: 0 0.75rem;
   border-radius: 10px;
   font-size: 0.85rem;
   width: 180px;
@@ -341,13 +347,21 @@ left: 50%;
   z-index: 999;
 }
 
+#legend-popup > div {
+  margin-bottom: 0.5rem;
+}
+
 #legend-popup > h2 {
   color: var(--pageTitle);
 }
             
 
+#legend-popup {
+    display: none;
+}
+
 #legend-popup.show {
-  display: block;
+    display: block;
 }
 
 
