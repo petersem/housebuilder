@@ -116,6 +116,11 @@ main > section h2 {
   display: none;
 }
 
+
+article h3 {
+  display: none;
+}
+
 main > section {
   -webkit-box-flex: 1;
       -ms-flex: 1;

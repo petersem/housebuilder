@@ -6,8 +6,8 @@
         <%= title %>
     </title>
     <%- include("partials/head.ejs") %>
-    <!-- set as module type because i am calling in clientHouseController code for the hide/show of delete button logic -->
-        <script src="/scripts/showcase.mjs" type="module" defer></script>
+    <!-- TODO - Check if this is in the brief -- set as module type because i am calling in clientHouseController code for the hide/show of delete button logic -->
+        <script src="/scripts/showcase.mjs" type="module"></script>
 </head>
 
 <body>
@@ -21,7 +21,7 @@
                 </span>
 
                 <div id="search-sort-row">
-                    <label for="searchBox"></label><input id="searchBox" placeholder="Search title..." value="<%=searchTerm%>" onkeyup="search()" />
+                    <label for="searchBox"></label><input id="searchBox" placeholder="Search title..." value="<%=searchTerm%>" onkeyup="search()">
 
 
                     <label for="sort"></label><select id="sort" onchange="sort()" data-id="<%=sortTerm%>">
@@ -39,6 +39,7 @@
                             <% let money=new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3
                                 }).format(house.totalCost); %>
                                 <span class="money">$<%= money %></span>
+                                <h3>House</h3>
                                 <span class="title">
                                     <%= house.title %>
                                 </span>
