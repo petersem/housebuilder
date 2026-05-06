@@ -116,8 +116,11 @@ main > section h2 {
   display: none;
 }
 
-
 article h3 {
+  display: none;
+}
+
+main > section > section > h3 {
   display: none;
 }
 
