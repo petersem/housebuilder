@@ -20,10 +20,10 @@
                 </span>
 
                 <div id="search-sort-row">
-                    <input id="searchBox" placeholder="Search title..." value="<%=searchTerm%>" onkeyup="search()" />
+                    <label for="searchBox"></label><input id="searchBox" placeholder="Search title..." value="<%=searchTerm%>" onkeyup="search()" />
 
 
-                    <select id="sort" onchange="sort()" data-id="<%=sortTerm%>">
+                    <label for="sort"></label><select id="sort" onchange="sort()" data-id="<%=sortTerm%>">
                         <% sortOptions.forEach(option=> { %>
                             <option value="<%= option.value %>">
                                 <%= option.label %>

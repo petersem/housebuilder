@@ -36,9 +36,11 @@ toggle.onclick = () => {
     if (dark) {
         icon.classList.remove("fa-moon");
         icon.classList.add("fa-sun");
+        ariaLabel = "Dark Theme";
     } else {
         icon.classList.remove("fa-sun");
         icon.classList.add("fa-moon");
+        ariaLabel = "Light Theme";
     }
 };
 

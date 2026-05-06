@@ -21,6 +21,7 @@
     "tree2folder": "^1.0.8"
   },
   "dependencies": {
+    "autoprefixer": "^10.5.0",
     "cors": "^2.8.6",
     "ejs": "^5.0.1",
     "express": "^5.2.1",
