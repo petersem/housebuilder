@@ -16,7 +16,6 @@ export default class PricingModel extends DataModel {
         this.perSqm = perSqm;
         this.extras = extras;
     }
-
 }
 
 // Load static sample data. In the future we will use a database instead.

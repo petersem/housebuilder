@@ -1,19 +1,8 @@
-import { ClientHouseController } from "./controllers/ClientHouseController.mjs";
+import { ClientHouseListController } from "./controllers/ClientHouseListController.mjs";
 
-ClientHouseController.renderHouses();
+// ClientHouseListController.renderHouses();
 
-function houseDelete(id) {
 
-  const params = id.split("||");
-  
-  if (window.confirm(`DELETE:\n     ${params[1]}?`)) {
-    ClientHouseController.deleteHouse(params[0]);
-  } 
-}
-
-function houseEdit(id) {
-  window.location.href = "/housebuilder/" + id;
-}
 
 /**
  * debounce function to limit the rate at which a function can fire.
@@ -86,33 +75,7 @@ if (searchBox.value != "" || window.innerWidth > 600) {
   searchBox.selectionStart = searchBox.selectionEnd = searchBox.value.length;
 }
 
-// add listeners for delete buttons using the house ID from the data-id attribute
-document.addEventListener("click", function (e) {
-    if (e.target.matches(".delete-btn")) {
-        const id = e.target.dataset.id;
-        houseDelete(id);
-    }
-});
 
-// add listeners for edit buttons using the house ID from the data-id attribute
-document.addEventListener("click", function (e) {
-    if (e.target.matches(".edit-btn")) {
-        const id = e.target.dataset.id;
-        houseEdit(id);
-    }
-});
-
-// add listeners for add buttons using the house ID from the data-id attribute
-document.addEventListener("click", function (e) {
-    if (e.target.matches(".showcase-btn")) {
-        const id = e.target.dataset.id;
-        const house = ClientHouseController.GetHouseList().find(h => h.id == id);
-        ClientHouseController.sendToShowcase(house);
-
-
-        
-    }
-});
 
 // set the sort value, based upon selected previous value before refresh
 // const sortOptions =  document.getElementById('sort');
@@ -121,7 +84,7 @@ document.addEventListener("click", function (e) {
 
 // // Set the showcase to add or delete, depending if the local house is already in the showcase
 // //
-// const localStorageHouses = ClientHouseController.GetHouseList(); // get localStorageHouses
+// const localStorageHouses = ClientHouseListController.GetHouseList(); // get localStorageHouses
 // // get all the delete buttons on the showcase page
 // const articles = document.querySelectorAll('.showcase-btn[data-id]');
 
@@ -135,8 +98,5 @@ document.addEventListener("click", function (e) {
 //   }
 // });
 
-// expose functions globally, as setting this as a module type removed them from global scope.
-window.search = search;
-window.sort = sort;
-window.houseDelete = houseDelete;
+
 

@@ -7,7 +7,14 @@
     </title>
     <%- include("partials/head.ejs") %>
     <!-- TODO this probably needs to move to a NEW controller -->
-        <script src="/scripts/houseedit.mjs" type="module"></script>
+        <!-- <script src="/scripts/houseedit.mjs" type="module"></script> -->
+
+        <script type="module">
+            import { ClientHouseBuilderController } from "/scripts/controllers/ClientHouseBuilderController.mjs";
+            window.addEventListener("DOMContentLoaded", () => {
+                ClientHouseBuilderController.renderEdit();
+            });
+        </script>
 </head>
 
 <body>

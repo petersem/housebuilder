@@ -8,6 +8,10 @@
     <%- include("partials/head.ejs") %>
     <!-- TODO - Check if this is in the brief - set as module type because i am calling in clientHouseController code for the hide/show of delete button logic -->
         <script src="/scripts/showcase.mjs" type="module"></script>
+        <!-- // needed so i can run client click/selected events for search and sort, and use things like debounce. 
+        <script type="module">
+            import { ClientHouseListController } from "../controllers/ShowcaseController.mjs";
+        </script> -->
 </head>
 
 <body>

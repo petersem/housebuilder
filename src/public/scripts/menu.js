@@ -44,7 +44,10 @@ toggle.onclick = () => {
     }
 };
 
-// manage legend popup clicks
+/**
+ * Toggle the visibility of the legend popup when the legend button is clicked
+ * and toggle the "show" class on the button itself for styling purposes.
+ */
 document.getElementById('legend-btn').addEventListener('click', () => {
     const btn = document.getElementById('legend-btn');
     const popup = document.getElementById('legend-popup');
@@ -53,14 +56,33 @@ document.getElementById('legend-btn').addEventListener('click', () => {
     btn.classList.toggle('show');
 });
 
-function toast(message, duration = 3000) {
+/**
+ * toast - generate toast notification
+ * @param {String} message 
+ * @param {Number} duration in milliseconds (default is 3000ms)
+ * @param {String} msgType - null for normal, "error" for error (default is null)
+ */
+function toast(message, duration = 3000, msgType = "") {
+    let col = "#000000";
+    let brdr = "#222";
+    if (msgType == "error") {
+        col = "#ff0000";
+        brdr = "#ff0000";
+    }
     Toastify({
         text: message,
         duration: duration,
         close: true,
         gravity: "top", // top or bottom
         position: "right", // left, center or right
-        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+        style: {
+            "background": "#ffffff",
+            "color": col,
+            "border-radius": "10px",
+            "border": `1px solid ${brdr}`,
+            "font-weight": "bold",
+            "box-shadow": "0 0 10px rgba(0, 0, 0, 0.8)"
+        },
         stopOnFocus: true, // Prevents dismissing of toast on hover
     }).showToast();
 }

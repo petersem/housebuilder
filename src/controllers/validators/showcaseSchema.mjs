@@ -149,11 +149,11 @@ export const updateShowcaseValidationSchema = {
     rooms: {
         isInt: {
             options: {
-                min: 3,
+                min: 1,
                 max: 15
             },
             errorMessage:
-                "must be a whole number from 3 to 15"
+                "must be a whole number from 1 to 15"
         },
         notEmpty: {
             errorMessage: 
@@ -205,11 +205,11 @@ export const updateShowcaseValidationSchema = {
     floorAreaSqm: {
         isInt: {
             options: {
-                min: 200,
+                min: 100,
                 max: 800
             },
             errorMessage:
-                "must be a whole number from 200 to 800"
+                "must be a whole number from 100 to 800"
         },
         notEmpty: {
             errorMessage: 

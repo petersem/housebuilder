@@ -1,4 +1,4 @@
-import { ClientHouseController } from "./controllers/ClientHouseController.mjs";
+import { ClientHouseListController } from "./controllers/ClientHouseListController.mjs";
 
 // TODO - Show a toggle to only show your own sc items, or everyones. 
 
@@ -93,7 +93,7 @@ if (searchBox.value != "" || window.innerWidth > 600) {
   searchBox.selectionStart = searchBox.selectionEnd = searchBox.value.length;
 }
 
-// add listeners for delete buttons using the house ID from the data-id attribute
+// add listener for delete buttons using the house ID from the data-id attribute
 document.addEventListener("click", function (e) {
     if (e.target.matches(".delete-btn")) {
         const id = e.target.dataset.id;
@@ -108,7 +108,7 @@ sortOptions.value=sortOptions.dataset.id;
 
 // Remove delete button for any house witch doesn have an entry in local storage
 //
-const localStorageHouses = ClientHouseController.GetHouseList(); // get localStorageHouses
+const localStorageHouses = ClientHouseListController.GetHouseList(); // get localStorageHouses
 // get all the delete buttons on the showcase page
 const articles = document.querySelectorAll('.delete-btn[data-id]');
 // check showcase delete buttons to see if they have matching data-id to local storage houses, then show dlt button

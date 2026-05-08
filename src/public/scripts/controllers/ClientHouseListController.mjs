@@ -1,11 +1,9 @@
-import { ClientDataModel } from "../models/ClientDataModel.mjs";
 import { ClientHouseModel } from "../models/ClientHouseModel.mjs";
-
 
 /**
  * Manages houses stored in the client local storage.
  */
-export class ClientHouseController {
+export class ClientHouseListController {
 
   /**
    * renderHouses - Builds HTML elements, based upon the contents of houses in local storage 
@@ -17,7 +15,7 @@ export class ClientHouseController {
     houseList.innerHTML = "";
 
     // build article
-    ClientHouseController.GetHouseList().forEach(house => {
+    ClientHouseListController.GetHouseList().forEach(house => {
       let article = document.createElement("article");
       let moneySpan = document.createElement("span");
       moneySpan.className = "money";
@@ -137,21 +135,32 @@ export class ClientHouseController {
       // add article
       houseList.appendChild(article);
     });
+    
+    // add listeners for delete buttons using the house ID from the data-id attribute
+    document.addEventListener("click", function (e) {
+      if (e.target.matches(".delete-btn")) {
+        const id = e.target.dataset.id;
+        ClientHouseListController.deleteConfirm(id);
+      }
+    });
 
-  }
+    // add listeners for edit buttons using the house ID from the data-id attribute
+    document.addEventListener("click", function (e) {
+      if (e.target.matches(".edit-btn")) {
+        const id = e.target.dataset.id;
+        ClientHouseListController.editHouse(id);
+      }
+    });
 
-  // TODO - implement calculate 
-  static calculatePrice(house) {
+    // add listeners for add buttons using the house ID from the data-id attribute
+    document.addEventListener("click", function (e) {
+      if (e.target.matches(".showcase-btn")) {
+        const id = e.target.dataset.id;
+        const house = ClientHouseListController.GetHouseList().find(h => h.id == id);
+        ClientHouseListController.sendToShowcase(house);
+      }
+    });
 
-  }
-
-  // TODO  - call server side get companies
-  static getCompanies() {
-
-  }
-
-  // TODO - call server-side get pricing
-  static getPricing() {
   }
 
   /**
@@ -169,6 +178,19 @@ export class ClientHouseController {
    */
   static GetHouseList() {
     return ClientHouseModel.select();
+  }
+
+  static deleteConfirm(id) {
+
+    const params = id.split("||");
+
+    if (window.confirm(`DELETE:\n     ${params[1]}?`)) {
+      ClientHouseListController.deleteHouse(params[0]);
+    }
+  }
+
+  static editHouse(id) {
+    window.location.href = "/housebuilder/" + id;
   }
 
   static addHouse(newHouse) {
@@ -202,13 +224,29 @@ export class ClientHouseController {
   // TODO implement delete house and remove from local storage, also remove from showcase if published there
   static deleteHouse(id) {
     ClientHouseModel.delete(house => house.id == id);
-    ClientHouseController.renderHouses();
+    // delete from showcase, regardless if there
+    ClientHouseListController.deleteFromShowcase(id);
 
-    // TODO - delete from showcase also if published there
-
+    ClientHouseListController.renderHouses();
   }
 
-  // TODO implement add to showcase, also add to server side showcase
+
+  static async deleteFromShowcase(houseID) {
+    fetch("/showcase/delete/", {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+        "Idempotency-Key": crypto.randomUUID() // generate a unique id for this request to prevent duplicate calls
+      },
+      body: JSON.stringify({ "houseId": houseID })
+    })
+      .then(response => {
+        if (!response.ok) {
+          return response.statusText;
+        }
+      })
+  }
+
   static sendToShowcase(house) {
     fetch("/showcase/add/", {
       method: "POST",
@@ -218,10 +256,19 @@ export class ClientHouseController {
       },
       body: JSON.stringify(house)
     })
-      .then(response => ClientHouseController.renderHouses());
-
-
-    toast("House sent to showcase!");
+      .then(response => {
+        if (response.ok) {
+          toast("House sent to showcase!");
+        } else {
+          if (response.status == 409) {
+            toast("House already in showcase!", 3000, "error");
+          } else {
+            toast("Error sending to showcase: " + response.statusText, 3000, "error");
+          }
+          return response.statusText;
+        }
+      })
   }
+
 
 }

@@ -52,6 +52,11 @@ export class ShowcaseController {
             const x = a[prop];
             const y = b[prop];
 
+            if (prop.toLowerCase() == "totalCost") {
+                x = parseInt(x);
+
+            }
+
             if (typeof x === "number" && typeof y === "number") {
                 return direction === "asc" ? x - y : y - x;
             }
@@ -69,7 +74,7 @@ export class ShowcaseController {
      */
     static getSortValues(houses) {
         const sortArray = [];
-        sortArray.push({ value: "unsorted", label: "No Sort" });
+
         if (houses.length !== 0) {
             const props = Object.keys(houses[0]);
 
@@ -97,41 +102,8 @@ export class ShowcaseController {
                 }
             }
         }
-
-        return sortArray;
-    }
-
-    /**
-     * 
-     * @param {house} house a showcase house
-     * @returns {Number} The total price for the house
-     */
-    static costCalculator(house) {
-        const pricing = PricingModel.select();
-
-        let companyBasePrice = 0;
-        let totalRoomPrice = 0;
-        let totalBathroomPrice = 0;
-        let totalGarargePrice = 0;
-        let totalSqmPrice = 0;
-        let totalExtrasPrice = 0;
-
-        // get company base price
-        companyBasePrice = CompanyModel.select(comp => comp.name == house.companyName)[0].basePrice;
-
-        // calculate other costs
-        totalRoomPrice = house.rooms * pricing[0].perRoom;
-        totalBathroomPrice = house.rooms * pricing[0].perBathroom;
-        totalGarargePrice = house.garages * pricing[0].perGarage;
-        totalSqmPrice = house.floorAreaSqm * pricing[0].perSqm;
-
-        // calculate any extras
-        house.extras.forEach(extra => {
-            totalExtrasPrice += [pricing[0].extras.find((ex) => ex.extra == extra)][0].price;
-        });
-
-        // return total cost
-        return (companyBasePrice + totalRoomPrice + totalBathroomPrice + totalGarargePrice + totalSqmPrice + totalExtrasPrice);
+        sortArray.push({ value: "unsorted", label: "No Sort" });
+        return sortArray.reverse();
     }
 
     /**
@@ -276,15 +248,22 @@ export class ShowcaseController {
      * @param {Request} req request object
      * @param {Response} res response object 
      */
-    static createHouse(req, res) {
-//TODO make sure there are no duplicate ID houses added.
+    static async createHouse(req, res) {
+        let existingHouse;
+        existingHouse = ShowcaseModel.select(house => house.id == req.body.id);
+        // check if showcase house already present. If so, return 409 error
+        if (existingHouse.length > 0) {
+            res.setHeader('Content-Type', 'application/json');
+            return res.status(409).send({ errors: "Record with that ID already exists"});
+        }
+
         // validate fields and exit if errors
         const result = validationResult(req);
         const readErrs = ShowcaseController.checkValidationErrors(req, res);
         if (readErrs?.length > 0) {
             return res.status(400).send({ errors: readErrs })
         }
-
+        
         const id = req.body.id;
         const title = req.body.title;
         const companyName = req.body.companyName;
@@ -307,7 +286,6 @@ export class ShowcaseController {
         catch (err) {
             res.status(400);
             res.json({ message: "bad request", data: err.message })
-            throw err;
         } finally {
             res.end();
         }

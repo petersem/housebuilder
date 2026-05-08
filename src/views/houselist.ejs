@@ -6,7 +6,13 @@
         <%= title %>
     </title>
     <%- include("partials/head.ejs") %>
-        <script src="/scripts/houselist.mjs" type="module"></script>
+        <!-- <script src="/scripts/houselist.mjs" type="module"></script> -->
+        <script type="module">
+            import { ClientHouseListController } from "/scripts/controllers/ClientHouseListController.mjs";
+            window.addEventListener("DOMContentLoaded", () => {
+                ClientHouseListController.renderHouses();
+        });
+        </script>
 </head>
 
 <body>
