@@ -8,11 +8,11 @@ houseBuilderRoutes.get("/", (req, res) => {
     });
 
 houseBuilderRoutes.get("/create", (req, res) => {
-    res.render('housedetails.ejs', { title: "New House", ver: pkg.version });
+    res.render('housedetails.ejs', { title: "House Builder New", ver: pkg.version });
     });
 
 houseBuilderRoutes.get("/:houseID", (req, res) => {
-    res.render('housedetails.ejs', { title: "Edit House", ver: pkg.version });
+    res.render('housedetails.ejs', { title: "House Builder Edit", ver: pkg.version });
     });
 
 

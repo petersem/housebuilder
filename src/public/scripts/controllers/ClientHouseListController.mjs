@@ -263,7 +263,7 @@ export class ClientHouseListController {
           if (response.status == 409) {
             toast("House already in showcase!", 3000, "error");
           } else {
-            toast("Error sending to showcase: " + response.statusText, 3000, "error");
+            toast(`Error sending to showcase: ${response.statustext}`, 3000, "error");
           }
           return response.statusText;
         }

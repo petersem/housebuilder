@@ -110,17 +110,23 @@ export class ClientHouseBuilderController {
     });
   }
 
-
-  // TODO - implement calculate with companies and pricing data
   static async calculatePrice(house) {
     // load companies and pricing data
     const companyList = await ClientHouseBuilderController.getCompanies()
       .then(data => data)
-      .catch(err => console.error("Fetch error:", err));
+      .catch(err => { 
+        console.error("Fetch error:", err);
+        toast("Error fetching company data: " + err, 3000, "error");
+        return { data: [] }; // return empty data to prevent further errors
+      });
 
     const pricingList = await ClientHouseBuilderController.getPricing()
       .then(data => data)
-      .catch(err => console.error("Fetch error:", err));
+      .catch(err => { 
+        console.error("Fetch error:", err);
+        toast("Error fetching pricing data: " + err, 3000, "error");
+        return { data: [] }; // return empty data to prevent further errors
+      });
 
     const companies = companyList.data;
     const pricing = pricingList.data;
