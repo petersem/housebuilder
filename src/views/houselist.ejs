@@ -6,6 +6,7 @@
         <%= title %>
     </title>
     <%- include("partials/head.ejs") %>
+        <script src="/scripts/houselist.mjs" defer></script>
         <script type="module">
             import { ClientHouseListController } from "/scripts/controllers/ClientHouseListController.mjs";
             window.addEventListener("DOMContentLoaded", () => {
@@ -24,8 +25,7 @@
                 </span>
                 <div id="top-controls"></div>
                 <div id="search-sort-row">
-                    <label for="searchBox"></label><input id="searchBox" placeholder="Search title..." value=""
-                        onkeyup="search()">
+                    <label for="searchBox"></label><input id="searchBox" placeholder="Search title...">
 
                     <select id="sort" onchange="sort()" data-id="">
                     <option value=" unsorted">

@@ -16,7 +16,7 @@ export default class CompanyModel extends DataModel {
 
 // Load static sample data. In the future we will use a database instead.
 CompanyModel.setDataSource([
-    new CompanyModel("DreamBuild Homes", 170000, 4.5),
-    new CompanyModel("Value Builders", 150000, 4.0),
+    new CompanyModel("DreamBuild Homes", 170000, 3.8),
+    new CompanyModel("Value Builders", 150000, 2.6),
     new CompanyModel("Premium Living Co.", 200000, 4.8),
 ]);

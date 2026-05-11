@@ -24,7 +24,8 @@ export class ClientHouseListController {
    * renderHouses - Builds HTML elements, based upon the contents of houses in local storage 
    * @returns {void} 
   */
-  static async renderHouses() {
+  static async renderHouses(titleSearch = "", sortTerm = "") {
+
     // get house list and clear houses before load
     let houseList = document.getElementById("house-list");
     houseList.innerHTML = "";
@@ -33,16 +34,13 @@ export class ClientHouseListController {
       .then(data => data)
       .catch(err => console.error("Fetch error:", err));
 
-    console.log(companyList.data)
 
-
-    // build article
-    ClientHouseListController.GetHouseList().forEach(house => {
+    // build house article
+    const houses = ClientHouseListController.GetHouseList(titleSearch, sortTerm)
+    houses.forEach(house => {
       // add company star rating to each house
-      console.log(house.companyName)
       const company = companyList.data.find(c => c.name == house.companyName);
       if (company) {
-        console.log(company.rating)
         house.companyRating = company.rating;
       }
       else {
@@ -139,6 +137,7 @@ export class ClientHouseListController {
       // delete button
       let dltLink = document.createElement("a");
       dltLink.className = "delete-btn";
+      dltLink.id = "delete-btn";
       dltLink.href = "#";
       dltLink.setAttribute('data-id', house.id + "||" + house.title);
       dltLink.innerText = "Delete"
@@ -148,6 +147,7 @@ export class ClientHouseListController {
       // edit button
       let edtLink = document.createElement("a");
       edtLink.className = "edit-btn";
+      edtLink.id = "edit-btn"
       edtLink.href = "#";
       edtLink.setAttribute('data-id', house.id);
       edtLink.innerText = "Edit"
@@ -157,6 +157,7 @@ export class ClientHouseListController {
       // showcase button
       let scLink = document.createElement("a");
       scLink.className = "showcase-btn";
+      scLink.id = "showcase-btn";
       scLink.href = "#";
       scLink.setAttribute('data-id', house.id);
       scLink.innerText = "Showcase"
@@ -175,7 +176,11 @@ export class ClientHouseListController {
       houseList.appendChild(article);
     });
 
+    const sortList = ClientHouseListController.getSortValues(houses)
+    console.log(sortList)
+
     // add listeners for delete buttons using the house ID from the data-id attribute
+    ClientHouseListController.clearListeners('delete-btn');
     document.addEventListener("click", function (e) {
       if (e.target.matches(".delete-btn")) {
         const id = e.target.dataset.id;
@@ -184,6 +189,7 @@ export class ClientHouseListController {
     });
 
     // add listeners for edit buttons using the house ID from the data-id attribute
+    ClientHouseListController.clearListeners('edit-btn');
     document.addEventListener("click", function (e) {
       if (e.target.matches(".edit-btn")) {
         const id = e.target.dataset.id;
@@ -192,6 +198,7 @@ export class ClientHouseListController {
     });
 
     // add listeners for add buttons using the house ID from the data-id attribute
+    ClientHouseListController.clearListeners('showcase-btn');
     document.addEventListener("click", function (e) {
       if (e.target.matches(".showcase-btn")) {
         const id = e.target.dataset.id;
@@ -199,6 +206,29 @@ export class ClientHouseListController {
         ClientHouseListController.sendToShowcase(house);
       }
     });
+
+    // add search and sort listeners
+    ClientHouseListController.clearListeners('searchBox');
+    ClientHouseListController.clearListeners('sort');
+
+    const sb = document.getElementById("searchBox");
+    const srt = document.getElementById("sort");
+    sb.addEventListener("selected", (e) => {
+      ClientHouseListController.dSearch(sb.value, e.target.value);
+    });
+
+    sb.addEventListener("keyup", (e) => {
+      ClientHouseListController.dSearch(e.target.value, srt.value);
+    });
+
+    // set focus to title search and set cursor to end of text
+    // but not if search text is empty or in mobile view (stops keyboard from opening on focus in mobile)
+    const searchBox = document.getElementById('searchBox');
+    if (searchBox.value != "" || window.innerWidth > 600) {
+      searchBox.focus();
+      searchBox.selectionStart = searchBox.selectionEnd = searchBox.value.length;
+    }
+
 
   }
 
@@ -212,11 +242,99 @@ export class ClientHouseListController {
   }
 
   /**
+   * sortBy
+   * @param {Array} arr 
+   * @param {string} prop 
+   * @param {string} direction 
+   * @returns {Array} sorted array by the given property and direction 
+   */
+  static sortBy(arr, prop, direction = "asc") {
+    return arr.sort((a, b) => {
+      const x = a[prop];
+      const y = b[prop];
+
+      if (prop.toLowerCase() == "totalCost") {
+        x = parseInt(x);
+
+      }
+
+      if (typeof x === "number" && typeof y === "number") {
+        return direction === "asc" ? x - y : y - x;
+      }
+
+      return direction === "asc"
+        ? String(x).localeCompare(String(y))
+        : String(y).localeCompare(String(x));
+    });
+  }
+
+  /**
+   * getSortValues
+   * @param {Array} houses 
+   * @returns {Array} data for sort array
+   */
+  static getSortValues(houses) {
+    const sortArray = [];
+
+    if (houses.length !== 0) {
+      const props = Object.keys(houses[0]);
+
+      for (const k of props) {
+        if (k !== "id" && k !== "extras" && k != "companyRating") {
+          let label = k.charAt(0).toUpperCase() + k.slice(1);
+          switch (label) {
+            case "CompanyName":
+              label = "Company";
+              break;
+            case "FloorAreaSqm":
+              label = "Area";
+              break;
+            case "StoryCount":
+              label = "Stories";
+              break;
+            case "TotalCost":
+              label = "Price";
+              break;
+            default:
+              break;
+          }
+          sortArray.push({ value: `${k}|asc`, label: `${label}: asc` });
+          sortArray.push({ value: `${k}|desc`, label: `${label}: desc` });
+        }
+      }
+    }
+    sortArray.push({ value: "unsorted", label: "No Sort" });
+    return sortArray.reverse();
+  }
+
+  /**
    * Get House List
    * @returns {house[]} All client houses
    */
-  static GetHouseList() {
-    return ClientHouseModel.select();
+  static GetHouseList(titleSearch = "", sortTerm = "") {
+    let houses;
+
+    // manage title searches
+    let searchTerm = null
+    if (titleSearch.length > 0) {
+      houses = ClientHouseModel.select(house => house.title.toLowerCase().includes(titleSearch.toLowerCase()));
+      searchTerm = titleSearch;
+    } else {
+      houses = ClientHouseModel.select();
+      searchTerm = "";
+    }
+
+    if (sortTerm?.length > 0) {
+      const sortParams = sortTerm.split("|");
+      // Sort
+      houses = ClientHouseListController.sortBy(houses, sortParams[0], sortParams[1]);
+
+    } else {
+      sortTerm = "unsorted";
+    }
+
+
+    return houses;
   }
 
   /**
@@ -328,6 +446,41 @@ export class ClientHouseListController {
         }
       })
   }
+
+  /**
+   * debounce function to limit the rate at which a function can fire.
+   * @param {function} func takes a function to debounce
+   * @param {number} delay the delay time for the debounce in milliseconds
+   * @returns {void}
+   */
+  static debounce(func, delay) {
+    let timeout;
+    return function (...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        func.apply(this, args);
+      }, delay);
+    };
+  }
+
+  /**
+  * Debounced version of the search function to prevent excessive calls while typing. Adjust the delay as needed.
+  * @param {function} searchTitle The function to be debounced
+  * @param {Number} The debounce delay in milliseconds
+  * @returns {void}
+  */
+  static dSearch = ClientHouseListController.debounce(ClientHouseListController.renderHouses.bind(ClientHouseListController), 1000);
+
+  /**
+   * cloneNode - recreates an object without event listeners attached, but with everything else. 
+   * @param {DomObject} eId 
+   */
+  static clearListeners(eId) {
+    let old_element = document.getElementById(eId);
+    let new_element = old_element.cloneNode(true);
+    old_element.parentNode.replaceChild(new_element, old_element);
+  }
+
 
 
 }

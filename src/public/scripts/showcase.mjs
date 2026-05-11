@@ -1,7 +1,3 @@
-
-// TODO-MAYBE Extra credit- Show star ratings next to companies
-
-
 /**
  * debounce function to limit the rate at which a function can fire.
  * @param {function} func takes a function to debounce

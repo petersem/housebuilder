@@ -79,7 +79,7 @@ export class ShowcaseController {
             const props = Object.keys(houses[0]);
 
             for (const k of props) {
-                if (k !== "id" && k !== "extras") {
+                if (k !== "id" && k !== "extras" && k != "companyRating") {
                     let label = k.charAt(0).toUpperCase() + k.slice(1);
                     switch (label) {
                         case "CompanyName":
