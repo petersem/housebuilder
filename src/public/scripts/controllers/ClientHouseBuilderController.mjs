@@ -179,7 +179,7 @@ export class ClientHouseBuilderController {
   }
 
   /**
-   * getCompany
+   * getCompanies
    * @returns {Object} an array of company obects
    */
   static async getCompanies() {
@@ -194,7 +194,10 @@ export class ClientHouseBuilderController {
     return json;
   }
 
-
+  /**
+  * getPricing
+  * @returns array of price objects
+  */
   static async getPricing() {
     const response = await fetch("/pricing/", {
       method: "GET",
@@ -394,7 +397,6 @@ export class ClientHouseBuilderController {
    * @returns 
    */
   static populateCompanyDropdown(selectId, comps, selectedValue = null) {
-    // TODO - get this data from fetch of company api
     const sel = document.getElementById(selectId);
     if (!sel) return;
 
