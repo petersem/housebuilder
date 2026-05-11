@@ -137,7 +137,7 @@ export class ClientHouseListController {
       // delete button
       let dltLink = document.createElement("a");
       dltLink.className = "delete-btn";
-      dltLink.id = "delete-btn";
+      dltLink.id = "delete-btn" + house.id;
       dltLink.href = "#";
       dltLink.setAttribute('data-id', house.id + "||" + house.title);
       dltLink.innerText = "Delete"
@@ -147,7 +147,7 @@ export class ClientHouseListController {
       // edit button
       let edtLink = document.createElement("a");
       edtLink.className = "edit-btn";
-      edtLink.id = "edit-btn"
+      edtLink.id = "edit-btn" + house.id;
       edtLink.href = "#";
       edtLink.setAttribute('data-id', house.id);
       edtLink.innerText = "Edit"
@@ -157,7 +157,7 @@ export class ClientHouseListController {
       // showcase button
       let scLink = document.createElement("a");
       scLink.className = "showcase-btn";
-      scLink.id = "showcase-btn";
+      scLink.id = "showcase-btn" + house.id;
       scLink.href = "#";
       scLink.setAttribute('data-id', house.id);
       scLink.innerText = "Showcase"
@@ -176,46 +176,31 @@ export class ClientHouseListController {
       houseList.appendChild(article);
     });
 
+    // setup sort dropdown
     const sortList = ClientHouseListController.getSortValues(houses)
-    console.log(sortList)
-
-    // add listeners for delete buttons using the house ID from the data-id attribute
-    ClientHouseListController.clearListeners('delete-btn');
-    document.addEventListener("click", function (e) {
-      if (e.target.matches(".delete-btn")) {
-        const id = e.target.dataset.id;
-        ClientHouseListController.deleteConfirm(id);
-      }
-    });
-
-    // add listeners for edit buttons using the house ID from the data-id attribute
-    ClientHouseListController.clearListeners('edit-btn');
-    document.addEventListener("click", function (e) {
-      if (e.target.matches(".edit-btn")) {
-        const id = e.target.dataset.id;
-        ClientHouseListController.editHouse(id);
-      }
-    });
-
-    // add listeners for add buttons using the house ID from the data-id attribute
-    ClientHouseListController.clearListeners('showcase-btn');
-    document.addEventListener("click", function (e) {
-      if (e.target.matches(".showcase-btn")) {
-        const id = e.target.dataset.id;
-        const house = ClientHouseListController.GetHouseList().find(h => h.id == id);
-        ClientHouseListController.sendToShowcase(house);
-      }
+    let sortDDL = document.getElementById('sort');
+    sortDDL.innerHTML = "";
+    sortList.forEach(se => {
+      let opt = document.createElement('option');
+      opt.value = se.value;
+      opt.innerText = se.label;
+      sortDDL.appendChild(opt);
     });
 
     // add search and sort listeners
-    ClientHouseListController.clearListeners('searchBox');
-    ClientHouseListController.clearListeners('sort');
+    ClientHouseListController.clearListenersById('searchBox');
+    ClientHouseListController.clearListenersById('sort');
 
     const sb = document.getElementById("searchBox");
     const srt = document.getElementById("sort");
-    sb.addEventListener("selected", (e) => {
-      ClientHouseListController.dSearch(sb.value, e.target.value);
+
+    srt.addEventListener("change", (e) => {
+      ClientHouseListController.renderHouses(sb.value, e.target.value);
     });
+
+    // set the loadedd value for sort
+    if (sortTerm) srt.value = sortTerm;
+
 
     sb.addEventListener("keyup", (e) => {
       ClientHouseListController.dSearch(e.target.value, srt.value);
@@ -228,7 +213,6 @@ export class ClientHouseListController {
       searchBox.focus();
       searchBox.selectionStart = searchBox.selectionEnd = searchBox.value.length;
     }
-
 
   }
 
@@ -369,28 +353,6 @@ export class ClientHouseListController {
   }
 
   /**
-   * Updates house details
-   * @param {object} updatedHouse 
-   */
-  static updateHouse(updatedHouse) {
-    const houseToUpdate = ClientHouseModel.select(house => house.id == updatedHouse.id);
-    houseToUpdate.title = updatedHouse.title;
-    houseToUpdate.company = updatedHouse.company;
-    houseToUpdate.rooms = updatedHouse.rooms;
-    houseToUpdate.bathrooms = updatedHouse.bathrooms;
-    houseToUpdate.storyCount = updatedHouse.storyCount;
-    houseToUpdate.floorAreaSqm = updatedHouse.floorAreaSqm;
-    houseToUpdate.totalCost = updatedHouse.totalCost;
-    houseToUpdate.extras = updatedHouse.extras;
-
-    ClientHouseModel.update(house => house.id == updatedHouse.id, updatedHouse);
-
-    window.location.href = "/housebuilder";
-
-    // TODO: also update showcase if published there
-  }
-
-  /**
    * deleteHouse - Deletes a house from local storage, given the house ID. Also deletes from showcase if it exists there.
    * @param {String} id 
    */
@@ -472,15 +434,29 @@ export class ClientHouseListController {
   static dSearch = ClientHouseListController.debounce(ClientHouseListController.renderHouses.bind(ClientHouseListController), 1000);
 
   /**
-   * cloneNode - recreates an object without event listeners attached, but with everything else. 
+   * clearListenersById - recreates an object without event listeners attached, but with everything else. 
    * @param {DomObject} eId 
    */
-  static clearListeners(eId) {
+  static clearListenersById(eId) {
     let old_element = document.getElementById(eId);
+    if (old_element == undefined) return;
     let new_element = old_element.cloneNode(true);
-    old_element.parentNode.replaceChild(new_element, old_element);
+    old_element.replaceWith(new_element);
   }
 
+  /**
+   * clearListenersByClass - recreates an object without event listeners attached, but with everything else. 
+   * @param {DomObject} eId 
+   */
+  static clearListenersByClass(cName) {
+    let nodes = document.querySelectorAll(cName).forEach(el => {
+    let old_element = el;
+    if (old_element == undefined) return;
+    let new_element = old_element.cloneNode(true);
+    old_element.replaceWith(new_element);
 
+
+    })
+  }
 
 }

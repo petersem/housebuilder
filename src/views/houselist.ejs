@@ -6,12 +6,37 @@
         <%= title %>
     </title>
     <%- include("partials/head.ejs") %>
-        <script src="/scripts/houselist.mjs" defer></script>
         <script type="module">
             import { ClientHouseListController } from "/scripts/controllers/ClientHouseListController.mjs";
             window.addEventListener("DOMContentLoaded", () => {
                 ClientHouseListController.renderHouses();
-        });
+                // add listeners for delete buttons using the house ID from the data-id attribute
+                document.addEventListener("click", function (e) {
+                    if (e.target.matches(".delete-btn")) {
+                        const id = e.target.dataset.id;
+                        ClientHouseListController.deleteConfirm(id);
+                    }
+                });
+
+                // add listeners for edit buttons using the house ID from the data-id attribute
+                ClientHouseListController.clearListenersByClass('.edit-btn');
+                document.addEventListener("click", function (e) {
+                    if (e.target.matches(".edit-btn")) {
+                        const id = e.target.dataset.id;
+                        ClientHouseListController.editHouse(id);
+                    }
+                });
+                
+                // add listeners for add buttons using the house ID from the data-id attribute
+                ClientHouseListController.clearListenersByClass('.showcase-btn');
+                document.addEventListener("click", function (e) {
+                    if (e.target.matches(".showcase-btn")) {
+                        const id = e.target.dataset.id;
+                        const house = ClientHouseListController.GetHouseList().find(h => h.id == id);
+                        ClientHouseListController.sendToShowcase(house);
+                    }
+                });
+            });
         </script>
 </head>
 
@@ -25,9 +50,9 @@
                 </span>
                 <div id="top-controls"></div>
                 <div id="search-sort-row">
-                    <label for="searchBox"></label><input id="searchBox" placeholder="Search title...">
+                    <label for="searchBox"></label><input class="searchBox" id="searchBox" placeholder="Search title...">
 
-                    <select id="sort" onchange="sort()" data-id="">
+                    <select class="sort" id="sort" data-id="">
                     <option value=" unsorted">
                         No sort
                         </option>
