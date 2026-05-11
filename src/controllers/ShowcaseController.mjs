@@ -152,6 +152,18 @@ export class ShowcaseController {
             sortTerm = "unsorted";
         }
 
+        // add company star rating to each house
+        const companies = CompanyModel.select();
+        houses.forEach(house => {
+            const company = companies.find(c => c.name == house.companyName);       
+            if (company) {
+                house.companyRating = company.rating;
+            }       
+            else {
+                house.companyRating = 0;
+            }
+        });
+
         // open showcase page with data
         res.status(200);
         res.render('showcaselist.ejs', {

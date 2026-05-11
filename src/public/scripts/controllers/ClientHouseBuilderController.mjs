@@ -110,6 +110,11 @@ export class ClientHouseBuilderController {
     });
   }
 
+  /**
+   * calculatePrice - Calculates the total price for a given house based on its specifications and the current pricing data.
+   * @param {Object} house - The house object for which to calculate the price.
+   * @returns {Promise<number>} - A promise resolving to the calculated total price.
+   */
   static async calculatePrice(house) {
     // load companies and pricing data
     const companyList = await ClientHouseBuilderController.getCompanies()
@@ -149,14 +154,34 @@ export class ClientHouseBuilderController {
 
     // calculate any extras
     house.extras.forEach(extra => {
-      totalExtrasPrice += [pricing[0].extras.find((ex) => ex.extra == extra)][0].price;
-    });
+      switch ([pricing[0].extras.find((ex) => ex.extra == extra)][0].extra) {
+        case "Built-in Wardrobe":
+          extra = "Built-in Wardrobe";    
+          totalExtrasPrice += parseInt(house.rooms/2) * [pricing[0].extras.find((ex) => ex.extra == extra)][0].price; // add a built in wardrobe for every 2 rooms, rounded down
+          break;
+        case "Double Glazing Windows":
+          extra = "Double Glazing Windows";
+          totalExtrasPrice += parseInt(house.rooms) * [pricing[0].extras.find((ex) => ex.extra == extra)][0].price; // add double glazing cost for every room
+          break;
+        case "Solar Panel Installation (Standard)":
+          extra = "Solar Panel Installation (Standard)";
+          totalExtrasPrice += [pricing[0].extras.find((ex) => ex.extra == extra)][0].price; // flat cost for solar panel installation
+          break;
+        default:
+          console.warn("Unknown extra:", extra);
+          return; // skip unknown extras
+      }
+          });
 
     // return total cost
     return (companyBasePrice + totalRoomPrice + totalBathroomPrice + totalGarargePrice + totalSqmPrice + totalExtrasPrice);
 
   }
 
+  /**
+   * getCompany
+   * @returns {Object} an array of company obects
+   */
   static async getCompanies() {
     const response = await fetch("/companies/", {
       method: "GET",
@@ -167,7 +192,6 @@ export class ClientHouseBuilderController {
 
     const json = await response.json();
     return json;
-
   }
 
 
@@ -201,6 +225,10 @@ export class ClientHouseBuilderController {
     return ClientHouseModel.select();
   }
 
+  /**
+   * addHouse - Adds a new house to local storage and redirects to the house builder page. Called when the "Add House" button is clicked on the house list page.
+   * @returns {void} 
+   */
   static async addHouse() {
     let extras = [];
     const bi = document.getElementById("builtIns");
@@ -279,7 +307,10 @@ export class ClientHouseBuilderController {
 
   }
 
-
+  /**
+   * updateShowcase - Sends an updated house object to the server to update the corresponding entry in the public showcase. Called after a house is updated in the builder, to ensure the showcase reflects the latest details.
+   * @param {Object} house object 
+   */
   static async updateShowcase(house) {
     fetch("/showcase/update", {
       method: "PUT",
@@ -348,7 +379,7 @@ export class ClientHouseBuilderController {
     return str
       .replace(/\u00A0/g, ' ')   // non-breaking space → normal space
       .replace(/\u200B/g, '')    // zero-width space
-      .replace(/\uFEFF/g, '')    // BOM
+      .replace(/\uFEFF/g, '')    // Byte Order Mark
       .replace(/[’]/g, "'")      // smart apostrophe → normal
       .replace(/[–]/g, "-")      // en dash → hyphen
       .replace(/[“”]/g, '"')     // smart quotes → normal

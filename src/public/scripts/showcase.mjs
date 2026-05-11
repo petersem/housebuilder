@@ -1,26 +1,6 @@
-import { ClientHouseListController } from "./controllers/ClientHouseListController.mjs";
 
-// TODO - Show a toggle to only show your own sc items, or everyones. 
+// TODO-MAYBE Extra credit- Show star ratings next to companies
 
-// TODO - Show star ratings next to companies
-
-function showcaseDelete(id) {
-  const params = id.split("||");
-  
-  if (window.confirm(`DELETE:\n     ${params[1]}?`)) {
-    fetch("/showcase/delete/", {
-      method: "DELETE",
-      headers: {
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify({
-        "houseId": params[0]
-      })
-    })
-    .then(response => window.location.reload(true));
-  } 
-
-}
 
 /**
  * debounce function to limit the rate at which a function can fire.
@@ -106,9 +86,9 @@ const sortOptions =  document.getElementById('sort');
 sortOptions.value=sortOptions.dataset.id;
 
 
-// Remove delete button for any house witch doesn have an entry in local storage
+// show delete button for any house which has an entry in local storage
 //
-const localStorageHouses = ClientHouseListController.GetHouseList(); // get localStorageHouses
+const localStorageHouses = JSON.parse(localStorage.getItem("houses"))
 // get all the delete buttons on the showcase page
 const articles = document.querySelectorAll('.delete-btn[data-id]');
 // check showcase delete buttons to see if they have matching data-id to local storage houses, then show dlt button
@@ -121,6 +101,28 @@ articles.forEach(a => {
   }
 });
 
+/**
+ * showcaseDelete function to send a delete request to the server for the specified house ID, then reloads the page to reflect the changes.
+ * @param {String} id 
+ */
+function showcaseDelete(id) {
+  const params = id.split("||");
+  
+  if (window.confirm(`DELETE:\n     ${params[1]}?`)) {
+    fetch("/showcase/delete/", {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({
+        "houseId": params[0]
+      })
+    })
+    .then(response => window.location.reload(true))
+    .catch(error => toast("Error deleting house: " + error.message, "error")
+    );
+  }
+}
 
 // expose functions globally, as setting this as a module type removed them from global scope.
 window.search = search;

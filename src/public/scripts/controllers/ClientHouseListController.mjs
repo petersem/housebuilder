@@ -4,18 +4,53 @@ import { ClientHouseModel } from "../models/ClientHouseModel.mjs";
  * Manages houses stored in the client local storage.
  */
 export class ClientHouseListController {
+  /**
+   * getCompany
+   * @returns {Object} an array of company obects
+   */
+  static async getCompanies() {
+    const response = await fetch("/companies/", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      }
+    })
+
+    const json = await response.json();
+    return json;
+  }
 
   /**
    * renderHouses - Builds HTML elements, based upon the contents of houses in local storage 
    * @returns {void} 
   */
-  static renderHouses() {
+  static async renderHouses() {
     // get house list and clear houses before load
     let houseList = document.getElementById("house-list");
     houseList.innerHTML = "";
 
+    const companyList = await ClientHouseListController.getCompanies()
+      .then(data => data)
+      .catch(err => console.error("Fetch error:", err));
+
+    console.log(companyList.data)
+
+
     // build article
     ClientHouseListController.GetHouseList().forEach(house => {
+      // add company star rating to each house
+      console.log(house.companyName)
+      const company = companyList.data.find(c => c.name == house.companyName);
+      if (company) {
+        console.log(company.rating)
+        house.companyRating = company.rating;
+      }
+      else {
+        house.companyRating = 0;
+      }
+
+
+
       let article = document.createElement("article");
       let moneySpan = document.createElement("span");
       moneySpan.className = "money";
@@ -27,7 +62,11 @@ export class ClientHouseListController {
       titleSpan.innerText = house.title;
       let companySpan = document.createElement("span");
       companySpan.className = "company";
-      companySpan.innerText = house.companyName;
+      companySpan.innerText = house.companyName + " ";
+      let companyRatingSpan = document.createElement("span");
+      companyRatingSpan.className = "rating";
+      companyRatingSpan.style = "--rating: " + house.companyRating
+      companySpan.appendChild(companyRatingSpan);
 
       // specs p > span
       let specsP = document.createElement("p");
@@ -135,7 +174,7 @@ export class ClientHouseListController {
       // add article
       houseList.appendChild(article);
     });
-    
+
     // add listeners for delete buttons using the house ID from the data-id attribute
     document.addEventListener("click", function (e) {
       if (e.target.matches(".delete-btn")) {
@@ -180,6 +219,10 @@ export class ClientHouseListController {
     return ClientHouseModel.select();
   }
 
+  /**
+   * deleteConfirm - Prompts the user to confirm the deletion of a house, given the house ID. Called when the "Delete" button is clicked on a house card.
+   * @param {String} id 
+   */
   static deleteConfirm(id) {
 
     const params = id.split("||");
@@ -189,10 +232,18 @@ export class ClientHouseListController {
     }
   }
 
+  /**
+   * editHouse - Redirects to the house builder page with the house ID in the URL, to allow editing of the house details. Called when the "Edit" button is clicked on a house card.
+   * @param {String} id 
+   */
   static editHouse(id) {
     window.location.href = "/housebuilder/" + id;
   }
 
+  /**
+   * addHouse - Adds a new house to local storage and redirects to the house builder page. Called when the "Add House" button is clicked on the house list page.
+   * @param {Object} newHouse object containing the details of the new house to be added, excluding the ID which is generated in the function
+   */
   static addHouse(newHouse) {
     const houseToAdd = new ClientHouseModel(null, newHouse.title, newHouse.companyName, newHouse.rooms, newHouse.bathrooms, newHouse.garages, newHouse.floorAreaSqm, newHouse.storyCount, newHouse.totalCost, newHouse.extras);
     ClientHouseModel.insert(houseToAdd);
@@ -221,22 +272,26 @@ export class ClientHouseListController {
     // TODO: also update showcase if published there
   }
 
-  // TODO implement delete house and remove from local storage, also remove from showcase if published there
+  /**
+   * deleteHouse - Deletes a house from local storage, given the house ID. Also deletes from showcase if it exists there.
+   * @param {String} id 
+   */
   static deleteHouse(id) {
     ClientHouseModel.delete(house => house.id == id);
-    // delete from showcase, regardless if there
+    // tries to delete from showcase, regardless if there or not
     ClientHouseListController.deleteFromShowcase(id);
-
     ClientHouseListController.renderHouses();
   }
 
-
+  /**
+   * deleteFromShowcase - Deletes a house from the showcase, given the house ID. Called when deleting a house from local storage to ensure it is also removed from the showcase if it exists there.
+   * @param {String} houseID 
+   */
   static async deleteFromShowcase(houseID) {
     fetch("/showcase/delete/", {
       method: "DELETE",
       headers: {
-        "Content-type": "application/json",
-        "Idempotency-Key": crypto.randomUUID() // generate a unique id for this request to prevent duplicate calls
+        "Content-type": "application/json"
       },
       body: JSON.stringify({ "houseId": houseID })
     })
@@ -247,6 +302,10 @@ export class ClientHouseListController {
       })
   }
 
+  /**
+   * sendToShowcase - Sends a house to the showcase by making a POST request to the server with the house details. Called when the "Showcase" button is clicked on a house card.
+   * @param {Object} house 
+   */
   static sendToShowcase(house) {
     fetch("/showcase/add/", {
       method: "POST",

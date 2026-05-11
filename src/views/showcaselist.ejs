@@ -6,12 +6,7 @@
         <%= title %>
     </title>
     <%- include("partials/head.ejs") %>
-    <!-- TODO - Check if this is in the brief - set as module type because i am calling in clientHouseController code for the hide/show of delete button logic -->
-        <script src="/scripts/showcase.mjs" type="module"></script>
-        <!-- // needed so i can run client click/selected events for search and sort, and use things like debounce. 
-        <script type="module">
-            import { ClientHouseListController } from "../controllers/ShowcaseController.mjs";
-        </script> -->
+    <script src="/scripts/showcase.mjs" type="module"></script>
 </head>
 
 <body>
@@ -26,8 +21,6 @@
 
                 <div id="search-sort-row">
                     <label for="searchBox"></label><input id="searchBox" placeholder="Search title..." value="<%=searchTerm%>" onkeyup="search()">
-
-
                     <label for="sort"></label><select id="sort" onchange="sort()" data-id="<%=sortTerm%>">
                         <% sortOptions.forEach(option=> { %>
                             <option value="<%= option.value %>">
@@ -49,7 +42,9 @@
                                 </span>
                                 <span class="company">
                                     <%= house.companyName %>
+                                    <span class="rating" style="--rating: <%=house.companyRating%>"></span>
                                 </span>
+
 
                                 <p class="specs">
                                     <span>

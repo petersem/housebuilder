@@ -812,3 +812,32 @@ aboutLinks > a {
        -o-transition-duration: 0.4s;
           transition-duration: 0.4s;
 }
+
+.rating {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: relative;
+    display: inline-block;
+    /* font-size: 24px; */
+    color: #aaaaaa;
+    letter-spacing: 2px;
+}
+
+.rating::before,
+.rating::after {
+    content: "\f005\f005\f005\f005\f005";
+    display: inline-block;
+}
+
+.rating::before {
+    color: #aaaaaa;
+}
+
+.rating::after {
+    color: rgb(228, 172, 31);
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    width: calc((var(--rating) / 5) * 100%);
+}

@@ -1,9 +1,5 @@
 import { ClientHouseListController } from "./controllers/ClientHouseListController.mjs";
 
-// ClientHouseListController.renderHouses();
-
-
-
 /**
  * debounce function to limit the rate at which a function can fire.
  * @param {function} func takes a function to debounce
