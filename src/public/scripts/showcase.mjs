@@ -5,13 +5,13 @@
  * @returns {void}
  */
 function debounce(func, delay) {
-    let timeout;
-    return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-            func.apply(this, args);
-        }, delay);
-    };
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
 }
 
 /**
@@ -21,18 +21,18 @@ function debounce(func, delay) {
  * @returns {void}
  */
 function searchTitle(query, sort = "unsorted") {
-    console.log('Searching for:', query);
-    console.log('Sort by:', sort);
-  
-    if (sort == undefined || sort == "unsorted") {
-      window.location.href = "/showcase/render/" + query;
+  console.log('Searching for:', query);
+  console.log('Sort by:', sort);
+
+  if (sort == undefined || sort == "unsorted") {
+    window.location.href = "/showcase/render/" + query;
+  } else {
+    if ((query == undefined || query.length == 0) && sort != undefined) {
+      window.location.href = "/showcase/render/unfiltered/" + sort;
     } else {
-      if ((query == undefined || query.length == 0) && sort != undefined) {
-        window.location.href = "/showcase/render/unfiltered/" + sort;
-      } else {
-        window.location.href = "/showcase/render/" + query + "/" + sort;
-      }
+      window.location.href = "/showcase/render/" + query + "/" + sort;
     }
+  }
 }
 
 /**
@@ -71,31 +71,33 @@ if (searchBox.value != "" || window.innerWidth > 600) {
 
 // add listener for delete buttons using the house ID from the data-id attribute
 document.addEventListener("click", function (e) {
-    if (e.target.matches(".delete-btn")) {
-        const id = e.target.dataset.id;
-        showcaseDelete(id);
-    }
+  if (e.target.matches(".delete-btn")) {
+    const id = e.target.dataset.id;
+    showcaseDelete(id);
+  }
 });
 
 // set the sort value, based upon selected previous value before refresh
-const sortOptions =  document.getElementById('sort');
-sortOptions.value=sortOptions.dataset.id;
+const sortOptions = document.getElementById('sort');
+sortOptions.value = sortOptions.dataset.id;
 
 
 // show delete button for any house which has an entry in local storage
 //
 const localStorageHouses = JSON.parse(localStorage.getItem("houses"))
-// get all the delete buttons on the showcase page
-const articles = document.querySelectorAll('.delete-btn[data-id]');
-// check showcase delete buttons to see if they have matching data-id to local storage houses, then show dlt button
-articles.forEach(a => {
-  let scId = a.getAttribute("data-id").split("||")[0];
-  const result = localStorageHouses.find(({ id }) => id === scId)
-  for (let house in result) {
-    // set the show attribute for css to display button
-    a.setAttribute("data-show", "true");
-  }
-});
+if (localStorageHouses?.length > 0) {
+  // get all the delete buttons on the showcase page
+  const articles = document.querySelectorAll('.delete-btn[data-id]');
+  // check showcase delete buttons to see if they have matching data-id to local storage houses, then show dlt button
+  articles.forEach(a => {
+    let scId = a.getAttribute("data-id").split("||")[0];
+    const result = localStorageHouses.find(({ id }) => id === scId)
+    for (let house in result) {
+      // set the show attribute for css to display button
+      a.setAttribute("data-show", "true");
+    }
+  });
+};
 
 /**
  * showcaseDelete function to send a delete request to the server for the specified house ID, then reloads the page to reflect the changes.
@@ -103,7 +105,7 @@ articles.forEach(a => {
  */
 function showcaseDelete(id) {
   const params = id.split("||");
-  
+
   if (window.confirm(`DELETE:\n     ${params[1]}?`)) {
     fetch("/showcase/delete/", {
       method: "DELETE",
@@ -114,9 +116,9 @@ function showcaseDelete(id) {
         "houseId": params[0]
       })
     })
-    .then(response => window.location.reload(true))
-    .catch(error => toast("Error deleting house: " + error.message, "error")
-    );
+      .then(response => window.location.reload(true))
+      .catch(error => toast("Error deleting house: " + error.message, "error")
+      );
   }
 }
 
