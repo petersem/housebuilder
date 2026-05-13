@@ -69,6 +69,10 @@ function toast(message, duration = 3000, msgType = "") {
         col = "#ff0000";
         brdr = "#ff0000";
     }
+    if (msgType == "warning") {
+        col = "#995802";
+        brdr = "#000000";
+    }
     Toastify({
         text: message,
         duration: duration,

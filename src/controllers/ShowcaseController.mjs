@@ -154,6 +154,8 @@ export class ShowcaseController {
 
         // add company star rating to each house
         const companies = CompanyModel.select();
+
+
         houses.forEach(house => {
             const company = companies.find(c => c.name == house.companyName);       
             if (company) {
@@ -162,7 +164,25 @@ export class ShowcaseController {
             else {
                 house.companyRating = 0;
             }
+
+            const counts = house.extras.reduce((acc, value) => {
+            acc[value] = (acc[value] || 0) + 1;
+            return acc;
+            }, {});
+
+            //house.extras 
+            const extraCounts = [];
+            for (let [key, value] of Object.entries(counts)) {
+                // if there are 2 or more, then make the name a plural
+                if (value >= 2) {
+                    key += (key[key.length - 1].toLowerCase() != "s") ? "s" : ""
+                }
+                extraCounts.push([key, value])
+            }
+            house.extras = extraCounts;
         });
+
+
 
         // open showcase page with data
         res.status(200);

@@ -21,6 +21,72 @@ export class ClientHouseBuilderController {
 
     const companies = companyList.data;
     const pricing = pricingList.data;
+    const extras = pricing[0].extras
+
+    // build out the extras section for new or edit page
+    extras.forEach((e) => {
+      let checkboxDiv = document.getElementById("checkbox-row");
+      const div = document.createElement("div");
+      div.className = "extraItem";
+
+      // button
+      const btnLeft = document.createElement("i");
+      btnLeft.className = "fa-sharp fa-regular fa-circle-arrow-left"
+      btnLeft.id = 'button-less-' + e.extra.toLowerCase().replaceAll(" ", "_");
+
+      // count span
+      const count = document.createElement("span");
+      count.id = 'extra-count-' + e.extra.replaceAll(" ", "_");
+      count.textContent = 0;
+
+      // button
+      const btnRight = document.createElement("i");
+      btnRight.className = "fa-sharp fa-regular fa-circle-arrow-right"
+      btnRight.id = 'button-more-' + e.extra.toLowerCase().replaceAll(" ", "_");
+
+      // count span
+      const label = document.createElement("span");
+      label.textContent = " " + e.extra;
+
+      //add click behaviour
+      btnLeft.addEventListener("click", () => {
+        if (parseInt(count.textContent) > 0) {
+          count.textContent = Number(count.textContent) - 1;
+          
+          // trigger an onInput event to force price calculation when extras decrease button clicked
+          const el = document.querySelector("#title");
+          el.dispatchEvent(new Event("input", { bubbles: true }));          
+        } else {
+          toast(`Cannot have less than zero ${e.extra + ((e.extra[e.extra.length - 1].toLowerCase() != "s") ? "s" : "")}`,
+            3000,
+            "warning")
+        }
+      });
+
+      //add click behaviour
+      btnRight.addEventListener("click", () => {
+        if (e.maxValue != 0 && e.maxValue == parseInt(count.textContent)) {
+          toast(`Cannot add more than ${e.maxValue} ${e.extra + ((parseInt(count.textContent) > 1 && e.extra[e.extra.length - 1].toLowerCase() != "s") ? "s" : "")}`,
+            3000,
+            "warning")
+        } else {
+          count.textContent = Number(count.textContent) + 1;
+
+          // trigger an onInput event to force price calculation when extras increase button clicked          
+          const el = document.querySelector("#title");
+          el.dispatchEvent(new Event("input", { bubbles: true }));          
+        
+        }
+      });
+
+      // append to container
+      div.appendChild(btnLeft);
+      div.appendChild(count);
+      div.appendChild(btnRight);
+      div.appendChild(label);
+      checkboxDiv.appendChild(div);
+    });
+
 
     // setup for edit or new page
     if (window.location.href.toLowerCase().includes("housebuilder/create")) {
@@ -39,6 +105,18 @@ export class ClientHouseBuilderController {
       const house = ClientHouseBuilderController.getHouse(houseId);
 
       if (house.length > 0) {
+        // count the number of each extra in extra array
+        const counts = house[0].extras.reduce((acc, value) => {
+          acc[value] = (acc[value] || 0) + 1;
+          return acc;
+        }, {});
+
+        //build a new extras array with unique extras and included counts
+        const extraCounts = [];
+        for (const [key, value] of Object.entries(counts)) {
+          extraCounts.push({key, value})
+        }
+        
         ClientHouseBuilderController.updateValidity("title", house[0].title);
         ClientHouseBuilderController.populateCompanyDropdown("companyName", companies, house[0].companyName);
         ClientHouseBuilderController.updateValidity("rooms", house[0].rooms);
@@ -49,14 +127,20 @@ export class ClientHouseBuilderController {
         const price = document.getElementById("totalCost");
         price.innerText = "$" + new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3 }).format(house[0].totalCost);
         price.setAttribute("data-id", house[0].totalCost);
-        ClientHouseBuilderController.setCheckbox("builtIns", house[0].extras.includes("Built-in Wardrobe"));
-        ClientHouseBuilderController.setCheckbox("doubleGlazing", house[0].extras.includes("Double Glazing Windows"));
-        ClientHouseBuilderController.setCheckbox("solarPanels", house[0].extras.includes("Solar Panel Installation (Standard)"));
+        
+        // load up saved extras values
+        let checkboxDiv = document.getElementById("checkbox-row");
+        const nodes = document.querySelectorAll(".extraItem");
+        nodes.forEach(n => {
+          const ext = n.querySelector("span").id.replace("extra-count-", "").replaceAll("_", " ");
+          const fec = extraCounts.filter(ec => ec.key == ext )
+          n.querySelector("span").innerText = fec[0].value
+        });
       }
     }
 
     document.removeEventListener("DOMContentLoaded", () => { });
-    document.removeEventListener("input", () => { }); 
+    document.removeEventListener("input", () => { });
 
     document.addEventListener("input", async () => {
       const form = document.querySelector("form");
@@ -67,31 +151,22 @@ export class ClientHouseBuilderController {
 
 
         // calculate price 
-          let extras = [];
-          const bi = document.getElementById("builtIns");
-          if (bi.checked) extras.push("Built-in Wardrobe")
+        const newHouse = {
+          title: document.getElementById("title").value,
+          companyName: document.getElementById("companyName").value,
+          bathrooms: document.getElementById("bathrooms").value,
+          extras: ClientHouseBuilderController.createExtrasArray(),
+          floorAreaSqm: document.getElementById("floorAreaSqm").value,
+          garages: document.getElementById("garages").value,
+          rooms: document.getElementById("rooms").value,
+          storyCount: document.getElementById("storyCount").value,
+          totalCost: document.getElementById("totalCost").getAttribute("data-id")
+        }
 
-          const dg = document.getElementById("doubleGlazing");
-          if (dg.checked) extras.push("Double Glazing Windows")
-          const sp = document.getElementById("solarPanels");
-          if (sp.checked) extras.push("Solar Panel Installation (Standard)")
-
-          const newHouse = {
-            title: document.getElementById("title").value,
-            companyName: document.getElementById("companyName").value,
-            bathrooms: document.getElementById("bathrooms").value,
-            extras: extras,
-            floorAreaSqm: document.getElementById("floorAreaSqm").value,
-            garages: document.getElementById("garages").value,
-            rooms: document.getElementById("rooms").value,
-            storyCount: document.getElementById("storyCount").value,
-            totalCost: document.getElementById("totalCost").getAttribute("data-id")
-          }
-
-          newHouse.totalCost = await ClientHouseBuilderController.calculatePrice(newHouse);
-          const price = document.getElementById("totalCost");
-          price.innerText = "$" + new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3 }).format(newHouse.totalCost);
-          price.setAttribute("data-id", newHouse.totalCost);
+        newHouse.totalCost = await ClientHouseBuilderController.calculatePrice(newHouse);
+        const price = document.getElementById("totalCost");
+        price.innerText = "$" + new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3 }).format(newHouse.totalCost);
+        price.setAttribute("data-id", newHouse.totalCost);
 
       } else {
         saveBtn.style.display = "none";
@@ -111,6 +186,29 @@ export class ClientHouseBuilderController {
   }
 
   /**
+   * createExtrasArray is used to create a save/update/add compatible house.extras array
+   * @returns {extras[]} an array of extras
+   */
+  static createExtrasArray() {
+    // create a count object for each extras item
+    let newCounts = {}
+    const nodes = document.querySelectorAll(".extraItem")
+    nodes.forEach(node => {
+      const ext = node.querySelector("span").id.replace("extra-count-", "").replaceAll("_", " ");
+      const cnt = parseInt(node.querySelector("span").innerText);
+      newCounts[ext] = cnt;
+    });
+    // populate an array with the extras
+    let newExtras = []
+    for (const [key, value] of Object.entries(newCounts)) {
+      for (let i = 1; i <= value; i++) {
+        newExtras.push(key);
+      }
+    }
+    return newExtras;
+  }
+
+  /**
    * calculatePrice - Calculates the total price for a given house based on its specifications and the current pricing data.
    * @param {Object} house - The house object for which to calculate the price.
    * @returns {Promise<number>} - A promise resolving to the calculated total price.
@@ -119,7 +217,7 @@ export class ClientHouseBuilderController {
     // load companies and pricing data
     const companyList = await ClientHouseBuilderController.getCompanies()
       .then(data => data)
-      .catch(err => { 
+      .catch(err => {
         console.error("Fetch error:", err);
         toast("Error fetching company data: " + err, 3000, "error");
         return { data: [] }; // return empty data to prevent further errors
@@ -127,7 +225,7 @@ export class ClientHouseBuilderController {
 
     const pricingList = await ClientHouseBuilderController.getPricing()
       .then(data => data)
-      .catch(err => { 
+      .catch(err => {
         console.error("Fetch error:", err);
         toast("Error fetching pricing data: " + err, 3000, "error");
         return { data: [] }; // return empty data to prevent further errors
@@ -154,24 +252,8 @@ export class ClientHouseBuilderController {
 
     // calculate any extras
     house.extras.forEach(extra => {
-      switch ([pricing[0].extras.find((ex) => ex.extra == extra)][0].extra) {
-        case "Built-in Wardrobe":
-          extra = "Built-in Wardrobe";    
-          totalExtrasPrice += parseInt(house.rooms/2) * [pricing[0].extras.find((ex) => ex.extra == extra)][0].price; // add a built in wardrobe for every 2 rooms, rounded down
-          break;
-        case "Double Glazing Windows":
-          extra = "Double Glazing Windows";
-          totalExtrasPrice += parseInt(house.rooms) * [pricing[0].extras.find((ex) => ex.extra == extra)][0].price; // add double glazing cost for every room
-          break;
-        case "Solar Panel Installation (Standard)":
-          extra = "Solar Panel Installation (Standard)";
-          totalExtrasPrice += [pricing[0].extras.find((ex) => ex.extra == extra)][0].price; // flat cost for solar panel installation
-          break;
-        default:
-          console.warn("Unknown extra:", extra);
-          return; // skip unknown extras
-      }
-          });
+      totalExtrasPrice += [pricing[0].extras.find((ex) => ex.extra == extra)][0].price;
+    });
 
     // return total cost
     return (companyBasePrice + totalRoomPrice + totalBathroomPrice + totalGarargePrice + totalSqmPrice + totalExtrasPrice);
@@ -233,20 +315,12 @@ export class ClientHouseBuilderController {
    * @returns {void} 
    */
   static async addHouse() {
-    let extras = [];
-    const bi = document.getElementById("builtIns");
-    if (bi.checked) extras.push("Built-in Wardrobe")
-
-    const dg = document.getElementById("doubleGlazing");
-    if (dg.checked) extras.push("Double Glazing Windows")
-    const sp = document.getElementById("solarPanels");
-    if (sp.checked) extras.push("Solar Panel Installation (Standard)")
 
     const newHouse = {
       title: document.getElementById("title").value,
       companyName: document.getElementById("companyName").value,
       bathrooms: document.getElementById("bathrooms").value,
-      extras: extras,
+      extras: ClientHouseBuilderController.createExtrasArray(),
       floorAreaSqm: document.getElementById("floorAreaSqm").value,
       garages: document.getElementById("garages").value,
       rooms: document.getElementById("rooms").value,
@@ -269,21 +343,12 @@ export class ClientHouseBuilderController {
     let parameters = window.location.href.split("/");
     let houseId = parameters[parameters.length - 1];
 
-    let extras = [];
-    const bi = document.getElementById("builtIns");
-    if (bi.checked) extras.push("Built-in Wardrobe")
-
-    const dg = document.getElementById("doubleGlazing");
-    if (dg.checked) extras.push("Double Glazing Windows")
-    const sp = document.getElementById("solarPanels");
-    if (sp.checked) extras.push("Solar Panel Installation (Standard)")
-
     const newHouse = {
       id: houseId,
       title: document.getElementById("title").value,
       companyName: document.getElementById("companyName").value,
       bathrooms: document.getElementById("bathrooms").value,
-      extras: extras,
+      extras: ClientHouseBuilderController.createExtrasArray(),
       floorAreaSqm: document.getElementById("floorAreaSqm").value,
       garages: document.getElementById("garages").value,
       rooms: document.getElementById("rooms").value,

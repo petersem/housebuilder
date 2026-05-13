@@ -24,15 +24,33 @@ PricingModel.setDataSource([
         [
             {
                 extra: "Built-in Wardrobe",
-                price: 8000
+                price: 8000,
+                maxValue: 0
             },
             {
                 extra: "Double Glazing Windows",
-                price: 3500
+                price: 3500,
+                maxValue: 0
             },
             {
                 extra: "Solar Panel Installation (Standard)",
-                price: 15000
+                price: 15000,
+                maxValue: 1
+            },
+            {
+                extra: "Panic Room",
+                price: 21000,
+                maxValue: 2
+            },
+            {
+                extra: "Fallout Shelter",
+                price: 38000,
+                maxValue: 1
+            },
+            {
+                extra: "Wine Cellar",
+                price: 15000,
+                maxValue: 1
             }
         ]),
 ]);

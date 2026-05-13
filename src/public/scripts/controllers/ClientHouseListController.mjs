@@ -47,6 +47,18 @@ export class ClientHouseListController {
         house.companyRating = 0;
       }
 
+      // count the number of each extra in extra array
+      const counts = house.extras.reduce((acc, value) => {
+        acc[value] = (acc[value] || 0) + 1;
+        return acc;
+      }, {});
+
+      //build a new extras array with unique extras and included counts
+      const extraCounts = [];
+      for (const [key, value] of Object.entries(counts)) {
+        extraCounts.push([key, value])
+      }
+      house.extras = extraCounts;
 
 
       let article = document.createElement("article");
@@ -126,7 +138,7 @@ export class ClientHouseListController {
       extrasDiv.className = "extras";
       for (let e in house.extras) {
         let extraDiv = document.createElement("div");
-        extraDiv.innerText = house.extras[e];
+        extraDiv.innerText = house.extras[e][1] + " x " + house.extras[e][0];
         extrasDiv.appendChild(extraDiv);
       }
 
@@ -450,10 +462,10 @@ export class ClientHouseListController {
    */
   static clearListenersByClass(cName) {
     let nodes = document.querySelectorAll(cName).forEach(el => {
-    let old_element = el;
-    if (old_element == undefined) return;
-    let new_element = old_element.cloneNode(true);
-    old_element.replaceWith(new_element);
+      let old_element = el;
+      if (old_element == undefined) return;
+      let new_element = old_element.cloneNode(true);
+      old_element.replaceWith(new_element);
 
 
     })

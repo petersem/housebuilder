@@ -187,6 +187,7 @@ main > section {
   border-radius: 10px;
   padding: 10px;
   font-size: 1em;
+  width: 120px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
@@ -210,7 +211,9 @@ footer {
 
 #newBtn {
   margin-top: 8px !important;
-    padding: 8px 10px !important;
+  padding: 8px 10px !important;
+    -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, .5);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, .5);
 }
 
 #newBtn,
@@ -606,6 +609,8 @@ article {
   -o-transition: background 0.2s, transform 0.2s, color 0.2s;
   transition: background 0.2s, transform 0.2s, color 0.2s;
   transition: background 0.2s, transform 0.2s, color 0.2s, -webkit-transform 0.2s;
+    -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, .5);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, .5);
 }
 
 .edit-btn { background: var(--btn-edit); }
@@ -703,6 +708,12 @@ main section form .checkbox-row {
     border: 1px solid var(--border-soft);
     border-radius: 5px;
     background: var(--surface-raised);
+    font-size: 1.5em;
+}
+
+main section form .checkbox-row i {
+  padding-right: 5px;
+  padding-left: 5px;
 }
 
 main section form .checkbox-row input[type="checkbox"] {
@@ -811,6 +822,10 @@ aboutLinks > a {
   -webkit-transition-duration: 0.4s;
        -o-transition-duration: 0.4s;
           transition-duration: 0.4s;
+}
+
+.company {
+  font-weight: 600;
 }
 
 .rating {
