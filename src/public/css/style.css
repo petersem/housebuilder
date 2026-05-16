@@ -5,7 +5,7 @@
   --text-strong: #111;
   --pageTitle: #660000;
 
-  --link: #07db04;
+  --link: #660000;
   --link-hover: #eb1b1b;
 
   --card-bg: #ffffff;
@@ -55,6 +55,9 @@
   --btn-edit: #4bbf6b;
   --btn-delete: #d96a3c;
   --btn-new: #a8a8a8;
+
+  --link: #fffeda;
+  --link-hover: #a8a8a8;
 }
 
 /* debug outlines */
@@ -73,14 +76,11 @@ html, body {
   margin: 0;
 }
 
-#aboutLinks > ul > a:link,
-#aboutLinks > ul > a:visited,
-#aboutLinks > ul > a:active {
+a {
   color: var(--link);
-
 }
 
-#aboutLinks > ul > a:hover {
+a:hover {
   color: var(--link-hover);
 }
 
