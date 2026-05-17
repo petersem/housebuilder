@@ -131,11 +131,10 @@ export class ClientHouseBuilderController {
         // load up saved extras values
         let checkboxDiv = document.getElementById("checkbox-row");
         const nodes = document.querySelectorAll(".extraItem");
-        console.log(nodes);
         nodes.forEach(n => {
           const ext = n.querySelector("span").id.replace("extra-count-", "").replaceAll("_", " ");
           const fec = extraCounts.filter(ec => ec.key == ext )
-          n.querySelector("span").innerText = fec[0].value
+          if (fec.length > 0) n.querySelector("span").innerText = fec[0].value
         });
       }
     }
