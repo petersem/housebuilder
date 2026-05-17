@@ -10,11 +10,11 @@ import { logDanger, logWarning, logInfo } from "./../utilities/logger.mjs";
 // express limiter
 // if prod, 200 calls per 15 minutes
 let period = 15 * 60 * 1000;
-let limit = 200;
+let limit = 500;
 // if dev, 40 calls per 2 minutes
 if (process.env?.NODE_ENV === "development") {
-    period = 2 * 60 * 1000;
-    limit = 40;
+    period = 15 * 60 * 1000;
+    limit = 500;
 }
 
 const allowList = ['localhost', '127.0.0.1', '::1'] // whitelist for local address calls
