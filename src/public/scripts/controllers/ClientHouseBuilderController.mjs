@@ -131,6 +131,7 @@ export class ClientHouseBuilderController {
         // load up saved extras values
         let checkboxDiv = document.getElementById("checkbox-row");
         const nodes = document.querySelectorAll(".extraItem");
+        console.log(nodes);
         nodes.forEach(n => {
           const ext = n.querySelector("span").id.replace("extra-count-", "").replaceAll("_", " ");
           const fec = extraCounts.filter(ec => ec.key == ext )
@@ -148,7 +149,6 @@ export class ClientHouseBuilderController {
 
       if (form.checkValidity()) {
         saveBtn.style.display = "inline-block";
-
 
         // calculate price 
         const newHouse = {

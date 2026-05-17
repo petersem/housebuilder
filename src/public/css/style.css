@@ -74,14 +74,17 @@ header h1 {
 html, body {
   height: 100%;
   margin: 0;
+  transition: 0.3s;
 }
 
 a {
   color: var(--link);
+  transition: 0.3s;
 }
 
 a:hover {
   color: var(--link-hover);
+  transition: 0.3s;
 }
 
 body {
@@ -96,6 +99,8 @@ body {
   color: var(--text);
   font-family: system-ui, sans-serif;
   line-height: 1.6;
+  transition: 0.3s;
+
 }
 
 /* Main content expands to fill space */
@@ -137,6 +142,7 @@ body:has(#special-element) {
   background-repeat: repeat; 
   background-position: top left;
   background-attachment: scroll;
+  transition: 0.3s;
 }
 
 /* Search + Dropdown  */
@@ -207,6 +213,7 @@ footer {
   padding: 1rem 0;
   font-size: 0.9rem;
   margin-top: 2rem;
+  transition: 0.3s;  
 }
 
 #newBtn {
@@ -250,11 +257,9 @@ header {
   background: var(--header-bg);
   padding: 0 1rem;
   height: 80px;
-
+  transition: 0.3s;
   display: -webkit-box;
-
   display: -ms-flexbox;
-
   display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
