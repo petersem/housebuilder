@@ -6,9 +6,6 @@
         <%= title %>
     </title>
     <%- include("partials/head.ejs") %>
-    <!-- TODO this probably needs to move to a NEW controller -->
-        <!-- <script src="/scripts/houseedit.mjs" type="module"></script> -->
-
         <script type="module">
             import { ClientHouseBuilderController } from "/scripts/controllers/ClientHouseBuilderController.mjs";
             window.addEventListener("DOMContentLoaded", () => {
@@ -32,9 +29,9 @@
                         <span class="money" id="totalCost">$0</span>
 
                         <label for="title">Title</label>
-                        <input id="title" name="title" required pattern="^(?!.*  )[A-Za-z0-9 .,'&\-]{3,30}$" type="text"
+                        <input id="title" name="title" required pattern="^(?!.*  )(?!.*--)[A-Za-z0-9 .,'!\-]{3,30}$" type="text"
                             value="">
-                        <span class="error">Must be 3 to 30 characters in length, with no double spaces</span>
+                        <span class="error">Must be 3 to 30 characters in length, with no double spaces or double dashes. Allowed special characters are . , ! - '</span>
 
                         <label for="companyName">Company</label>
                         <select id="companyName" name="companyName" required>
