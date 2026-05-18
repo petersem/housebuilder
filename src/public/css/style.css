@@ -391,6 +391,10 @@ ver {
     font-size: 1.12em;
 }
 
+main > section > h1 {
+  display: none;
+}
+
 nav ul {
   display: -webkit-box;
   display: -ms-flexbox;
