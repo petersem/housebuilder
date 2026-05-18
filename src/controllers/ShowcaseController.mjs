@@ -288,7 +288,6 @@ export class ShowcaseController {
             res.setHeader('Content-Type', 'application/json');
             return res.status(409).send({ errors: "Record with that ID already exists"});
         }
-
         // validate fields and exit if errors
         const result = validationResult(req);
         const readErrs = ShowcaseController.checkValidationErrors(req, res);
@@ -306,7 +305,6 @@ export class ShowcaseController {
         const storyCount = req.body.storyCount;
         const totalCost = req.body.totalCost;
         const extras = req.body.extras;
-
         const house = new ShowcaseModel(id, title, companyName, rooms, bathrooms, garages, floorAreaSqm, storyCount, totalCost, extras);
         res.setHeader('Content-Type', 'application/json');
 

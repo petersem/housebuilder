@@ -340,7 +340,18 @@ export class ClientHouseBuilderController {
 
     newHouse.totalCost = await ClientHouseBuilderController.calculatePrice(newHouse);
 
-    const houseToAdd = new ClientHouseModel(null, newHouse.title, newHouse.companyName, newHouse.rooms, newHouse.bathrooms, newHouse.garages, newHouse.floorAreaSqm, newHouse.storyCount, newHouse.totalCost, newHouse.extras);
+    const houseToAdd = new ClientHouseModel(
+      null, 
+      newHouse.title, 
+      newHouse.companyName, 
+      newHouse.rooms, 
+      newHouse.bathrooms, 
+      newHouse.garages, 
+      newHouse.floorAreaSqm, 
+      newHouse.storyCount, 
+      newHouse.totalCost, 
+      newHouse.extras
+    );
     ClientHouseModel.insert(houseToAdd);
     window.location.href = "/housebuilder";
   }
@@ -423,7 +434,6 @@ export class ClientHouseBuilderController {
         if (response.ok) {
           toast("House sent to showcase!");
         } else {
-
           toast("House already in showcase!", 3000, "error");
           return response.statusText;
         }
