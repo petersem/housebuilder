@@ -182,8 +182,6 @@ export class ShowcaseController {
             house.extras = extraCounts;
         });
 
-
-
         // open showcase page with data
         res.status(200);
         res.render('showcaselist.ejs', {
