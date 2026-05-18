@@ -16,6 +16,7 @@ const app = express();  // setup express app
 app.set('trust proxy', 1 /* number of proxies between user and server */)
 app.set("view engine", "ejs");  // use ejs for the view engine
 app.set("views", path.join(import.meta.dirname, "/views")); // define where the views are
+
 // setup basic express middleware
 app.use(express.json());  // handle json payloads that come in
 app.use(express.urlencoded({ extended: true }));  // handle querystring nested data inputs
