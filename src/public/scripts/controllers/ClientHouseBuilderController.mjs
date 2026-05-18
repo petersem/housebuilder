@@ -94,6 +94,7 @@ export class ClientHouseBuilderController {
       ClientHouseBuilderController.populateCompanyDropdown("companyName", companies);
       document.getElementById("saveBtn").onclick = ClientHouseBuilderController.addHouse;
       document.getElementById("saveBtn").innerText = "Save Draft";
+      saveBtn.style.display = "none";
 
     } else {
       // Edit entry
