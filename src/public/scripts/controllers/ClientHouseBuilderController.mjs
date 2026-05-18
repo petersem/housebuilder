@@ -65,7 +65,7 @@ export class ClientHouseBuilderController {
 
       //add click behaviour
       btnRight.addEventListener("click", () => {
-        if (e.maxValue != 0 && e.maxValue == parseInt(count.textContent)) {
+        if (e.maxValue != 0 && e.maxValue <= parseInt(count.textContent)) {
           toast(`Cannot add more than ${e.maxValue} ${e.extra + ((parseInt(count.textContent) > 1 && e.extra[e.extra.length - 1].toLowerCase() != "s") ? "s" : "")}`,
             3000,
             "warning")
