@@ -23,8 +23,8 @@ app.use(express.static(path.join(import.meta.dirname, "public"))); // handle any
 
 
 // implement express rate limiter
-//const limiter = rateLimit(limiterOptions)
-// app.use(limiter) // Apply the rate limiting middleware to all requests.
+const limiter = rateLimit(limiterOptions)
+app.use(limiter) // Apply the rate limiting middleware to all requests.
 console.log(logInfo, `Express-rate-limiter enabled. 
                 - Requests: ${limiterOptions.limit} 
                 - Period: ${limiterOptions.windowMs / 1000 / 60} minutes`);

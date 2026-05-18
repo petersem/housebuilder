@@ -11,13 +11,13 @@ import { logDanger, logWarning, logInfo } from "./../utilities/logger.mjs";
 // if prod, 200 calls per 15 minutes
 let period = 15 * 60 * 1000;
 let limit = 500;
-// if dev, 40 calls per 2 minutes
+// if dev, 500 calls per 15 minutes
 if (process.env?.NODE_ENV === "development") {
     period = 15 * 60 * 1000;
     limit = 500;
 }
 
-const allowList = ['localhost', '127.0.0.1', '::1'] // whitelist for local address calls
+const allowList = ['localhost', '127.0.0.1', '::1']; // whitelist for local address calls
 export const limiterOptions = {
     windowMs: period, // 15 minutes
     limit: limit, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
