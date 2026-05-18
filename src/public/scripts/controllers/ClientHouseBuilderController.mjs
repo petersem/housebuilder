@@ -125,7 +125,12 @@ export class ClientHouseBuilderController {
         ClientHouseBuilderController.updateValidity("garages", house[0].garages);
         ClientHouseBuilderController.updateValidity("floorAreaSqm", house[0].floorAreaSqm);
         const price = document.getElementById("totalCost");
-        price.innerText = "$" + new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3 }).format(house[0].totalCost);
+        price.innerText = new Intl.NumberFormat("en-AU", { 
+          style: "currency", 
+          currency: "AUD", 
+          minimumFractionDigits: 0, 
+          maximumFractionDigits: 0 
+        }).format(house[0].totalCost);
         price.setAttribute("data-id", house[0].totalCost);
         
         // load up saved extras values
@@ -164,7 +169,12 @@ export class ClientHouseBuilderController {
 
         newHouse.totalCost = await ClientHouseBuilderController.calculatePrice(newHouse);
         const price = document.getElementById("totalCost");
-        price.innerText = "$" + new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3 }).format(newHouse.totalCost);
+        price.innerText = new Intl.NumberFormat("en-AU", { 
+          style: "currency", 
+          currency: "AUD", 
+          minimumFractionDigits: 0, 
+          maximumFractionDigits: 0 
+        }).format(newHouse.totalCost);
         price.setAttribute("data-id", newHouse.totalCost);
 
       } else {

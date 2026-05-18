@@ -33,9 +33,13 @@
                     <h2>Showcase</h2>
                     <% data.forEach((house)=> { %>
                         <article>
-                            <% let money=new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3
-                                }).format(house.totalCost); %>
-                                <span class="money">$<%= money %></span>
+                            <% let money=new Intl.NumberFormat("en-AU", { 
+                                            style: "currency", 
+                                            currency: "AUD", 
+                                            minimumFractionDigits: 0, 
+                                            maximumFractionDigits: 0 
+                                        }).format(house.totalCost) %>
+                                <span class="money"><%= money %></span>
                                 <h3>House</h3>
                                 <span class="title">
                                     <%= house.title %>

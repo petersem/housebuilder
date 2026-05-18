@@ -65,7 +65,12 @@ export class ClientHouseListController {
       let moneySpan = document.createElement("span");
       moneySpan.className = "money";
       moneySpan.id = "totalCost";
-      moneySpan.innerText = "$" + new Intl.NumberFormat("en-AU", { maximumSignificantDigits: 3 }).format(house.totalCost);
+      moneySpan.innerText = new Intl.NumberFormat("en-AU", { 
+          style: "currency", 
+          currency: "AUD", 
+          minimumFractionDigits: 0, 
+          maximumFractionDigits: 0 
+        }).format(house.totalCost);
       moneySpan.setAttribute("data-id", house.totalCost);
       let titleSpan = document.createElement("span");
       titleSpan.className = "title";
