@@ -29,7 +29,7 @@
                         <span class="money" id="totalCost">$0</span>
 
                         <label for="title">Title</label>
-                        <input id="title" name="title" required pattern="^(?!.*  )(?!.*--)[A-Za-z0-9 .,'!\-]{3,30}$" type="text"
+                        <input id="title" name="title" required pattern="^(?!.*  )(?!.*--)[A-Za-z0-9 .,!\-\x20-\x7E]{3,30}$" type="text"
                             value="">
                         <span class="error">Must be 3 to 30 characters in length, with no double spaces or double dashes. Allowed special characters are . , ! - '</span>
 
