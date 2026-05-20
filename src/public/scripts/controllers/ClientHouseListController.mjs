@@ -403,7 +403,30 @@ export class ClientHouseListController {
    * sendToShowcase - Sends a house to the showcase by making a POST request to the server with the house details. Called when the "Showcase" button is clicked on a house card.
    * @param {Object} house 
    */
-  static sendToShowcase(house) {
+  static async updateShowcase(house) {
+    fetch("/showcase/update/", {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+        "Idempotency-Key": crypto.randomUUID() // generate a unique id for this request to prevent duplicate calls
+      },
+      body: JSON.stringify(house)
+    })
+      .then(response => {
+        if (response.ok) {
+          toast("House updated in showcase!");
+        } else {
+          toast("House cannot be updated in showcase!");
+          return response.statusText;
+        }
+      })
+  }
+
+  /**
+   * sendToShowcase - Sends a house to the showcase by making a POST request to the server with the house details. Called when the "Showcase" button is clicked on a house card.
+   * @param {Object} house 
+   */
+  static async sendToShowcase(house) {
     fetch("/showcase/add/", {
       method: "POST",
       headers: {
@@ -417,7 +440,8 @@ export class ClientHouseListController {
           toast("House sent to showcase!");
         } else {
           if (response.status == 409) {
-            toast("House already in showcase!", 3000, "error");
+            // house already in showcase, so call the update method
+            ClientHouseListController.updateShowcase(house);
           } else {
             toast(`Error sending to showcase: ${response.statustext}`, 3000, "error");
           }
