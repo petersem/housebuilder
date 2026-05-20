@@ -177,8 +177,8 @@ export class ClientHouseListController {
       scLink.id = "showcase-btn" + house.id;
       scLink.href = "#";
       scLink.setAttribute('data-id', house.id);
-      scLink.innerText = "Showcase"
-      scLink.title = "Add to showcase"
+      scLink.innerText = "Publish"
+      scLink.title = "Publish to showcase"
       cardActions.appendChild(scLink);
 
       // build card
@@ -346,9 +346,9 @@ export class ClientHouseListController {
 
     const params = id.split("||");
 
-    if (window.confirm(`DELETE:\n     ${params[1]}?`)) {
+    // if (window.confirm(`DELETE:\n     ${params[1]}?`)) {
       ClientHouseListController.deleteHouse(params[0]);
-    }
+    // }
   }
 
   /**
