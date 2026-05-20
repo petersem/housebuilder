@@ -106,7 +106,7 @@ if (localStorageHouses?.length > 0) {
 function showcaseDelete(id) {
   const params = id.split("||");
 
-  if (window.confirm(`DELETE:\n     ${params[1]}?`)) {
+  // if (window.confirm(`DELETE:\n     ${params[1]}?`)) {
     fetch("/showcase/delete/", {
       method: "DELETE",
       headers: {
@@ -118,8 +118,8 @@ function showcaseDelete(id) {
     })
       .then(response => window.location.reload(true))
       .catch(error => toast("Error deleting house: " + error.message, "error")
-      );
-  }
+    );
+  // }
 }
 
 // expose functions globally, as setting this as a module type removed them from global scope.
