@@ -94,7 +94,7 @@ export class ClientHouseBuilderController {
       ClientHouseBuilderController.populateCompanyDropdown("companyName", companies);
       document.getElementById("saveBtn").onclick = ClientHouseBuilderController.addHouse;
       document.getElementById("saveBtn").innerText = "Save Draft";
-      saveBtn.style.display = "none";
+      saveBtn.disabled = true;
 
     } else {
       // Edit entry
@@ -154,6 +154,7 @@ export class ClientHouseBuilderController {
 
       if (form.checkValidity()) {
         saveBtn.style.display = "inline-block";
+        saveBtn.disabled = false;
 
         // calculate price 
         const newHouse = {
@@ -179,18 +180,19 @@ export class ClientHouseBuilderController {
         price.setAttribute("data-id", newHouse.totalCost);
 
       } else {
-        saveBtn.style.display = "none";
+        saveBtn.disabled = true;
       }
     });
 
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.querySelector("form");
       const saveBtn = document.getElementById("saveBtn");
-
+      
       if (form.checkValidity()) {
         saveBtn.style.display = "inline-block";
+        saveBtn.disabled = false;
       } else {
-        saveBtn.style.display = "none";
+        saveBtn.disabled = true;
       }
     });
   }
@@ -390,8 +392,6 @@ export class ClientHouseBuilderController {
     houseToUpdate.extras = newHouse.extras;
     ClientHouseModel.update(house => house.id == newHouse.id, newHouse);
 
-    await ClientHouseBuilderController.updateShowcase(newHouse);
-
     window.location.href = "/housebuilder";
 
   }
@@ -417,30 +417,7 @@ export class ClientHouseBuilderController {
       })
   }
 
-  /**
-   * sendToShowcase - sends the house to the showcase endpoint to be added to the public showcase
-   * @param {Object} house 
-   */
-  static sendToShowcase(house) {
-    fetch("/showcase/add", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-        "Idempotency-Key": crypto.randomUUID() // generate a unique id for this request to prevent duplicate calls
-      },
-      body: JSON.stringify(house)
-    })
-      .then(response => {
-        if (response.ok) {
-          toast("House sent to showcase!");
-        } else {
-          toast("House already in showcase!", 3000, "error");
-          return response.statusText;
-        }
-      })
-  }
-
-  /**
+ /**
  * Update validity - validates data (form regex)before populating form. 
  * @param {*} id 
  * @param {*} value 

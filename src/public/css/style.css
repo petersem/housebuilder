@@ -824,6 +824,18 @@ select:invalid {
     color: #fff !important;
 }
 
+#saveBtn:disabled,
+#saveBtn:disabled:hover,
+#saveBtn:disabled:active,
+#saveBtn:disabled:focus {
+    opacity: .5 !important;
+    cursor: default !important;
+    filter: grayscale(40%) !important;
+    /* background: inherit !important;
+    color: inherit !important; */
+    pointer-events: none;
+}
+
 aboutLinks > a {
   text-decoration: none;
   font-weight: 800;
