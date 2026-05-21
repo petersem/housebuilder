@@ -781,18 +781,17 @@ body:has(main form) main > section {
     color: #d9534f;
 }
 
-/* When the input is invalid, show the error message */
-input:invalid + .error,
-select:invalid + .error {
+/* Show error ONLY after user interaction */
+input:user-invalid + .error,
+select:user-invalid + .error {
     display: block;
 }
 
-/* Optional: red border on invalid fields */
-input:invalid,
-select:invalid {
+/* Red border ONLY after user interaction */
+input:user-invalid,
+select:user-invalid {
     border-color: #d9534f;
-    -webkit-box-shadow: 0 0 0 2px rgba(217,83,79,0.2);
-            box-shadow: 0 0 0 2px rgba(217,83,79,0.2);
+    box-shadow: 0 0 0 2px rgba(217,83,79,0.2);
 }
 
 #saveBtn,

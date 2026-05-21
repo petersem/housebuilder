@@ -10,6 +10,8 @@ export class ClientHouseBuilderController {
    * @returns {void} 
   */
   static async renderEdit() {
+    let isHydrating = true;
+    
     // load companies and pricing data
     const companyList = await ClientHouseBuilderController.getCompanies()
       .then(data => data)
@@ -95,7 +97,6 @@ export class ClientHouseBuilderController {
       document.getElementById("saveBtn").onclick = ClientHouseBuilderController.addHouse;
       document.getElementById("saveBtn").innerText = "Save Draft";
       saveBtn.disabled = true;
-
     } else {
       // Edit entry
       document.getElementById("saveBtn").onclick = ClientHouseBuilderController.updateHouse;
@@ -145,10 +146,8 @@ export class ClientHouseBuilderController {
       }
     }
 
-    document.removeEventListener("DOMContentLoaded", () => { });
-    document.removeEventListener("input", () => { });
-
     document.addEventListener("input", async () => {
+      if (isHydrating) return; // ignore synthetic events during load
       const form = document.querySelector("form");
       const saveBtn = document.getElementById("saveBtn");
 
@@ -184,17 +183,7 @@ export class ClientHouseBuilderController {
       }
     });
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.querySelector("form");
-      const saveBtn = document.getElementById("saveBtn");
-      
-      if (form.checkValidity()) {
-        saveBtn.style.display = "inline-block";
-        saveBtn.disabled = false;
-      } else {
-        saveBtn.disabled = true;
-      }
-    });
+    isHydrating = false;
   }
 
   /**
@@ -432,7 +421,7 @@ export class ClientHouseBuilderController {
     // Force browser to re-evaluate pattern + required
     el.checkValidity();
     // Trigger UI update for :invalid / :valid CSS
-    el.dispatchEvent(new Event("input", { bubbles: true }));
+    // el.dispatchEvent(new Event("input", { bubbles: true }));
   }
 
   /**
@@ -482,18 +471,5 @@ export class ClientHouseBuilderController {
     });
   }
 
-  /**
- * setCheckbox - wrapped to set the cb value
- * @param {*} id 
- * @param {*} value 
- * @returns 
- */
-  static setCheckbox(id, value) {
-    const el = document.getElementById(id);
-    if (!el) return;
-
-    // value should be true or false
-    el.checked = Boolean(value);
-  }
 
 }
