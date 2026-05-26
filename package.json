@@ -1,6 +1,6 @@
 {
   "name": "housebuilder",
-  "version": "1.11.14",
+  "version": "1.11.15",
   "description": "",
   "main": "server.mjs",
   "scripts": {
