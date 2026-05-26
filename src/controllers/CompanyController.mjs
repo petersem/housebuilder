@@ -8,8 +8,13 @@ import { logDanger, logWarning, logInfo } from "../utilities/logger.mjs";
  */
 export class CompanyController {
 
+    /**
+     * viewCompanies gets all companies from the CompanyModel
+     * @param {Object} - The request 
+     * @param {Object} - The response 
+     * @return {companies[]} array of companies
+     */
     static viewCompanies(req, res) {
-
         const companies = CompanyModel.select();
 
         res.status(200);

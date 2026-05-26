@@ -5,8 +5,8 @@ import { ClientHouseModel } from "../models/ClientHouseModel.mjs";
  */
 export class ClientHouseListController {
   /**
-   * getCompany
-   * @returns {Object} an array of company obects
+   * **getCompanies** - gets an array of _companies_ from the server-side /companies API
+   * @returns {Object[]} an array of company objects
    */
   static async getCompanies() {
     const response = await fetch("/companies/", {
@@ -243,12 +243,12 @@ export class ClientHouseListController {
   }
 
   /**
-   * sortBy
-   * @param {Array} arr 
-   * @param {string} prop 
-   * @param {string} direction 
-   * @returns {Array} sorted array by the given property and direction 
-   */
+  * **sortBy** - Sort function that manages string and number sorts, in asc or desc order
+  * @param {Array} arr - the array of data to be sorted
+  * @param {string} prop - the propert that will be sorted
+  * @param {string} direction - the direction of sort asc/desc
+  * @returns {Array} sorted array by the given property and direction 
+  */
   static sortBy(arr, prop, direction = "asc") {
     return arr.sort((a, b) => {
       const x = a[prop];
@@ -270,10 +270,11 @@ export class ClientHouseListController {
   }
 
   /**
-   * getSortValues
-   * @param {Array} houses 
-   * @returns {Array} data for sort array
-   */
+   * **getSortValues** - Generates an array of sort values for the sort dropdown list. 
+   * > Takes all but some properties from a house object
+   * @param {Array} houses - takes a house object to interrogate the properties of 
+   * @returns {Array} data for sort array, to be used in the drop down list
+  */
   static getSortValues(houses) {
     const sortArray = [];
 
@@ -309,8 +310,10 @@ export class ClientHouseListController {
   }
 
   /**
-   * Get House List
-   * @returns {house[]} All client houses
+   * **GetHouseList** Gets a list of filtered and sorted houses 
+   * @param {String} titleSearch - the house name filter
+   * @param {String} sortTerm - the sort property and sort direction
+   * @returns {Object[]} houses[] - an array of sorted and filtered houses
    */
   static GetHouseList(titleSearch = "", sortTerm = "") {
     let houses;

@@ -2,7 +2,19 @@ import { ClientDataModel } from "./ClientDataModel.mjs";
 let uuid = self.crypto.randomUUID()
 
 /**
- * Client house model
+ * CTOR requires params to create a new ClientHouseModel
+ * @class ClientHouseModel
+ * @classdesc Manages all _CRUD_ operations for the _ClientHouseModel_
+ * @param {string} id - 34 character UUID as a unique key
+ * @param {string} title - basePrice - The base price for the company
+ * @param {string} companyName - The company name
+ * @param {Number} rooms - The number of rooms
+ * @param {Number} bathrooms - The number of bathrooms
+ * @param {Number} garages - The number of garages
+ * @param {Number} floorAreaSqm - The floor area in square meters
+ * @param {Number} storyCount - The number of stories
+ * @param {Number} totalCostgrooms - The calculated total cost
+ * @param {Object[]} extras - An array of extras objects
  */
 export class ClientHouseModel extends ClientDataModel {
 

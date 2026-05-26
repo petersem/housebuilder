@@ -1,5 +1,13 @@
 import { DataModel } from "./DataModel.mjs";
 
+/**
+ * CTOR requires params to create a new company, base price, and rating
+ * @class CompanyModel
+ * @classdesc Manages all _CRUD_ operations for _companies_
+ * @param {string} companyName - The name of the company
+ * @param {integer} basePrice - The base price for the company
+ * @param {number} rating - The company rating
+ */
 export default class CompanyModel extends DataModel {
 
     name;

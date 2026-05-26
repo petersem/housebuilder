@@ -262,8 +262,8 @@ export class ClientHouseBuilderController {
   }
 
   /**
-   * getCompanies
-   * @returns {Object} an array of company obects
+   * **getCompanies** - gets an array of _companies_ from the server-side /companies API
+   * @returns {Object[]} an array of company objects
    */
   static async getCompanies() {
     const response = await fetch("/companies/", {
@@ -278,7 +278,7 @@ export class ClientHouseBuilderController {
   }
 
   /**
-  * getPricing
+  * **getPricing** - gets pricing data from the server-side /pricing API
   * @returns array of price objects
   */
   static async getPricing() {

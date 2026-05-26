@@ -41,10 +41,10 @@ export class ShowcaseController {
     }
 
     /**
-     * sortBy
-     * @param {Array} arr 
-     * @param {string} prop 
-     * @param {string} direction 
+     * sortBy - Sort function that manages string and number sorts, in asc or desc order
+     * @param {Array} arr - the array of data to be sorted
+     * @param {string} prop - the propert that will be sorted
+     * @param {string} direction - the direction of sort asc/desc
      * @returns {Array} sorted array by the given property and direction 
      */
     static sortBy(arr, prop, direction = "asc") {
@@ -68,9 +68,10 @@ export class ShowcaseController {
     }
 
     /**
-     * getSortValues
-     * @param {Array} houses 
-     * @returns {Array} data for sort array
+     * getSortValues - Generates an array of sort values for the sort dropdown list. 
+     * > Takes all but some properties from a house object
+     * @param {Array} houses - takes a house object to interrogate the properties of 
+     * @returns {Array} data for sort array, to be used in the drop down list
      */
     static getSortValues(houses) {
         const sortArray = [];

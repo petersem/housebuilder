@@ -1,6 +1,21 @@
 import { DataModel } from "./DataModel.mjs";
 import crypto from 'crypto';
 
+/**
+ * CTOR requires params to create a new ShowcaseModel
+ * @class ShowcaseModel
+ * @classdesc Manages all _CRUD_ operations for _Showcase Houses_
+ * @param {string} id - 34 character UUID as a unique key
+ * @param {string} title - basePrice - The base price for the company
+ * @param {string} companyName - The company name
+ * @param {Number} rooms - The number of rooms
+ * @param {Number} bathrooms - The number of bathrooms
+ * @param {Number} garages - The number of garages
+ * @param {Number} floorAreaSqm - The floor area in square meters
+ * @param {Number} storyCount - The number of stories
+ * @param {Number} totalCostgrooms - The calculated total cost
+ * @param {Object[]} extras - An array of extras objects
+ */
 export default class ShowcaseModel extends DataModel {
 
     id;

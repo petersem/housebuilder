@@ -1,5 +1,15 @@
 import { DataModel } from "./DataModel.mjs";
 
+/**
+ * CTOR requires params to create a new PricingModel, with perRoom, perBatthroom, perGarage, perSqm, and extras prices.
+ * @class PricingModel
+ * @classdesc Manages all _CRUD_ operations for _PricingModels_
+ * @param {integer} perRoom - The price per-room
+ * @param {integer} perBathroom - The price per-bathroom
+ * @param {integer} perGarage - The price per-garage
+ * @param {integer} perSqm - The price per-Sqm
+ * @param {Object[]} Extras - Array of extras objects 
+ */
 export default class PricingModel extends DataModel {
 
     perRoom;
