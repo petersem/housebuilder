@@ -13,7 +13,7 @@ let uuid = self.crypto.randomUUID()
  * @param {Number} garages - The number of garages
  * @param {Number} floorAreaSqm - The floor area in square meters
  * @param {Number} storyCount - The number of stories
- * @param {Number} totalCostgrooms - The calculated total cost
+ * @param {Number} totalCost - The calculated total cost
  * @param {Object[]} extras - An array of extras objects
  */
 export class ClientHouseModel extends ClientDataModel {
